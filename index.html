@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Segovia Local — Discover the Real Segovia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stone: #C4A882;
+    --stone-light: #E8DBC8;
+    --stone-pale: #F5EFE5;
+    --terracotta: #C4674A;
+    --terracotta-soft: rgba(196,103,74,0.1);
+    --ink: #1A1A18;
+    --ink-soft: #3A3A35;
+    --ink-muted: #7A7A72;
+    --parchment: #FAF7F2;
+    --cream: #FFFCF7;
+    --warm-white: #FEFDFB;
+    --olive: #6B7C5A;
+    --olive-soft: rgba(107,124,90,0.1);
+    --shadow-soft: 0 2px 12px rgba(26,26,24,0.04);
+    --shadow-card: 0 8px 32px rgba(26,26,24,0.06), 0 2px 8px rgba(26,26,24,0.03);
+    --shadow-hover: 0 16px 48px rgba(26,26,24,0.1), 0 4px 12px rgba(26,26,24,0.04);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 768px) {
+    body { max-width: 480px; margin: 0 auto; box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100vh; }
+  }
+
+  /* ============================================
+     HERO - Full screen, cinematic feel
+     ============================================ */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(196,168,130,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(196,103,74,0.15) 0%, transparent 50%),
+      linear-gradient(175deg, #1A1A18 0%, #2A2820 30%, #332E24 60%, #1A1A18 100%);
+    animation: heroBgShift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroBgShift {
+    0% { opacity: 1; }
+    100% { opacity: 0.85; }
+  }
+
+  /* Decorative arch pattern - inspired by the aqueduct */
+  .hero-arches {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    opacity: 0.04;
+    background:
+      radial-gradient(ellipse 60px 80px at 30px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 90px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 150px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 210px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 270px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 330px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 390px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
+      radial-gradient(ellipse 60px 80px at 450px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px);
+  }
+
+  /* Grain texture */
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' fill='white'/%3E%3C/svg%3E");
+    background-size: 256px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem 3rem;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: slideUp 0.7s ease-out 0.3s forwards;
+  }
+
+  .hero-eyebrow .line {
+    width: 24px;
+    height: 1px;
+    background: var(--stone);
+  }
+
+  .hero-eyebrow span {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 0.95;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: slideUp 0.8s ease-out 0.5s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--stone);
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(250,247,242,0.45);
+    line-height: 1.65;
+    max-width: 300px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: slideUp 0.8s ease-out 0.7s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--stone);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 14px 28px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    opacity: 0;
+    animation: slideUp 0.8s ease-out 0.9s forwards;
+  }
+
+  .hero-cta:hover {
+    background: var(--cream);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(196,168,130,0.3);
+  }
+
+  .hero-cta .arrow {
+    transition: transform 0.3s;
+    font-size: 1.1rem;
+  }
+  .hero-cta:hover .arrow { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    opacity: 0;
+    animation: slideUp 0.6s ease-out 1.2s forwards;
+  }
+
+  .hero-scroll-inner {
+    width: 22px;
+    height: 36px;
+    border: 1.5px solid rgba(196,168,130,0.3);
+    border-radius: 11px;
+    position: relative;
+  }
+
+  .hero-scroll-dot {
+    width: 3px;
+    height: 8px;
+    background: var(--stone);
+    border-radius: 2px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scrollDot 2s ease-in-out infinite;
+  }
+
+  /* ============================================
+     INTRO STRIP
+     ============================================ */
+  .intro-strip {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem 1.5rem;
+    background: var(--ink);
+    border-bottom: 1px solid rgba(196,168,130,0.1);
+  }
+
+  .intro-stat {
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  .intro-stat:nth-child(1) { animation-delay: 1.1s; }
+  .intro-stat:nth-child(2) { animation-delay: 1.25s; }
+  .intro-stat:nth-child(3) { animation-delay: 1.4s; }
+
+  .intro-stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--stone);
+  }
+
+  .intro-stat .lbl {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,247,242,0.3);
+    margin-top: 2px;
+  }
+
+  /* ============================================
+     SECTIONS - Shared
+     ============================================ */
+  .section {
+    padding: 3.5rem 1.5rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label .dot {
+    width: 5px;
+    height: 5px;
+    background: var(--terracotta);
+    border-radius: 50%;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .section-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+
+  /* ============================================
+     DISCOVER - Horizontal scroll cards
+     ============================================ */
+  .discover-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem 0 1.5rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .discover-scroll::-webkit-scrollbar { display: none; }
+
+  .discover-card {
+    flex-shrink: 0;
+    width: 280px;
+    scroll-snap-align: start;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: white;
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+  }
+
+  .discover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .discover-card-visual {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .discover-card-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .discover-card:hover .discover-card-bg { transform: scale(1.05); }
+
+  .discover-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,26,24,0.7) 0%, rgba(26,26,24,0) 50%);
+  }
+
+  .discover-card-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(26,26,24,0.6);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(250,247,242,0.1);
+  }
+
+  .discover-card-icon {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    font-size: 2.2rem;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  }
+
+  .discover-card-body {
+    padding: 1.2rem 1.4rem 1.4rem;
+  }
+
+  .discover-card-cat {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 4px;
+  }
+
+  .discover-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .discover-card-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .discover-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .discover-card-loc {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .discover-card-loc svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--stone);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .heart-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(26,26,24,0.08);
+    background: var(--parchment);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1rem;
+  }
+
+  .heart-btn:active { transform: scale(0.9); }
+  .heart-btn.liked {
+    background: var(--terracotta-soft);
+    border-color: var(--terracotta);
+    animation: heartPop 0.4s ease-out;
+  }
+
+  /* ============================================
+     PLACES GRID - Curated listings
+     ============================================ */
+  .places-section {
+    background: white;
+    padding: 3.5rem 1.5rem;
+  }
+
+  .category-row {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .category-row::-webkit-scrollbar { display: none; }
+
+  .cat-chip {
+    flex-shrink: 0;
+    padding: 9px 20px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(26,26,24,0.08);
+    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+    white-space: nowrap;
+  }
+
+  .cat-chip:hover { border-color: var(--stone); color: var(--ink); }
+
+  .cat-chip.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--cream);
+  }
+
+  .place-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(26,26,24,0.05);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .place-card:last-child { border-bottom: none; }
+
+  .place-card:hover { transform: translateX(4px); }
+
+  .place-card-img {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .place-card-img-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .place-card:hover .place-card-img-inner { transform: scale(1.08); }
+
+  .place-card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .place-card-cat {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 3px;
+  }
+
+  .place-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+
+  .place-card-desc {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .place-card-arrow {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    opacity: 0;
+    transition: all 0.3s;
+    color: var(--stone);
+    font-size: 1.2rem;
+  }
+
+  .place-card:hover .place-card-arrow {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  /* ============================================
+     LOCAL TIPS - Editorial feel
+     ============================================ */
+  .tips-section {
+    background: var(--ink);
+    padding: 3.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tips-section::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(196,168,130,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .tips-section .section-label { color: var(--stone-light); }
+  .tips-section .section-label .dot { background: var(--stone-light); }
+  .tips-section .section-title { color: var(--cream); }
+  .tips-section .section-desc { color: rgba(250,247,242,0.4); }
+
+  .tip-card {
+    position: relative;
+    background: rgba(250,247,242,0.04);
+    border: 1px solid rgba(250,247,242,0.06);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 0.75rem;
+    backdrop-filter: blur(4px);
+    transition: all 0.35s;
+    cursor: pointer;
+  }
+
+  .tip-card:hover {
+    background: rgba(250,247,242,0.07);
+    border-color: rgba(196,168,130,0.2);
+    transform: translateY(-2px);
+  }
+
+  .tip-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(196,168,130,0.12);
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    line-height: 1;
+  }
+
+  .tip-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .tip-card-text {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(250,247,242,0.5);
+    line-height: 1.55;
+  }
+
+  /* ============================================
+     FOOTER CTA
+     ============================================ */
+  .footer-cta {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(to bottom, var(--parchment), var(--stone-pale));
+    position: relative;
+  }
+
+  .footer-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-cta-title em { font-weight: 600; }
+
+  .footer-cta-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .footer-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .footer-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,26,24,0.15);
+  }
+
+  .footer-brand {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(26,26,24,0.06);
+  }
+
+  .footer-brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-brand-sub {
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+
+  /* ============================================
+     BOTTOM NAV
+     ============================================ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,253,251,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(26,26,24,0.05);
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+
+  @media (min-width: 768px) {
+    .bottom-nav { max-width: 480px; left: 50%; transform: translateX(-50%); }
+  }
+
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .nav-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ink-muted);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.2s;
+  }
+
+  .nav-btn span {
+    font-size: 0.55rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .nav-btn.active svg { stroke: var(--ink); stroke-width: 2.2; }
+  .nav-btn.active span { color: var(--ink); font-weight: 700; }
+
+  .nav-btn .active-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    right: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .nav-btn.active .active-dot { opacity: 1; }
+
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scrollDot {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    50% { transform: translateX(-50%) translateY(12px); opacity: 0.3; }
+  }
+
+  @keyframes heartPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Scroll-triggered animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- =========== HERO =========== -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-arches"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="line"></div>
+      <span>Your Local Guide</span>
+    </div>
+    <h1>Discover<br><em>Segovia</em></h1>
+    <p>Curated by the people who live here. Not algorithms, not ads — just honest recommendations from locals who love this city.</p>
+    <button class="hero-cta" onclick="document.getElementById('discover').scrollIntoView({behavior:'smooth'})">
+      Start Exploring <span class="arrow">→</span>
+    </button>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-inner">
+      <div class="hero-scroll-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== STATS STRIP =========== -->
+<div class="intro-strip">
+  <div class="intro-stat">
+    <div class="num">47</div>
+    <div class="lbl">Places Curated</div>
+  </div>
+  <div class="intro-stat">
+    <div class="num">Local</div>
+    <div class="lbl">Recommendations</div>
+  </div>
+  <div class="intro-stat">
+    <div class="num">Free</div>
+    <div class="lbl">Always</div>
+  </div>
+</div>
+
+<!-- =========== DISCOVER =========== -->
+<section class="section" id="discover">
+  <div class="section-header reveal">
+    <div class="section-label"><div class="dot"></div> Discover</div>
+    <div class="section-title">Places you <em>won't find</em><br>on Google</div>
+    <div class="section-desc">The spots locals actually go to — from hidden tapas bars to the best sunset viewpoints.</div>
+  </div>
+
+  <div class="discover-scroll" id="discover-scroll"></div>
+</section>
+
+<!-- =========== CURATED PLACES =========== -->
+<section class="places-section" id="places">
+  <div class="section-header reveal">
+    <div class="section-label"><div class="dot"></div> The Guide</div>
+    <div class="section-title">Eat, Drink &<br><em>Experience</em></div>
+    <div class="section-desc">Hand-picked by people who actually live in Segovia.</div>
+  </div>
+
+  <div class="category-row" id="cat-row"></div>
+  <div id="places-list"></div>
+</section>
+
+<!-- =========== LOCAL TIPS =========== -->
+<section class="tips-section" id="tips">
+  <div class="section-header reveal">
+    <div class="section-label"><div class="dot"></div> Local Secrets</div>
+    <div class="section-title" style="color:var(--cream)">Things only <em>locals</em><br>know</div>
+    <div class="section-desc">The unwritten rules of Segovia. You're welcome.</div>
+  </div>
+
+  <div id="tips-list"></div>
+</section>
+
+<!-- =========== FOOTER CTA =========== -->
+<section class="footer-cta">
+  <div class="reveal">
+    <div class="footer-cta-title">Know a place<br>we're <em>missing?</em></div>
+    <div class="footer-cta-desc">This guide is built by the community.<br>Help us make it better.</div>
+    <button class="footer-cta-btn">Suggest a Place →</button>
+  </div>
+  <div class="footer-brand">
+    <div class="footer-brand-name">Segovia Local</div>
+    <div class="footer-brand-sub">Curated by locals · Updated weekly</div>
+  </div>
+</section>
+
+<!-- =========== BOTTOM NAV =========== -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="navTo('discover', this)">
+    <div class="active-dot"></div>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    <span>Discover</span>
+  </button>
+  <button class="nav-btn" onclick="navTo('places', this)">
+    <div class="active-dot"></div>
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span>Places</span>
+  </button>
+  <button class="nav-btn" onclick="navTo('tips', this)">
+    <div class="active-dot"></div>
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span>Secrets</span>
+  </button>
+</nav>
+
+<script>
+// ===== DATA =====
+const discoverData = [
+  {
+    name: "Mesón de Cándido",
+    cat: "Legendary Restaurant",
+    desc: "The most iconic cochinillo in Spain since 1786. Watch them cut the suckling pig with a plate.",
+    area: "Aqueduct",
+    icon: "🐷",
+    tag: "Iconic",
+    gradient: "linear-gradient(135deg, #C4A882 0%, #A08862 100%)"
+  },
+  {
+    name: "Mirador de la Pradera",
+    cat: "Viewpoint",
+    desc: "The best view of the Alcázar at sunset. Bring wine. Thank us later.",
+    area: "South Bank",
+    icon: "🌅",
+    tag: "Must See",
+    gradient: "linear-gradient(135deg, #C4674A 0%, #A04E35 100%)"
+  },
+  {
+    name: "La Concepción",
+    cat: "Wine & Tapas",
+    desc: "Tiny bar, massive character. The patatas bravas are legendary. Always crowded — that's how you know.",
+    area: "Judería",
+    icon: "🍷",
+    tag: "Local Favorite",
+    gradient: "linear-gradient(135deg, #6B7C5A 0%, #4E5D42 100%)"
+  },
+  {
+    name: "Alcázar de Segovia",
+    cat: "Castle",
+    desc: "The castle that inspired Disney. Climb the tower — 152 steps to the best panoramic view in Castilla.",
+    area: "Old Town",
+    icon: "🏰",
+    tag: "Essential",
+    gradient: "linear-gradient(135deg, #5A6B7C 0%, #3E4F5D 100%)"
+  },
+  {
+    name: "Bar San Martín",
+    cat: "Tapas Bar",
+    desc: "Order a caña and they give you a free tapa. The real Segovia experience. No tourists, just locals.",
+    area: "Plaza San Martín",
+    icon: "🍺",
+    tag: "Hidden Gem",
+    gradient: "linear-gradient(135deg, #8C7A6B 0%, #6B5A4B 100%)"
+  },
+];
+
+const placesData = [
+  { name: "El Bernardino", cat: "Traditional Castilian", desc: "Roast lamb that falls off the bone. Family-run since forever. The dining room feels like a medieval banquet.", area: "Plaza del Azoguejo", group: "Eat", color: "#E8DBC8" },
+  { name: "El Sitio", cat: "Creative Tapas", desc: "Modern twist on Segovian classics. Try the black pudding croquetas — they're unreal.", area: "Calle Infanta Isabel", group: "Eat", color: "#D8C8B5" },
+  { name: "Restaurante José María", cat: "Cochinillo", desc: "Competes with Cándido for the cochinillo crown. Locals are split. You decide.", area: "Calle Cronista Lecea", group: "Eat", color: "#C8D5C0" },
+  { name: "Café Jeyma", cat: "Coffee & Pastries", desc: "Best ponche segoviano in the city. The secret recipe hasn't changed in decades.", area: "Plaza Mayor", group: "Drink", color: "#C8C5D5" },
+  { name: "La Tasquina", cat: "Wine Bar", desc: "Natural wines and local cheese boards. The owner knows every producer personally.", area: "Calle Valdeláguila", group: "Drink", color: "#D5C8C8" },
+  { name: "Limón y Menta", cat: "Cocktails", desc: "The only proper cocktail bar in Segovia. Gin & tonics are their religion.", area: "Calle Isabel la Católica", group: "Drink", color: "#C5D0D8" },
+  { name: "The Roman Aqueduct", cat: "Monument", desc: "2,000 years old. No mortar. Just stone balancing on stone. Come at dawn when nobody's there.", area: "Plaza del Azoguejo", group: "See", color: "#D8D0C5" },
+  { name: "Judería Walk", cat: "Historic Quarter", desc: "The old Jewish quarter. Narrow streets, hidden courtyards, stories on every wall.", area: "Judería", group: "See", color: "#C5C8D0" },
+  { name: "La Granja de San Ildefonso", cat: "Palace & Gardens", desc: "The Spanish Versailles, 15 min away. The fountains on Wednesday/Saturday are magical.", area: "San Ildefonso", group: "See", color: "#D0D5C5" },
+  { name: "Senda de los Molinos", cat: "Nature Walk", desc: "Follow the river below the Alcázar. Mills, bridges, and zero tourists. Pure peace.", area: "Eresma Valley", group: "Do", color: "#C0C8B8" },
+  { name: "Hot Air Balloon Ride", cat: "Experience", desc: "See the aqueduct from above. Early morning flights over the Castilian meseta. Life-changing.", area: "Departure Point", group: "Do", color: "#D8C0B0" },
+];
+
+const categories = ["All", "Eat", "Drink", "See", "Do"];
+
+const tipsData = [
+  { title: "Never eat on Plaza Mayor", text: "Tourist trap. Walk 2 minutes in any direction and the food is twice as good at half the price. Locals eat on the side streets." },
+  { title: "Cochinillo is lunch, not dinner", text: "The restaurants roast the suckling pig in the morning. By dinner, it's leftovers. Go between 1:30-3pm for the real experience." },
+  { title: "The aqueduct at 7am", text: "Skip the midday crowds. At dawn, you'll have the entire monument to yourself. The light hitting the stone is worth waking up for." },
+  { title: "Free tapas are real here", text: "Order a drink at most bars and you get a free tapa. It's not Madrid — they still do this properly in Segovia. Hop between 3-4 bars for a full meal." },
+  { title: "The secret viewpoint", text: "Walk past the Alcázar, down toward the Vera Cruz church. Turn around. That view of the castle against the sky is the photo nobody takes — and it's the best one." },
+];
+
+// ===== RENDER =====
+function renderDiscover() {
+  const el = document.getElementById('discover-scroll');
+  el.innerHTML = discoverData.map((d, i) => `
+    <div class="discover-card reveal reveal-delay-${i + 1}">
+      <div class="discover-card-visual">
+        <div class="discover-card-bg" style="background:${d.gradient}"></div>
+        <div class="discover-card-overlay"></div>
+        <div class="discover-card-tag">${d.tag}</div>
+        <div class="discover-card-icon">${d.icon}</div>
+      </div>
+      <div class="discover-card-body">
+        <div class="discover-card-cat">${d.cat}</div>
+        <div class="discover-card-name">${d.name}</div>
+        <div class="discover-card-desc">${d.desc}</div>
+        <div class="discover-card-footer">
+          <div class="discover-card-loc">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${d.area}
+          </div>
+          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">♡</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  observeAll();
+}
+
+function renderCategories() {
+  const el = document.getElementById('cat-row');
+  el.innerHTML = categories.map((c, i) => `
+    <button class="cat-chip ${i===0?'active':''}" onclick="filterCat('${c}',this)">${c}</button>
+  `).join('');
+}
+
+let activeCat = 'All';
+function filterCat(cat, btn) {
+  activeCat = cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderPlaces();
+}
+
+function renderPlaces() {
+  const el = document.getElementById('places-list');
+  const filtered = activeCat === 'All' ? placesData : placesData.filter(p => p.group === activeCat);
+  el.innerHTML = filtered.map((p, i) => `
+    <div class="place-card reveal reveal-delay-${Math.min(i+1, 4)}">
+      <div class="place-card-img">
+        <div class="place-card-img-inner" style="background:${p.color};display:flex;align-items:center;justify-content:center;font-size:1.6rem">
+          ${p.cat.includes('Cochinillo') || p.cat.includes('Traditional') ? '🍖' :
+            p.cat.includes('Tapas') || p.cat.includes('Creative') ? '🫒' :
+            p.cat.includes('Coffee') ? '☕' :
+            p.cat.includes('Wine') ? '🍷' :
+            p.cat.includes('Cocktail') ? '🍸' :
+            p.cat.includes('Monument') || p.cat.includes('Castle') ? '🏛️' :
+            p.cat.includes('Historic') || p.cat.includes('Palace') ? '🏰' :
+            p.cat.includes('Nature') ? '🌿' :
+            p.cat.includes('Balloon') ? '🎈' : '📍'}
+        </div>
+      </div>
+      <div class="place-card-body">
+        <div class="place-card-cat">${p.cat} · ${p.area}</div>
+        <div class="place-card-name">${p.name}</div>
+        <div class="place-card-desc">${p.desc}</div>
+      </div>
+      <div class="place-card-arrow">→</div>
+    </div>
+  `).join('');
+  observeAll();
+}
+
+function renderTips() {
+  const el = document.getElementById('tips-list');
+  el.innerHTML = tipsData.map((t, i) => `
+    <div class="tip-card reveal reveal-delay-${Math.min(i+1, 4)}">
+      <div class="tip-card-num">0${i+1}</div>
+      <div class="tip-card-title">${t.title}</div>
+      <div class="tip-card-text">${t.text}</div>
+    </div>
+  `).join('');
+  observeAll();
+}
+
+function toggleHeart(btn) {
+  btn.classList.toggle('liked');
+  btn.textContent = btn.classList.contains('liked') ? '♥' : '♡';
+  btn.style.color = btn.classList.contains('liked') ? 'var(--terracotta)' : '';
+}
+
+function navTo(id, btn) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ===== SCROLL OBSERVER =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+function observeAll() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+
+// ===== INIT =====
+renderDiscover();
+renderCategories();
+renderPlaces();
+renderTips();
+observeAll();
+</script>
+
+</body>
+</html>
