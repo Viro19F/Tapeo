@@ -7,24 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --stone: #C4A882;
-    --stone-light: #E8DBC8;
-    --stone-pale: #F5EFE5;
-    --terracotta: #C4674A;
-    --terracotta-soft: rgba(196,103,74,0.1);
-    --ink: #1A1A18;
-    --ink-soft: #3A3A35;
-    --ink-muted: #7A7A72;
-    --parchment: #FAF7F2;
-    --cream: #FFFCF7;
-    --warm-white: #FEFDFB;
-    --olive: #6B7C5A;
-    --olive-soft: rgba(107,124,90,0.1);
-    --shadow-soft: 0 2px 12px rgba(26,26,24,0.04);
-    --shadow-card: 0 8px 32px rgba(26,26,24,0.06), 0 2px 8px rgba(26,26,24,0.03);
-    --shadow-hover: 0 16px 48px rgba(26,26,24,0.1), 0 4px 12px rgba(26,26,24,0.04);
-    --radius: 20px;
-    --radius-sm: 12px;
+    --ink: #0F0F0D;
+    --ink-soft: #2C2C28;
+    --ink-muted: #6E6E68;
+    --stone: #B8956A;
+    --stone-light: #D4B896;
+    --stone-pale: #F0E8DA;
+    --terracotta: #B85A3A;
+    --parchment: #F8F5EF;
+    --cream: #FDFCF9;
+    --white: #FFFFFF;
+    --border: rgba(15,15,13,0.08);
+    --border-strong: rgba(15,15,13,0.14);
+    --radius: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,19 +33,39 @@
     color: var(--ink);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    padding-bottom: 80px;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: 72px;
   }
 
+  body.sheet-open { overflow: hidden; }
+
   @media (min-width: 768px) {
-    body { max-width: 480px; margin: 0 auto; box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100vh; }
+    body {
+      max-width: 430px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 32px 80px rgba(0,0,0,0.12);
+      min-height: 100vh;
+    }
   }
 
   /* ============================================
-     HERO - Full screen, cinematic feel
+     PHOTO SYSTEM
+     ============================================ */
+  .photo {
+    width: 100%;
+    height: 100%;
+    background-color: #2A2520;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* ============================================
+     HERO
      ============================================ */
   .hero {
     position: relative;
-    min-height: 100svh;
+    height: 100svh;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -56,670 +73,787 @@
     background: var(--ink);
   }
 
-  .hero-bg {
+  .hero-photo {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse at 30% 20%, rgba(196,168,130,0.25) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(196,103,74,0.15) 0%, transparent 50%),
-      linear-gradient(175deg, #1A1A18 0%, #2A2820 30%, #332E24 60%, #1A1A18 100%);
-    animation: heroBgShift 12s ease-in-out infinite alternate;
+    background-color: #1C1A16;
+    background-size: cover;
+    background-position: center;
   }
 
-  @keyframes heroBgShift {
-    0% { opacity: 1; }
-    100% { opacity: 0.85; }
-  }
-
-  /* Decorative arch pattern - inspired by the aqueduct */
-  .hero-arches {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    opacity: 0.04;
-    background:
-      radial-gradient(ellipse 60px 80px at 30px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 90px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 150px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 210px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 270px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 330px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 390px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px),
-      radial-gradient(ellipse 60px 80px at 450px 120px, transparent 58px, var(--stone) 60px, var(--stone) 62px, transparent 64px);
-  }
-
-  /* Grain texture */
-  .hero-grain {
+  .hero-overlay {
     position: absolute;
     inset: 0;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' fill='white'/%3E%3C/svg%3E");
-    background-size: 256px;
-    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(15,15,13,0.15) 0%,
+      rgba(15,15,13,0.05) 35%,
+      rgba(15,15,13,0.65) 70%,
+      rgba(15,15,13,0.94) 100%
+    );
   }
 
   .hero-content {
     position: relative;
     z-index: 2;
-    padding: 0 2rem 3rem;
+    padding: 0 1.75rem 3rem;
   }
 
-  .hero-eyebrow {
+  .hero-tag {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 1.5rem;
+    gap: 10px;
+    margin-bottom: 1.25rem;
     opacity: 0;
-    animation: slideUp 0.7s ease-out 0.3s forwards;
+    animation: fadeUp 0.7s ease-out 0.3s forwards;
   }
 
-  .hero-eyebrow .line {
-    width: 24px;
-    height: 1px;
-    background: var(--stone);
-  }
+  .hero-tag-line { width: 28px; height: 1px; background: var(--stone); }
 
-  .hero-eyebrow span {
-    font-size: 0.65rem;
+  .hero-tag-text {
+    font-size: 0.6rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--stone);
   }
 
   .hero h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 4.2rem;
+    font-size: clamp(3.2rem, 11vw, 4.8rem);
     font-weight: 300;
     color: var(--cream);
-    line-height: 0.95;
-    margin-bottom: 1.2rem;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
     opacity: 0;
-    animation: slideUp 0.8s ease-out 0.5s forwards;
+    animation: fadeUp 0.9s ease-out 0.5s forwards;
   }
 
-  .hero h1 em {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--stone);
-  }
+  .hero h1 em { font-style: italic; font-weight: 400; color: var(--stone-light); }
 
-  .hero-desc {
-    font-size: 0.95rem;
+  .hero-sub {
+    font-size: 0.85rem;
     font-weight: 300;
-    color: rgba(250,247,242,0.45);
-    line-height: 1.65;
-    max-width: 300px;
-    margin-bottom: 2.5rem;
+    color: rgba(253,252,249,0.5);
+    line-height: 1.7;
+    max-width: 280px;
+    margin-bottom: 2rem;
     opacity: 0;
-    animation: slideUp 0.8s ease-out 0.7s forwards;
+    animation: fadeUp 0.9s ease-out 0.7s forwards;
   }
 
   .hero-cta {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: var(--stone);
-    color: var(--ink);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    padding: 14px 28px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-    opacity: 0;
-    animation: slideUp 0.8s ease-out 0.9s forwards;
-  }
-
-  .hero-cta:hover {
-    background: var(--cream);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(196,168,130,0.3);
-  }
-
-  .hero-cta .arrow {
-    transition: transform 0.3s;
-    font-size: 1.1rem;
-  }
-  .hero-cta:hover .arrow { transform: translateX(4px); }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 1.2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    opacity: 0;
-    animation: slideUp 0.6s ease-out 1.2s forwards;
-  }
-
-  .hero-scroll-inner {
-    width: 22px;
-    height: 36px;
-    border: 1.5px solid rgba(196,168,130,0.3);
-    border-radius: 11px;
-    position: relative;
-  }
-
-  .hero-scroll-dot {
-    width: 3px;
-    height: 8px;
-    background: var(--stone);
-    border-radius: 2px;
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scrollDot 2s ease-in-out infinite;
-  }
-
-  /* ============================================
-     INTRO STRIP
-     ============================================ */
-  .intro-strip {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    padding: 2rem 1.5rem;
-    background: var(--ink);
-    border-bottom: 1px solid rgba(196,168,130,0.1);
-  }
-
-  .intro-stat {
-    text-align: center;
-    opacity: 0;
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-  .intro-stat:nth-child(1) { animation-delay: 1.1s; }
-  .intro-stat:nth-child(2) { animation-delay: 1.25s; }
-  .intro-stat:nth-child(3) { animation-delay: 1.4s; }
-
-  .intro-stat .num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--stone);
-  }
-
-  .intro-stat .lbl {
-    font-size: 0.6rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(250,247,242,0.3);
-    margin-top: 2px;
-  }
-
-  /* ============================================
-     SECTIONS - Shared
-     ============================================ */
-  .section {
-    padding: 3.5rem 1.5rem;
-  }
-
-  .section-header {
-    margin-bottom: 2rem;
-  }
-
-  .section-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--terracotta);
-    margin-bottom: 0.6rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-label .dot {
-    width: 5px;
-    height: 5px;
-    background: var(--terracotta);
-    border-radius: 50%;
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 1.1;
-    margin-bottom: 0.4rem;
-  }
-
-  .section-title em {
-    font-style: italic;
-    font-weight: 600;
-  }
-
-  .section-desc {
-    font-size: 0.85rem;
-    font-weight: 300;
-    color: var(--ink-muted);
-    line-height: 1.55;
-  }
-
-  /* ============================================
-     DISCOVER - Horizontal scroll cards
-     ============================================ */
-  .discover-scroll {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 0.5rem 0 1.5rem;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .discover-scroll::-webkit-scrollbar { display: none; }
-
-  .discover-card {
-    flex-shrink: 0;
-    width: 280px;
-    scroll-snap-align: start;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: white;
-    box-shadow: var(--shadow-card);
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
-    position: relative;
-  }
-
-  .discover-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-hover);
-  }
-
-  .discover-card-visual {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .discover-card-bg {
-    position: absolute;
-    inset: 0;
-    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
-  }
-
-  .discover-card:hover .discover-card-bg { transform: scale(1.05); }
-
-  .discover-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(26,26,24,0.7) 0%, rgba(26,26,24,0) 50%);
-  }
-
-  .discover-card-tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: rgba(26,26,24,0.6);
-    backdrop-filter: blur(8px);
+    gap: 12px;
+    background: transparent;
     color: var(--cream);
-    font-size: 0.6rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 100px;
-    border: 1px solid rgba(250,247,242,0.1);
+    padding: 13px 24px;
+    border-radius: 2px;
+    border: 1px solid rgba(253,252,249,0.3);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    opacity: 0;
+    animation: fadeUp 0.9s ease-out 0.9s forwards;
   }
 
-  .discover-card-icon {
+  .hero-cta:hover { background: var(--stone); border-color: var(--stone); color: var(--ink); }
+  .hero-cta svg { width: 14px; height: 14px; transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(3px); }
+
+  .hero-scroll-indicator {
     position: absolute;
-    bottom: 16px;
-    left: 16px;
-    font-size: 2.2rem;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+    bottom: 1.5rem;
+    right: 1.75rem;
+    z-index: 3;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out 1.4s forwards;
   }
 
-  .discover-card-body {
-    padding: 1.2rem 1.4rem 1.4rem;
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(253,252,249,0.4), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
   }
 
-  .discover-card-cat {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-bottom: 4px;
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
   }
 
-  .discover-card-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.15;
-    margin-bottom: 6px;
-  }
-
-  .discover-card-desc {
-    font-size: 0.8rem;
-    font-weight: 300;
-    color: var(--ink-muted);
-    line-height: 1.5;
-    margin-bottom: 1rem;
-  }
-
-  .discover-card-footer {
+  /* ============================================
+     MASTHEAD
+     ============================================ */
+  .masthead {
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1.25rem 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .discover-card-loc {
-    font-size: 0.7rem;
+  .masthead-stat { text-align: center; }
+
+  .masthead-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
     font-weight: 500;
+    color: var(--stone);
+    line-height: 1;
+  }
+
+  .masthead-label {
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(253,252,249,0.28);
+    margin-top: 4px;
+  }
+
+  .masthead-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.08); }
+
+  /* ============================================
+     SECTIONS
+     ============================================ */
+  .section-label {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .section-title em { font-style: italic; font-weight: 500; }
+
+  .section-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
     color: var(--ink-muted);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .discover-card-loc svg {
-    width: 12px;
-    height: 12px;
-    stroke: var(--stone);
-    fill: none;
-    stroke-width: 2;
-  }
-
-  .heart-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(26,26,24,0.08);
-    background: var(--parchment);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1rem;
-  }
-
-  .heart-btn:active { transform: scale(0.9); }
-  .heart-btn.liked {
-    background: var(--terracotta-soft);
-    border-color: var(--terracotta);
-    animation: heartPop 0.4s ease-out;
+    line-height: 1.65;
+    margin-top: 0.5rem;
   }
 
   /* ============================================
-     PLACES GRID - Curated listings
+     FEATURED
      ============================================ */
-  .places-section {
-    background: white;
-    padding: 3.5rem 1.5rem;
+  .featured {
+    padding: 2.5rem 1.75rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
   }
 
-  .category-row {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 1.5rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .category-row::-webkit-scrollbar { display: none; }
+  .featured-header { margin-bottom: 1.5rem; }
 
-  .cat-chip {
-    flex-shrink: 0;
-    padding: 9px 20px;
-    border-radius: 100px;
-    border: 1.5px solid rgba(26,26,24,0.08);
-    background: transparent;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--ink-muted);
+  .featured-card {
+    position: relative;
+    height: 340px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
     cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .featured-card-photo {
+    width: 100%;
+    height: 100%;
+    background-color: #2A2520;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .featured-card:hover .featured-card-photo { transform: scale(1.04); }
+
+  .featured-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15,15,13,0.9) 0%,
+      rgba(15,15,13,0.4) 50%,
+      rgba(15,15,13,0.05) 100%
+    );
+  }
+
+  .featured-card-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: rgba(15,15,13,0.65);
+    backdrop-filter: blur(6px);
+    padding: 5px 12px;
+    border: 1px solid rgba(184,149,106,0.3);
+    border-radius: 2px;
+  }
+
+  .featured-card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+  }
+
+  .featured-card-cat {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    margin-bottom: 6px;
+  }
+
+  .featured-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+
+  .featured-card-desc {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: rgba(253,252,249,0.6);
+    line-height: 1.55;
+  }
+
+  .featured-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .featured-card-loc {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: rgba(253,252,249,0.45);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .featured-card-loc svg {
+    width: 11px; height: 11px;
+    stroke: var(--stone); fill: none; stroke-width: 2;
+  }
+
+  .featured-card-arrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--stone);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.3s;
+  }
+
+  .featured-card:hover .featured-card-arrow { gap: 9px; }
+
+  /* Discover mini row */
+  .discover-row {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 1.5rem 0 0.25rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .discover-row::-webkit-scrollbar { display: none; }
+
+  .discover-mini {
+    flex-shrink: 0;
+    width: 155px;
+    scroll-snap-align: start;
+    cursor: pointer;
+  }
+
+  .discover-mini-photo {
+    height: 108px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+    background: #2A2520;
+    transition: all 0.4s ease;
+  }
+
+  .discover-mini:hover .discover-mini-photo {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(15,15,13,0.18);
+  }
+
+  .discover-mini-photo .photo { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .discover-mini:hover .discover-mini-photo .photo { transform: scale(1.06); }
+
+  .discover-mini-cat {
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 2px;
+  }
+
+  .discover-mini-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+
+  /* ============================================
+     TRENDING THIS WEEK
+     ============================================ */
+  .trending {
+    background: var(--ink);
+    padding: 2.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trending::after {
+    content: 'CHART';
+    position: absolute;
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.02);
+    pointer-events: none;
+    font-family: 'Outfit', sans-serif;
     white-space: nowrap;
   }
 
-  .cat-chip:hover { border-color: var(--stone); color: var(--ink); }
+  .trending .section-label { color: var(--stone-light); }
+  .trending .section-label::before { background: var(--stone-light); }
+  .trending .section-title { color: var(--cream); }
 
-  .cat-chip.active {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--cream);
+  .trending-header {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
   }
 
-  .place-card {
+  .trending-week {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: rgba(253,252,249,0.2);
+    text-transform: uppercase;
+    padding-bottom: 2px;
+  }
+
+  .trending-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .trending-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: all 0.22s ease;
+    position: relative;
+  }
+
+  .trending-item:last-child { border-bottom: none; }
+  .trending-item:hover { transform: translateX(4px); }
+
+  .trending-rank {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: rgba(253,252,249,0.12);
+    line-height: 1;
+    width: 36px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .trending-item:first-child .trending-rank {
+    color: var(--stone);
+    opacity: 0.7;
+  }
+
+  .trending-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .trending-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .trending-item:first-child .trending-name {
+    font-size: 1.25rem;
+  }
+
+  .trending-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .trending-bar-track {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .trending-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--stone);
+    width: 0%;
+    transition: width 1.1s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .trending-item:first-child .trending-bar-fill {
+    background: linear-gradient(to right, var(--stone), var(--stone-light));
+  }
+
+  .trending-count {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: rgba(253,252,249,0.25);
+    white-space: nowrap;
+  }
+
+  .trending-badge {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .trending-trend {
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .trending-cat {
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(253,252,249,0.22);
+  }
+
+  /* ============================================
+     THE GUIDE
+     ============================================ */
+  .guide {
+    padding: 2.5rem 1.75rem;
+    background: var(--white);
+  }
+
+  .guide-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding: 1.25rem 0 1.5rem;
+    scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 2px;
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.22s ease;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-chip.active { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+
+  .place-row {
     display: flex;
     gap: 1rem;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid rgba(26,26,24,0.05);
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
     cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
+    transition: all 0.22s ease;
   }
 
-  .place-card:last-child { border-bottom: none; }
+  .place-row:last-child { border-bottom: none; }
+  .place-row:hover { transform: translateX(3px); }
 
-  .place-card:hover { transform: translateX(4px); }
-
-  .place-card-img {
-    width: 80px;
-    height: 80px;
-    border-radius: var(--radius-sm);
+  .place-row-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
     flex-shrink: 0;
     overflow: hidden;
-    position: relative;
+    background: #E8E0D4;
   }
 
-  .place-card-img-inner {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-  }
-
-  .place-card:hover .place-card-img-inner { transform: scale(1.08); }
-
-  .place-card-body {
+  .place-row-body {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 3px;
   }
 
-  .place-card-cat {
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+  .place-row-cat {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--stone);
-    margin-bottom: 3px;
   }
 
-  .place-card-name {
+  .place-row-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 3px;
-    line-height: 1.2;
+    line-height: 1.15;
   }
 
-  .place-card-desc {
-    font-size: 0.78rem;
+  .place-row-area {
+    font-size: 0.72rem;
     font-weight: 300;
     color: var(--ink-muted);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
-  .place-card-arrow {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%) translateX(8px);
-    opacity: 0;
-    transition: all 0.3s;
-    color: var(--stone);
-    font-size: 1.2rem;
+  .place-row-chevron {
+    display: flex;
+    align-items: center;
+    color: var(--border-strong);
+    font-size: 1.1rem;
+    transition: all 0.22s ease;
+    flex-shrink: 0;
+    align-self: center;
   }
 
-  .place-card:hover .place-card-arrow {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
+  .place-row:hover .place-row-chevron { color: var(--stone); transform: translateX(2px); }
 
   /* ============================================
-     LOCAL TIPS - Editorial feel
+     LOCAL SECRETS
      ============================================ */
-  .tips-section {
+  .secrets {
     background: var(--ink);
-    padding: 3.5rem 1.5rem;
+    padding: 2.5rem 1.75rem;
     position: relative;
     overflow: hidden;
   }
 
-  .tips-section::before {
+  .secrets::before {
     content: '';
     position: absolute;
-    top: -40%;
-    right: -20%;
-    width: 60%;
-    height: 80%;
-    background: radial-gradient(circle, rgba(196,168,130,0.08) 0%, transparent 70%);
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
     border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,149,106,0.06) 0%, transparent 70%);
+    pointer-events: none;
   }
 
-  .tips-section .section-label { color: var(--stone-light); }
-  .tips-section .section-label .dot { background: var(--stone-light); }
-  .tips-section .section-title { color: var(--cream); }
-  .tips-section .section-desc { color: rgba(250,247,242,0.4); }
+  .secrets .section-label { color: var(--stone-light); }
+  .secrets .section-label::before { background: var(--stone-light); }
+  .secrets .section-title { color: var(--cream); }
+  .secrets .section-desc { color: rgba(253,252,249,0.38); }
+  .secrets-header { margin-bottom: 1.75rem; }
 
-  .tip-card {
-    position: relative;
-    background: rgba(250,247,242,0.04);
-    border: 1px solid rgba(250,247,242,0.06);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 0.75rem;
-    backdrop-filter: blur(4px);
-    transition: all 0.35s;
+  .secret-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     cursor: pointer;
+    transition: all 0.22s ease;
   }
 
-  .tip-card:hover {
-    background: rgba(250,247,242,0.07);
-    border-color: rgba(196,168,130,0.2);
-    transform: translateY(-2px);
-  }
+  .secret-item:last-child { border-bottom: none; }
+  .secret-item:hover { transform: translateX(3px); }
 
-  .tip-card-num {
+  .secret-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: rgba(196,168,130,0.12);
-    position: absolute;
-    top: 8px;
-    right: 16px;
-    line-height: 1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--stone);
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+    flex-shrink: 0;
+    width: 24px;
   }
 
-  .tip-card-title {
+  .secret-body { flex: 1; }
+
+  .secret-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.15rem;
+    font-weight: 500;
     color: var(--cream);
-    margin-bottom: 6px;
     line-height: 1.2;
+    margin-bottom: 5px;
   }
 
-  .tip-card-text {
-    font-size: 0.82rem;
+  .secret-text {
+    font-size: 0.8rem;
     font-weight: 300;
-    color: rgba(250,247,242,0.5);
-    line-height: 1.55;
+    color: rgba(253,252,249,0.42);
+    line-height: 1.6;
   }
 
   /* ============================================
-     FOOTER CTA
+     FOOTER
      ============================================ */
   .footer-cta {
+    padding: 3rem 1.75rem;
+    background: var(--parchment);
+    border-top: 1px solid var(--border);
     text-align: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(to bottom, var(--parchment), var(--stone-pale));
-    position: relative;
+  }
+
+  .footer-cta-eyebrow {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.75rem;
   }
 
   .footer-cta-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 400;
     color: var(--ink);
-    line-height: 1.15;
+    line-height: 1.1;
     margin-bottom: 0.6rem;
   }
 
-  .footer-cta-title em { font-weight: 600; }
+  .footer-cta-title em { font-style: italic; font-weight: 500; }
 
   .footer-cta-desc {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 300;
     color: var(--ink-muted);
-    margin-bottom: 2rem;
-    line-height: 1.5;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
   }
 
   .footer-cta-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     background: var(--ink);
     color: var(--cream);
     font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    padding: 14px 32px;
-    border-radius: 100px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 13px 28px;
+    border-radius: 2px;
     border: none;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    transition: all 0.3s ease;
   }
 
   .footer-cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26,26,24,0.15);
+    background: var(--stone);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(15,15,13,0.14);
   }
 
   .footer-brand {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(26,26,24,0.06);
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
   }
 
   .footer-brand-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--ink);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .footer-brand-sub {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--ink-muted);
-    margin-top: 2px;
+    margin-top: 3px;
+    letter-spacing: 0.04em;
   }
 
   /* ============================================
@@ -730,26 +864,26 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(255,253,251,0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(26,26,24,0.05);
+    background: rgba(248,245,239,0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-around;
-    padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
     z-index: 100;
   }
 
   @media (min-width: 768px) {
-    .bottom-nav { max-width: 480px; left: 50%; transform: translateX(-50%); }
+    .bottom-nav { max-width: 430px; left: 50%; transform: translateX(-50%); }
   }
 
   .nav-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    padding: 6px 16px;
+    gap: 3px;
+    padding: 5px 20px;
     background: none;
     border: none;
     cursor: pointer;
@@ -759,46 +893,381 @@
   }
 
   .nav-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--ink-muted);
-    fill: none;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    width: 18px; height: 18px;
+    stroke: var(--ink-muted); fill: none;
+    stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
     transition: all 0.2s;
   }
 
   .nav-btn span {
-    font-size: 0.55rem;
-    font-weight: 500;
+    font-size: 0.5rem;
+    font-weight: 600;
     color: var(--ink-muted);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     transition: all 0.2s;
   }
 
-  .nav-btn.active svg { stroke: var(--ink); stroke-width: 2.2; }
-  .nav-btn.active span { color: var(--ink); font-weight: 700; }
-
-  .nav-btn .active-dot {
-    width: 4px;
-    height: 4px;
-    background: var(--terracotta);
-    border-radius: 50%;
+  .nav-indicator {
     position: absolute;
-    top: 2px;
-    right: 12px;
+    top: -1px;
+    width: 20px;
+    height: 1px;
+    background: var(--terracotta);
     opacity: 0;
     transition: opacity 0.2s;
   }
 
-  .nav-btn.active .active-dot { opacity: 1; }
+  .nav-btn.active svg { stroke: var(--ink); }
+  .nav-btn.active span { color: var(--ink); }
+  .nav-btn.active .nav-indicator { opacity: 1; }
+
+  /* ============================================
+     DETAIL SHEET
+     ============================================ */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,15,13,0);
+    z-index: 200;
+    pointer-events: none;
+    transition: background 0.4s ease;
+  }
+
+  .sheet-backdrop.open {
+    background: rgba(15,15,13,0.55);
+    pointer-events: all;
+  }
+
+  .sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 201;
+    background: var(--cream);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 92svh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateY(100%);
+    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sheet.open {
+    transform: translateY(0);
+  }
+
+  @media (min-width: 768px) {
+    .sheet { max-width: 430px; left: 50%; transform: translateX(-50%) translateY(100%); }
+    .sheet.open { transform: translateX(-50%) translateY(0); }
+  }
+
+  .sheet-handle {
+    width: 36px;
+    height: 3px;
+    background: rgba(15,15,13,0.15);
+    border-radius: 2px;
+    margin: 0.75rem auto 0;
+  }
+
+  .sheet-photo {
+    height: 260px;
+    width: 100%;
+    background-color: #2A2520;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  .sheet-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,15,13,0.5) 0%, transparent 60%);
+  }
+
+  .sheet-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(15,15,13,0.5);
+    backdrop-filter: blur(8px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cream);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: background 0.2s;
+    z-index: 2;
+  }
+
+  .sheet-close:hover { background: rgba(15,15,13,0.8); }
+
+  .sheet-body {
+    padding: 1.5rem 1.75rem 2.5rem;
+  }
+
+  .sheet-tag {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.4rem;
+  }
+
+  .sheet-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.05;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+  }
+
+  .sheet-area {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 1.5rem;
+  }
+
+  .sheet-area svg {
+    width: 12px; height: 12px;
+    stroke: var(--stone); fill: none; stroke-width: 2;
+  }
+
+  .sheet-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.25rem 0;
+  }
+
+  .sheet-desc {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .sheet-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sheet-meta-item {
+    background: var(--parchment);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1rem;
+  }
+
+  .sheet-meta-label {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+
+  .sheet-meta-value {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .sheet-local-tip {
+    background: var(--stone-pale);
+    border-left: 2px solid var(--stone);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sheet-local-tip-label {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 4px;
+  }
+
+  .sheet-local-tip-text {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .sheet-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .sheet-btn-primary {
+    flex: 1;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 13px 20px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .sheet-btn-primary:hover { background: var(--stone); }
+
+  .sheet-btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 13px 16px;
+    border-radius: 2px;
+    border: 1px solid var(--border-strong);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .sheet-btn-secondary:hover { border-color: var(--ink); }
+
+  /* ============================================
+     SUGGEST FORM (inside sheet)
+     ============================================ */
+  .suggest-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 1.75rem 2.5rem;
+  }
+
+  .suggest-form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+
+  .suggest-form-title em { font-style: italic; }
+
+  .suggest-form-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .form-label {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .form-input,
+  .form-textarea {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--parchment);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    border-color: var(--stone);
+  }
+
+  .form-textarea {
+    resize: none;
+    height: 90px;
+    line-height: 1.5;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .form-success-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .form-success-text {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
 
   /* ============================================
      ANIMATIONS
      ============================================ */
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(24px); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -807,121 +1276,110 @@
     to { opacity: 1; }
   }
 
-  @keyframes scrollDot {
-    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-    50% { transform: translateX(-50%) translateY(12px); opacity: 0.3; }
-  }
-
-  @keyframes heartPop {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.25); }
-    100% { transform: scale(1); }
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-
-  /* Scroll-triggered animations */
   .reveal {
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    transform: translateY(20px);
+    transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
   }
 
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+  .reveal-d4 { transition-delay: 0.32s; }
 </style>
 </head>
 <body>
 
 <!-- =========== HERO =========== -->
 <section class="hero" id="top">
-  <div class="hero-bg"></div>
-  <div class="hero-arches"></div>
-  <div class="hero-grain"></div>
+  <div class="hero-photo photo" style="background-image:url('photos/hero.jpg')"></div>
+  <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">
-      <div class="line"></div>
-      <span>Your Local Guide</span>
+    <div class="hero-tag">
+      <div class="hero-tag-line"></div>
+      <span class="hero-tag-text">Segovia · Spain</span>
     </div>
-    <h1>Discover<br><em>Segovia</em></h1>
-    <p>Curated by the people who live here. Not algorithms, not ads — just honest recommendations from locals who love this city.</p>
-    <button class="hero-cta" onclick="document.getElementById('discover').scrollIntoView({behavior:'smooth'})">
-      Start Exploring <span class="arrow">→</span>
+    <h1>The <em>real</em><br>Segovia</h1>
+    <p class="hero-sub">Not from algorithms. Not from travel blogs. Honest recommendations from the people who live here.</p>
+    <button class="hero-cta" onclick="document.getElementById('featured').scrollIntoView({behavior:'smooth'})">
+      Explore the Guide
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
     </button>
   </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-inner">
-      <div class="hero-scroll-dot"></div>
-    </div>
-  </div>
+  <div class="hero-scroll-indicator"><div class="scroll-line"></div></div>
 </section>
 
-<!-- =========== STATS STRIP =========== -->
-<div class="intro-strip">
-  <div class="intro-stat">
-    <div class="num">47</div>
-    <div class="lbl">Places Curated</div>
+<!-- =========== MASTHEAD =========== -->
+<div class="masthead">
+  <div class="masthead-stat">
+    <div class="masthead-num">47</div>
+    <div class="masthead-label">Curated Places</div>
   </div>
-  <div class="intro-stat">
-    <div class="num">Local</div>
-    <div class="lbl">Recommendations</div>
+  <div class="masthead-divider"></div>
+  <div class="masthead-stat">
+    <div class="masthead-num">Local</div>
+    <div class="masthead-label">Editors Only</div>
   </div>
-  <div class="intro-stat">
-    <div class="num">Free</div>
-    <div class="lbl">Always</div>
+  <div class="masthead-divider"></div>
+  <div class="masthead-stat">
+    <div class="masthead-num">Weekly</div>
+    <div class="masthead-label">Updated</div>
   </div>
 </div>
 
-<!-- =========== DISCOVER =========== -->
-<section class="section" id="discover">
-  <div class="section-header reveal">
-    <div class="section-label"><div class="dot"></div> Discover</div>
-    <div class="section-title">Places you <em>won't find</em><br>on Google</div>
-    <div class="section-desc">The spots locals actually go to — from hidden tapas bars to the best sunset viewpoints.</div>
+<!-- =========== TRENDING =========== -->
+<section class="trending" id="trending">
+  <div class="trending-header reveal">
+    <div>
+      <div class="section-label">This Week</div>
+      <div class="section-title" style="color:var(--cream)">Most <em>popular</em></div>
+    </div>
+    <div class="trending-week" id="trending-week-label"></div>
   </div>
-
-  <div class="discover-scroll" id="discover-scroll"></div>
+  <div class="trending-list reveal reveal-d1" id="trending-list"></div>
 </section>
 
-<!-- =========== CURATED PLACES =========== -->
-<section class="places-section" id="places">
-  <div class="section-header reveal">
-    <div class="section-label"><div class="dot"></div> The Guide</div>
-    <div class="section-title">Eat, Drink &<br><em>Experience</em></div>
+<!-- =========== FEATURED =========== -->
+<section id="featured" class="featured">
+  <div class="featured-header reveal">
+    <div class="section-label">Editor's Pick</div>
+    <div class="section-title">Not on<br><em>any map</em></div>
+  </div>
+  <div id="featured-card" class="reveal reveal-d1"></div>
+  <div class="discover-row" id="discover-row"></div>
+</section>
+
+<!-- =========== THE GUIDE =========== -->
+<section class="guide" id="places">
+  <div class="guide-header reveal">
+    <div class="section-label">The Guide</div>
+    <div class="section-title">Eat, Drink &amp;<br><em>Experience</em></div>
     <div class="section-desc">Hand-picked by people who actually live in Segovia.</div>
   </div>
-
-  <div class="category-row" id="cat-row"></div>
+  <div class="filter-row" id="filter-row"></div>
   <div id="places-list"></div>
 </section>
 
-<!-- =========== LOCAL TIPS =========== -->
-<section class="tips-section" id="tips">
-  <div class="section-header reveal">
-    <div class="section-label"><div class="dot"></div> Local Secrets</div>
-    <div class="section-title" style="color:var(--cream)">Things only <em>locals</em><br>know</div>
-    <div class="section-desc">The unwritten rules of Segovia. You're welcome.</div>
+<!-- =========== LOCAL SECRETS =========== -->
+<section class="secrets" id="tips">
+  <div class="secrets-header reveal">
+    <div class="section-label">Local Secrets</div>
+    <div class="section-title" style="color:var(--cream)">Things only<br><em>locals</em> know</div>
+    <div class="section-desc">The unwritten rules. You're welcome.</div>
   </div>
-
   <div id="tips-list"></div>
 </section>
 
-<!-- =========== FOOTER CTA =========== -->
+<!-- =========== FOOTER =========== -->
 <section class="footer-cta">
   <div class="reveal">
+    <div class="footer-cta-eyebrow">Community</div>
     <div class="footer-cta-title">Know a place<br>we're <em>missing?</em></div>
-    <div class="footer-cta-desc">This guide is built by the community.<br>Help us make it better.</div>
-    <button class="footer-cta-btn">Suggest a Place →</button>
+    <div class="footer-cta-desc">This guide belongs to Segovia.<br>Help us keep it honest.</div>
+    <button class="footer-cta-btn" onclick="openSuggestSheet()">Suggest a Place →</button>
   </div>
   <div class="footer-brand">
     <div class="footer-brand-name">Segovia Local</div>
@@ -931,185 +1389,479 @@
 
 <!-- =========== BOTTOM NAV =========== -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="navTo('discover', this)">
-    <div class="active-dot"></div>
+  <button class="nav-btn active" onclick="navTo('featured', this)">
+    <div class="nav-indicator"></div>
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
     <span>Discover</span>
   </button>
+  <button class="nav-btn" onclick="navTo('trending', this)">
+    <div class="nav-indicator"></div>
+    <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    <span>Trending</span>
+  </button>
   <button class="nav-btn" onclick="navTo('places', this)">
-    <div class="active-dot"></div>
+    <div class="nav-indicator"></div>
     <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     <span>Places</span>
   </button>
   <button class="nav-btn" onclick="navTo('tips', this)">
-    <div class="active-dot"></div>
+    <div class="nav-indicator"></div>
     <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
     <span>Secrets</span>
   </button>
 </nav>
 
+<!-- =========== DETAIL SHEET =========== -->
+<div class="sheet-backdrop" id="backdrop" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div id="sheet-content"></div>
+</div>
+
 <script>
 // ===== DATA =====
+
+const featuredPlace = {
+  id: "candido",
+  name: "Mesón de Cándido",
+  cat: "Legendary Restaurant",
+  tag: "Since 1786",
+  desc: "The most iconic cochinillo in Spain. They cut the suckling pig with a plate — proving it's so tender no knife is needed.",
+  area: "Plaza del Azoguejo",
+  photo: "photos/meson-candido.jpg",
+  fullDesc: "Mesón de Cándido is not just a restaurant — it's a Segovian institution. Founded in 1786 at the foot of the Roman aqueduct, it has served kings, politicians, and Hemingway himself. The signature dish is cochinillo asado: a 21-day-old suckling pig roasted in a wood-fired oven until the skin crackles like porcelain. The owner cuts it tableside using only a ceramic plate — a tradition that proves the tenderness needs no sharp blade.",
+  hours: "1:00 pm – 4:30 pm\n8:30 pm – 11:00 pm",
+  price: "€€€",
+  bestFor: "Cochinillo asado, roast lamb",
+  localTip: "Book at least 2 days ahead for lunch. Ask for a table by the aqueduct-facing window — the view while you eat is part of the experience."
+};
+
 const discoverData = [
   {
-    name: "Mesón de Cándido",
-    cat: "Legendary Restaurant",
-    desc: "The most iconic cochinillo in Spain since 1786. Watch them cut the suckling pig with a plate.",
-    area: "Aqueduct",
-    icon: "🐷",
-    tag: "Iconic",
-    gradient: "linear-gradient(135deg, #C4A882 0%, #A08862 100%)"
-  },
-  {
+    id: "mirador",
     name: "Mirador de la Pradera",
     cat: "Viewpoint",
-    desc: "The best view of the Alcázar at sunset. Bring wine. Thank us later.",
     area: "South Bank",
-    icon: "🌅",
-    tag: "Must See",
-    gradient: "linear-gradient(135deg, #C4674A 0%, #A04E35 100%)"
+    photo: "photos/mirador.jpg",
+    fullDesc: "The single best view of the Alcázar in all of Segovia. Cross the bridge at Puente de San Marcos, walk along the river, and turn around. The castle rises from the rocky cliff with the cathedral behind it — a view that barely changes from medieval paintings. Come at sunset and bring wine.",
+    hours: "Open 24 hours",
+    price: "Free",
+    bestFor: "Sunset views, photography",
+    localTip: "Walk another 10 minutes past the viewpoint to reach Vera Cruz church. From there you get a different angle that almost nobody photographs."
   },
   {
+    id: "concepcion",
     name: "La Concepción",
     cat: "Wine & Tapas",
-    desc: "Tiny bar, massive character. The patatas bravas are legendary. Always crowded — that's how you know.",
     area: "Judería",
-    icon: "🍷",
-    tag: "Local Favorite",
-    gradient: "linear-gradient(135deg, #6B7C5A 0%, #4E5D42 100%)"
+    photo: "photos/la-concepcion.jpg",
+    fullDesc: "A tiny bar tucked into the Jewish quarter with enormous character. Standing room only most evenings. The patatas bravas are the stuff of local legend — crispy outside, fluffy inside, with a sauce that's been the same for decades. The wine list is short but every bottle is worth ordering.",
+    hours: "12:00 pm – 4:00 pm\n7:30 pm – 12:00 am",
+    price: "€",
+    bestFor: "Patatas bravas, house wine, jamón",
+    localTip: "Go on a weekday evening around 8pm. Weekends it's shoulder-to-shoulder. The owner speaks no English — that's a good sign."
   },
   {
+    id: "alcazar",
     name: "Alcázar de Segovia",
     cat: "Castle",
-    desc: "The castle that inspired Disney. Climb the tower — 152 steps to the best panoramic view in Castilla.",
     area: "Old Town",
-    icon: "🏰",
-    tag: "Essential",
-    gradient: "linear-gradient(135deg, #5A6B7C 0%, #3E4F5D 100%)"
+    photo: "photos/alcazar.jpg",
+    fullDesc: "The castle that inspired Walt Disney's Cinderella — though locals will debate this. Built on a rocky crag where two rivers meet, the Alcázar has served as a royal palace, a state prison, and a military academy. Climb the Torre de Juan II (152 steps) for a 360° panorama over the entire Castilian meseta. It is, without question, one of the most dramatically sited buildings in Europe.",
+    hours: "10:00 am – 8:00 pm (Apr–Oct)\n10:00 am – 6:00 pm (Nov–Mar)",
+    price: "€9 adults / €6 reduced",
+    bestFor: "Tower climb, royal chambers, views",
+    localTip: "Buy tickets online the day before — summer queues are brutal. Arrive right at opening (10am) for near-empty rooms and the best light in the throne room."
   },
   {
+    id: "sanmartin",
     name: "Bar San Martín",
     cat: "Tapas Bar",
-    desc: "Order a caña and they give you a free tapa. The real Segovia experience. No tourists, just locals.",
     area: "Plaza San Martín",
-    icon: "🍺",
-    tag: "Hidden Gem",
-    gradient: "linear-gradient(135deg, #8C7A6B 0%, #6B5A4B 100%)"
+    photo: "photos/bar-san-martin.jpg",
+    fullDesc: "This is where Segovia actually drinks. No tourists, plastic chairs, a TV showing football, and free tapas with every drink. Order a caña and something appears on the counter — usually a small bocadillo or a plate of something fried. The prices are from another era. The vibe is everything a Spanish bar should be.",
+    hours: "9:00 am – 12:00 am",
+    price: "€",
+    bestFor: "Cold beer, free tapas, no pretension",
+    localTip: "The free tapa changes daily — just ask 'qué hay hoy?' (what's today?). Don't overthink it. Drink, eat, repeat."
   },
 ];
 
 const placesData = [
-  { name: "El Bernardino", cat: "Traditional Castilian", desc: "Roast lamb that falls off the bone. Family-run since forever. The dining room feels like a medieval banquet.", area: "Plaza del Azoguejo", group: "Eat", color: "#E8DBC8" },
-  { name: "El Sitio", cat: "Creative Tapas", desc: "Modern twist on Segovian classics. Try the black pudding croquetas — they're unreal.", area: "Calle Infanta Isabel", group: "Eat", color: "#D8C8B5" },
-  { name: "Restaurante José María", cat: "Cochinillo", desc: "Competes with Cándido for the cochinillo crown. Locals are split. You decide.", area: "Calle Cronista Lecea", group: "Eat", color: "#C8D5C0" },
-  { name: "Café Jeyma", cat: "Coffee & Pastries", desc: "Best ponche segoviano in the city. The secret recipe hasn't changed in decades.", area: "Plaza Mayor", group: "Drink", color: "#C8C5D5" },
-  { name: "La Tasquina", cat: "Wine Bar", desc: "Natural wines and local cheese boards. The owner knows every producer personally.", area: "Calle Valdeláguila", group: "Drink", color: "#D5C8C8" },
-  { name: "Limón y Menta", cat: "Cocktails", desc: "The only proper cocktail bar in Segovia. Gin & tonics are their religion.", area: "Calle Isabel la Católica", group: "Drink", color: "#C5D0D8" },
-  { name: "The Roman Aqueduct", cat: "Monument", desc: "2,000 years old. No mortar. Just stone balancing on stone. Come at dawn when nobody's there.", area: "Plaza del Azoguejo", group: "See", color: "#D8D0C5" },
-  { name: "Judería Walk", cat: "Historic Quarter", desc: "The old Jewish quarter. Narrow streets, hidden courtyards, stories on every wall.", area: "Judería", group: "See", color: "#C5C8D0" },
-  { name: "La Granja de San Ildefonso", cat: "Palace & Gardens", desc: "The Spanish Versailles, 15 min away. The fountains on Wednesday/Saturday are magical.", area: "San Ildefonso", group: "See", color: "#D0D5C5" },
-  { name: "Senda de los Molinos", cat: "Nature Walk", desc: "Follow the river below the Alcázar. Mills, bridges, and zero tourists. Pure peace.", area: "Eresma Valley", group: "Do", color: "#C0C8B8" },
-  { name: "Hot Air Balloon Ride", cat: "Experience", desc: "See the aqueduct from above. Early morning flights over the Castilian meseta. Life-changing.", area: "Departure Point", group: "Do", color: "#D8C0B0" },
+  {
+    id: "bernardino",
+    name: "El Bernardino",
+    cat: "Traditional Castilian",
+    area: "Plaza del Azoguejo",
+    group: "Eat",
+    photo: "photos/el-bernardino.jpg",
+    fullDesc: "Family-run since the early 20th century, El Bernardino is the understated alternative to the more famous cochinillo houses. The roast lamb (cordero asado) is arguably better than the pig — it falls from the bone after hours in the wood oven. The stone-vaulted dining room feels like eating inside the city's history.",
+    hours: "1:00 pm – 4:30 pm\n8:00 pm – 11:30 pm",
+    price: "€€€",
+    bestFor: "Roast lamb, cochinillo, Ribera del Duero wine",
+    localTip: "Order the menú del día at lunch — three courses with wine for around €18. Better value than anything on the à la carte."
+  },
+  {
+    id: "elsitio",
+    name: "El Sitio",
+    cat: "Creative Tapas",
+    area: "Calle Infanta Isabel",
+    group: "Eat",
+    photo: "photos/el-sitio.jpg",
+    fullDesc: "Where younger Segovians eat when they want something that isn't cochinillo. El Sitio takes local ingredients and applies a modern hand — black pudding croquetas, mushroom and truffle montaditos, and a changing daily menu that actually surprises you. The wine list is one of the best in the city.",
+    hours: "1:00 pm – 4:00 pm\n8:00 pm – 11:00 pm. Closed Monday.",
+    price: "€€",
+    bestFor: "Croquetas, creative montaditos, wine",
+    localTip: "The small plates at the bar are better value than the sit-down menu. Stand at the bar, order four or five things, and spend half what you would at a table."
+  },
+  {
+    id: "josemaria",
+    name: "Restaurante José María",
+    cat: "Cochinillo",
+    area: "Calle Cronista Lecea",
+    group: "Eat",
+    photo: "photos/jose-maria.jpg",
+    fullDesc: "The great rival of Mesón de Cándido. Locals are genuinely divided on which cochinillo is superior, and the debate gets heated. José María's pig has a slightly crispier skin and is sourced from a farm the owner visits personally. The restaurant is larger, the service more formal, and the wine cellar impressive.",
+    hours: "1:30 pm – 4:30 pm\n9:00 pm – 11:00 pm",
+    price: "€€€",
+    bestFor: "Cochinillo asado, roast lamb",
+    localTip: "If you can only eat cochinillo once, this is the local favourite. Cándido has the fame; José María has the regulars."
+  },
+  {
+    id: "jeyma",
+    name: "Café Jeyma",
+    cat: "Coffee & Pastries",
+    area: "Plaza Mayor",
+    group: "Drink",
+    photo: "photos/cafe-jeyma.jpg",
+    fullDesc: "The only place in Segovia that matters for ponche segoviano — the city's signature pastry. A dense marzipan and egg yolk cake coated in powdered sugar with the cathedral outline burned on top. Café Jeyma's recipe is a closely guarded secret that hasn't changed in decades. Get a slice with a cortado.",
+    hours: "8:00 am – 9:00 pm",
+    price: "€",
+    bestFor: "Ponche segoviano, cortado, breakfast",
+    localTip: "Buy a whole ponche to take home — it travels well and makes an excellent gift. Far better than anything from the tourist shops."
+  },
+  {
+    id: "tasquina",
+    name: "La Tasquina",
+    cat: "Natural Wine Bar",
+    area: "Calle Valdeláguila",
+    group: "Drink",
+    photo: "photos/la-tasquina.jpg",
+    fullDesc: "A small, serious natural wine bar run by someone who clearly loves wine more than money. The list changes constantly — the owner sources directly from small producers across Castilla and beyond. The cheese and charcuterie boards are generous and impeccably chosen. Feels nothing like tourist Segovia.",
+    hours: "6:00 pm – 1:00 am. Closed Sunday & Monday.",
+    price: "€€",
+    bestFor: "Natural wine, cheese boards, atmosphere",
+    localTip: "Just tell them what you like and let them choose. That's how the regulars do it, and you'll drink something you've never heard of and can't forget."
+  },
+  {
+    id: "limon",
+    name: "Limón y Menta",
+    cat: "Cocktails",
+    area: "Calle Isabel la Católica",
+    group: "Drink",
+    photo: "photos/limon-menta.jpg",
+    fullDesc: "The only cocktail bar in Segovia worth the name. In a city where most bars serve beer, wine, or whisky-cola, Limón y Menta stands apart. The bartenders actually know what they're doing. The gin & tonic selection is encyclopedic. The space is narrow and always full after 10pm.",
+    hours: "7:00 pm – 3:00 am",
+    price: "€€",
+    bestFor: "Gin & tonic, cocktails, late nights",
+    localTip: "Come at opening (7pm) to actually get a seat. After 11pm it's standing only and you'll be shouting over the music."
+  },
+  {
+    id: "aqueduct",
+    name: "The Roman Aqueduct",
+    cat: "Roman Monument",
+    area: "Plaza del Azoguejo",
+    group: "See",
+    photo: "photos/aqueduct.jpg",
+    fullDesc: "Built in the 1st or 2nd century AD, the Aqueduct of Segovia is one of the best preserved Roman structures in the world. Almost 800 metres long, standing 28 metres at its highest point, and built from 20,000 granite blocks held together without a single drop of mortar — only the weight and precision of the stones themselves. It carried water from the Fuente Fría river until 1973.",
+    hours: "Open 24 hours. Best at dawn and dusk.",
+    price: "Free",
+    bestFor: "Architecture, history, photography",
+    localTip: "Come at 7am. The entire monument to yourself, perfect light, and the city just waking up. The midday crowd makes it feel like an airport terminal."
+  },
+  {
+    id: "juderia",
+    name: "Judería Walk",
+    cat: "Historic Quarter",
+    area: "Judería",
+    group: "See",
+    photo: "photos/juderia.jpg",
+    fullDesc: "Segovia had one of the most significant Jewish communities in medieval Castile. The Judería — the old Jewish quarter — is a compact network of narrow streets, hidden courtyards, and medieval houses that survived the 1492 expulsion mostly intact. There are no museums or ticket booths. Just streets with stories on every corner.",
+    hours: "Always open",
+    price: "Free",
+    bestFor: "History, architecture, quiet streets",
+    localTip: "Get a free map from the tourist office and do it yourself — no guided tour needed. Go on a weekday morning when it's completely empty."
+  },
+  {
+    id: "lagranja",
+    name: "La Granja de San Ildefonso",
+    cat: "Palace & Gardens",
+    area: "San Ildefonso · 11km",
+    group: "See",
+    photo: "photos/la-granja.jpg",
+    fullDesc: "Felipe V built this Baroque palace in 1721 as a Spanish answer to Versailles — and in the gardens, it arguably surpasses the original. The fountains, fed entirely by gravity from the mountains behind, are the most elaborate in Europe. On Wednesdays, Saturdays, and Sundays, they run at full force. The display lasts 20 minutes and involves 26 individual fountains firing simultaneously.",
+    hours: "10:00 am – 6:00 pm (gardens open later in summer)",
+    price: "€8 palace / Gardens free",
+    bestFor: "Fountain display, Baroque gardens, palace interior",
+    localTip: "The fountains run Wed, Sat, and Sun at 5:30pm (summer). Arrive 30 minutes early to get a good position. Worth the 15-minute drive from Segovia."
+  },
+  {
+    id: "senda",
+    name: "Senda de los Molinos",
+    cat: "Nature Walk",
+    area: "Eresma Valley",
+    group: "Do",
+    photo: "photos/senda-molinos.jpg",
+    fullDesc: "A riverside walk that follows the Eresma below the Alcázar through a valley of old water mills, medieval bridges, and wildflowers. Almost entirely flat, about 4km round trip, and completely devoid of tourists. The view back up to the castle from the valley floor is one of those sights that stays with you.",
+    hours: "Always open",
+    price: "Free",
+    bestFor: "Walking, photography, escaping crowds",
+    localTip: "Start from the Puente de San Marcos. Walk downstream, past the Vera Cruz church, and follow the river for as long as you like. No map needed."
+  },
+  {
+    id: "balloon",
+    name: "Hot Air Balloon",
+    cat: "Experience",
+    area: "Over the Meseta",
+    group: "Do",
+    photo: "photos/balloon.jpg",
+    fullDesc: "Seeing Segovia from above at dawn is one of the most disorienting and beautiful things you can do in Spain. The aqueduct looks absurdly thin from 500 metres. The Alcázar becomes a toy castle on a rock. The Castilian meseta stretches flat and golden in every direction. Flights launch at sunrise and last about an hour.",
+    hours: "Dawn departures (seasonal, Apr–Oct)",
+    price: "€160–€180 per person",
+    bestFor: "Sunrise, aerial views, once-in-a-lifetime",
+    localTip: "Book through a local operator rather than a reseller. Segovia Globos is the most established. Minimum 4 people usually required — team up with other travellers."
+  },
 ];
-
-const categories = ["All", "Eat", "Drink", "See", "Do"];
 
 const tipsData = [
-  { title: "Never eat on Plaza Mayor", text: "Tourist trap. Walk 2 minutes in any direction and the food is twice as good at half the price. Locals eat on the side streets." },
-  { title: "Cochinillo is lunch, not dinner", text: "The restaurants roast the suckling pig in the morning. By dinner, it's leftovers. Go between 1:30-3pm for the real experience." },
-  { title: "The aqueduct at 7am", text: "Skip the midday crowds. At dawn, you'll have the entire monument to yourself. The light hitting the stone is worth waking up for." },
-  { title: "Free tapas are real here", text: "Order a drink at most bars and you get a free tapa. It's not Madrid — they still do this properly in Segovia. Hop between 3-4 bars for a full meal." },
-  { title: "The secret viewpoint", text: "Walk past the Alcázar, down toward the Vera Cruz church. Turn around. That view of the castle against the sky is the photo nobody takes — and it's the best one." },
+  { title: "Never eat on Plaza Mayor",        text: "Tourist trap. Walk 2 minutes in any direction and the food is twice as good at half the price. Locals eat on the side streets." },
+  { title: "Cochinillo is lunch, not dinner", text: "The restaurants roast the pig in the morning. By dinner, it's leftovers. Go between 1:30–3pm for the real experience." },
+  { title: "The aqueduct at 7am",             text: "At dawn you'll have the entire monument to yourself. The light hitting the stone is worth waking up for." },
+  { title: "Free tapas are real here",        text: "Order a drink at most bars and you get a tapa. Hop between 3–4 bars for a full meal — and pay almost nothing." },
+  { title: "The secret viewpoint",            text: "Walk past the Alcázar toward the Vera Cruz church. Turn around. That view is the photo nobody takes — and it's the best one." },
 ];
 
-// ===== RENDER =====
-function renderDiscover() {
-  const el = document.getElementById('discover-scroll');
-  el.innerHTML = discoverData.map((d, i) => `
-    <div class="discover-card reveal reveal-delay-${i + 1}">
-      <div class="discover-card-visual">
-        <div class="discover-card-bg" style="background:${d.gradient}"></div>
-        <div class="discover-card-overlay"></div>
-        <div class="discover-card-tag">${d.tag}</div>
-        <div class="discover-card-icon">${d.icon}</div>
+const allPlaces = [featuredPlace, ...discoverData, ...placesData];
+
+// ===== API =====
+
+const API = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : '';
+
+async function recordTap(placeId, placeName) {
+  try {
+    await fetch(`${API}/api/tap`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ placeId, placeName })
+    });
+  } catch (_) {}
+}
+
+async function loadTrending() {
+  try {
+    const res = await fetch(`${API}/api/trending`);
+    const data = await res.json();
+    if (data && data.length > 0) {
+      // Merge live data with static metadata (cat, trend)
+      const metaMap = {
+        candido:   { cat: 'Restaurant', trend: '↑↑' },
+        aqueduct:  { cat: 'Monument',   trend: '↑'  },
+        alcazar:   { cat: 'Castle',     trend: '↑'  },
+        mirador:   { cat: 'Viewpoint',  trend: '→'  },
+        sanmartin: { cat: 'Tapas Bar',  trend: '↑↑' },
+        concepcion:{ cat: 'Wine Bar',   trend: '↑'  },
+        josemaria: { cat: 'Restaurant', trend: '→'  },
+      };
+      const merged = data.map(d => ({
+        ...d,
+        ...(metaMap[d.id] || { cat: 'Place', trend: '↑' })
+      }));
+      renderTrendingData(merged);
+    }
+  } catch (_) {
+    // Server not running — keep static fallback
+  }
+}
+
+// ===== SHEET =====
+
+function openSheet(id) {
+  const place = allPlaces.find(p => p.id === id);
+  if (!place) return;
+  recordTap(place.id, place.name);
+
+  const mapsQuery = encodeURIComponent(place.name + ' Segovia Spain');
+  const hoursFormatted = place.hours.replace(/\n/g, '<br>');
+
+  document.getElementById('sheet-content').innerHTML = `
+    <div class="sheet-photo" style="background-image:url('${place.photo}')">
+      <div class="sheet-photo-overlay"></div>
+      <button class="sheet-close" onclick="closeSheet()">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-tag">${place.cat}</div>
+      <div class="sheet-name">${place.name}</div>
+      <div class="sheet-area">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${place.area}
       </div>
-      <div class="discover-card-body">
-        <div class="discover-card-cat">${d.cat}</div>
-        <div class="discover-card-name">${d.name}</div>
-        <div class="discover-card-desc">${d.desc}</div>
-        <div class="discover-card-footer">
-          <div class="discover-card-loc">
+
+      <div class="sheet-desc">${place.fullDesc}</div>
+
+      <div class="sheet-meta">
+        <div class="sheet-meta-item">
+          <div class="sheet-meta-label">Hours</div>
+          <div class="sheet-meta-value" style="font-size:0.76rem;font-weight:400;line-height:1.5">${hoursFormatted}</div>
+        </div>
+        <div class="sheet-meta-item">
+          <div class="sheet-meta-label">Price</div>
+          <div class="sheet-meta-value">${place.price}</div>
+        </div>
+        <div class="sheet-meta-item" style="grid-column:1/-1">
+          <div class="sheet-meta-label">Best for</div>
+          <div class="sheet-meta-value" style="font-weight:400">${place.bestFor}</div>
+        </div>
+      </div>
+
+      <div class="sheet-local-tip">
+        <div class="sheet-local-tip-label">Local Tip</div>
+        <div class="sheet-local-tip-text">${place.localTip}</div>
+      </div>
+
+      <div class="sheet-actions">
+        <button class="sheet-btn-primary" onclick="window.open('https://maps.google.com/?q=${mapsQuery}','_blank')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          Get Directions
+        </button>
+        <button class="sheet-btn-secondary" onclick="sharePlace('${place.name}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  document.body.classList.add('sheet-open');
+}
+
+function closeSheet() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('sheet').classList.remove('open');
+  document.body.classList.remove('sheet-open');
+}
+
+function sharePlace(name) {
+  if (navigator.share) {
+    navigator.share({ title: name + ' — Segovia Local', text: 'Check out ' + name + ' in Segovia', url: window.location.href });
+  }
+}
+
+// Close on swipe down
+let touchStartY = 0;
+document.getElementById('sheet').addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.getElementById('sheet').addEventListener('touchend', e => {
+  const delta = e.changedTouches[0].clientY - touchStartY;
+  if (delta > 80 && document.getElementById('sheet').scrollTop === 0) closeSheet();
+}, { passive: true });
+
+// ===== RENDER =====
+
+function renderFeatured() {
+  const p = featuredPlace;
+  document.getElementById('featured-card').innerHTML = `
+    <div class="featured-card" onclick="openSheet('${p.id}')">
+      <div class="featured-card-photo" style="background-image:url('${p.photo}')"></div>
+      <div class="featured-card-overlay"></div>
+      <div class="featured-card-tag">${p.tag}</div>
+      <div class="featured-card-body">
+        <div class="featured-card-cat">${p.cat}</div>
+        <div class="featured-card-name">${p.name}</div>
+        <div class="featured-card-desc">${p.desc}</div>
+        <div class="featured-card-footer">
+          <div class="featured-card-loc">
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            ${d.area}
+            ${p.area}
           </div>
-          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">♡</button>
+          <div class="featured-card-arrow">
+            Read more
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
-  `).join('');
-  observeAll();
+  `;
 }
 
-function renderCategories() {
-  const el = document.getElementById('cat-row');
-  el.innerHTML = categories.map((c, i) => `
-    <button class="cat-chip ${i===0?'active':''}" onclick="filterCat('${c}',this)">${c}</button>
+function renderDiscover() {
+  document.getElementById('discover-row').innerHTML = discoverData.map(d => `
+    <div class="discover-mini" onclick="openSheet('${d.id}')">
+      <div class="discover-mini-photo">
+        <div class="photo" style="background-image:url('${d.photo}')"></div>
+      </div>
+      <div class="discover-mini-cat">${d.cat}</div>
+      <div class="discover-mini-name">${d.name}</div>
+    </div>
+  `).join('');
+}
+
+function renderFilters() {
+  const categories = ["All", "Eat", "Drink", "See", "Do"];
+  document.getElementById('filter-row').innerHTML = categories.map((c, i) => `
+    <button class="filter-chip ${i===0?'active':''}" onclick="filterCat('${c}',this)">${c}</button>
   `).join('');
 }
 
 let activeCat = 'All';
 function filterCat(cat, btn) {
   activeCat = cat;
-  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
   renderPlaces();
 }
 
 function renderPlaces() {
-  const el = document.getElementById('places-list');
   const filtered = activeCat === 'All' ? placesData : placesData.filter(p => p.group === activeCat);
-  el.innerHTML = filtered.map((p, i) => `
-    <div class="place-card reveal reveal-delay-${Math.min(i+1, 4)}">
-      <div class="place-card-img">
-        <div class="place-card-img-inner" style="background:${p.color};display:flex;align-items:center;justify-content:center;font-size:1.6rem">
-          ${p.cat.includes('Cochinillo') || p.cat.includes('Traditional') ? '🍖' :
-            p.cat.includes('Tapas') || p.cat.includes('Creative') ? '🫒' :
-            p.cat.includes('Coffee') ? '☕' :
-            p.cat.includes('Wine') ? '🍷' :
-            p.cat.includes('Cocktail') ? '🍸' :
-            p.cat.includes('Monument') || p.cat.includes('Castle') ? '🏛️' :
-            p.cat.includes('Historic') || p.cat.includes('Palace') ? '🏰' :
-            p.cat.includes('Nature') ? '🌿' :
-            p.cat.includes('Balloon') ? '🎈' : '📍'}
-        </div>
+  document.getElementById('places-list').innerHTML = filtered.map(p => `
+    <div class="place-row reveal" onclick="openSheet('${p.id}')">
+      <div class="place-row-photo">
+        <div class="photo" style="background-image:url('${p.photo}')"></div>
       </div>
-      <div class="place-card-body">
-        <div class="place-card-cat">${p.cat} · ${p.area}</div>
-        <div class="place-card-name">${p.name}</div>
-        <div class="place-card-desc">${p.desc}</div>
+      <div class="place-row-body">
+        <div class="place-row-cat">${p.cat}</div>
+        <div class="place-row-name">${p.name}</div>
+        <div class="place-row-area">${p.area}</div>
       </div>
-      <div class="place-card-arrow">→</div>
+      <div class="place-row-chevron">›</div>
     </div>
   `).join('');
   observeAll();
 }
 
 function renderTips() {
-  const el = document.getElementById('tips-list');
-  el.innerHTML = tipsData.map((t, i) => `
-    <div class="tip-card reveal reveal-delay-${Math.min(i+1, 4)}">
-      <div class="tip-card-num">0${i+1}</div>
-      <div class="tip-card-title">${t.title}</div>
-      <div class="tip-card-text">${t.text}</div>
+  document.getElementById('tips-list').innerHTML = tipsData.map((t, i) => `
+    <div class="secret-item reveal reveal-d${Math.min(i+1,4)}">
+      <div class="secret-num">0${i+1}</div>
+      <div class="secret-body">
+        <div class="secret-title">${t.title}</div>
+        <div class="secret-text">${t.text}</div>
+      </div>
     </div>
   `).join('');
   observeAll();
-}
-
-function toggleHeart(btn) {
-  btn.classList.toggle('liked');
-  btn.textContent = btn.classList.contains('liked') ? '♥' : '♡';
-  btn.style.color = btn.classList.contains('liked') ? 'var(--terracotta)' : '';
 }
 
 function navTo(id, btn) {
@@ -1118,26 +1870,160 @@ function navTo(id, btn) {
   btn.classList.add('active');
 }
 
-// ===== SCROLL OBSERVER =====
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+// ===== SCROLL REVEAL =====
+const observer = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+);
 
 function observeAll() {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
 }
 
+// ===== SUGGEST SHEET =====
+
+function openSuggestSheet() {
+  document.getElementById('sheet-content').innerHTML = `
+    <div class="sheet-handle" style="margin-bottom:0"></div>
+    <button class="sheet-close" style="position:absolute;top:1rem;right:1rem" onclick="closeSheet()">✕</button>
+    <div class="suggest-form" id="suggest-form">
+      <div>
+        <div class="suggest-form-title">Suggest a<br><em>place</em></div>
+        <div class="suggest-form-desc">Know somewhere that deserves to be here? Tell us.</div>
+      </div>
+      <div class="form-field">
+        <div class="form-label">Place Name *</div>
+        <input class="form-input" id="sug-name" type="text" placeholder="e.g. Bar La Piedad">
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <div class="form-label">Area</div>
+          <input class="form-input" id="sug-area" type="text" placeholder="e.g. Old Town">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Category</div>
+          <input class="form-input" id="sug-cat" type="text" placeholder="e.g. Tapas Bar">
+        </div>
+      </div>
+      <div class="form-field">
+        <div class="form-label">Why should it be here?</div>
+        <textarea class="form-textarea" id="sug-desc" placeholder="Tell us what makes it special..."></textarea>
+      </div>
+      <div class="form-field">
+        <div class="form-label">Your email (optional)</div>
+        <input class="form-input" id="sug-email" type="email" placeholder="so we can thank you">
+      </div>
+      <button class="sheet-btn-primary" onclick="submitSuggestion()" style="margin-top:0.25rem">
+        Send Suggestion →
+      </button>
+    </div>
+  `;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  document.body.classList.add('sheet-open');
+}
+
+async function submitSuggestion() {
+  const name = document.getElementById('sug-name').value.trim();
+  if (!name) {
+    document.getElementById('sug-name').focus();
+    document.getElementById('sug-name').style.borderColor = 'var(--terracotta)';
+    return;
+  }
+
+  const payload = {
+    name,
+    area:        document.getElementById('sug-area').value.trim(),
+    category:    document.getElementById('sug-cat').value.trim(),
+    description: document.getElementById('sug-desc').value.trim(),
+    email:       document.getElementById('sug-email').value.trim(),
+  };
+
+  try {
+    const res = await fetch(`${API}/api/suggest`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('suggest-form').innerHTML = `
+        <div class="form-success">
+          <div class="form-success-icon">✓</div>
+          <div class="form-success-title">Thank you!</div>
+          <div class="form-success-text">We got your suggestion for <strong>${name}</strong>.<br>We'll check it out and add it if it fits.</div>
+        </div>
+      `;
+    }
+  } catch (_) {
+    alert('Could not send right now. Try again in a moment.');
+  }
+}
+
+// ===== TRENDING =====
+
+const trendingData = [
+  { id: "candido",   name: "Mesón de Cándido",   cat: "Restaurant", visits: 412, trend: "↑↑", hot: true  },
+  { id: "aqueduct",  name: "Roman Aqueduct",      cat: "Monument",   visits: 389, trend: "↑",  hot: false },
+  { id: "alcazar",   name: "Alcázar de Segovia",  cat: "Castle",     visits: 274, trend: "↑",  hot: false },
+  { id: "mirador",   name: "Mirador de la Pradera",cat: "Viewpoint", visits: 198, trend: "→",  hot: false },
+  { id: "sanmartin", name: "Bar San Martín",       cat: "Tapas Bar",  visits: 161, trend: "↑↑", hot: false },
+];
+
+function renderTrendingData(data) {
+  const max = data[0]?.visits || 1;
+  document.getElementById('trending-list').innerHTML = data.map((item, i) => `
+    <div class="trending-item" onclick="openSheet('${item.id}')">
+      <div class="trending-rank">${String(i + 1).padStart(2, '0')}</div>
+      <div class="trending-info">
+        <div class="trending-name">${item.name}</div>
+        <div class="trending-bar-row">
+          <div class="trending-bar-track">
+            <div class="trending-bar-fill" data-width="${Math.round((item.visits / max) * 100)}"></div>
+          </div>
+          <div class="trending-count">${item.visits.toLocaleString()} taps</div>
+        </div>
+      </div>
+      <div class="trending-badge">
+        <div class="trending-trend">${item.trend || '↑'}</div>
+        <div class="trending-cat">${item.cat || ''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Animate bars on scroll into view
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.trending-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const list = document.getElementById('trending-list');
+  if (list) barObserver.observe(list);
+}
+
+function renderTrending() {
+  const now = new Date();
+  const week = `Week ${Math.ceil(now.getDate() / 7)} · ${now.toLocaleString('en-GB',{month:'long'})} ${now.getFullYear()}`;
+  document.getElementById('trending-week-label').textContent = week;
+  // Render static fallback immediately, then try live data
+  renderTrendingData(trendingData);
+  loadTrending();
+}
+
 // ===== INIT =====
+renderFeatured();
 renderDiscover();
-renderCategories();
+renderFilters();
 renderPlaces();
 renderTips();
+renderTrending();
 observeAll();
 </script>
-
 </body>
 </html>

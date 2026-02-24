@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Segovia — Local Picks</title>
+<meta name="description" content="The best restaurants and experiences in Segovia, curated by locals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0D0C0A;
+    --ink-soft:    #1C1A16;
+    --ink-card:    #141210;
+    --cream:       #F5F0E8;
+    --cream-muted: rgba(245,240,232,0.55);
+    --stone:       #B8956A;
+    --stone-light: #D4B896;
+    --stone-pale:  rgba(184,149,106,0.12);
+    --terra:       #C4674A;
+    --border:      rgba(245,240,232,0.08);
+    --border-mid:  rgba(245,240,232,0.13);
+    --r:           10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 100px;
+  }
+
+  @media (min-width: 600px) {
+    body {
+      max-width: 430px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 40px 100px rgba(0,0,0,0.6);
+      min-height: 100vh;
+    }
+  }
+
+  /* ── SOURCE BADGE ── */
+  .source-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    background: rgba(13,12,10,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .source-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--stone);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .source-text {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--stone-light);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 88svh;
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(1.04);
+    animation: heroZoom 8s ease-out forwards;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.04); }
+    to { transform: scale(1); }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(13,12,10,0.2) 0%,
+      rgba(13,12,10,0.05) 30%,
+      rgba(13,12,10,0.7) 65%,
+      rgba(13,12,10,0.97) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 1.75rem 2.75rem;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.4s forwards;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .hero-line { width: 28px; height: 1px; background: var(--stone); }
+
+  .hero-eyebrow-text {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 12vw, 4.5rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    margin-bottom: 1.1rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--stone-light);
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.65;
+    max-width: 280px;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.75rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out 1.5s forwards;
+  }
+
+  .scroll-line-v {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, var(--stone), transparent);
+    animation: scrollDrop 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollDrop {
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    30% { opacity: 1; }
+    70% { transform: scaleY(1); transform-origin: top; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+  }
+
+  .scroll-label {
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 0 1.25rem;
+  }
+
+  .section-header {
+    padding: 2.5rem 0.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cream);
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--stone-light);
+  }
+
+  /* ── FEATURED CARD (large) ── */
+  .featured-card {
+    background: var(--ink-card);
+    border: 1px solid var(--border-mid);
+    border-radius: var(--r);
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+    display: block;
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 0.2s forwards;
+  }
+
+  .featured-card:active { transform: scale(0.985); }
+
+  .featured-card-photo {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+  }
+
+  .featured-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .featured-card:hover .featured-card-img { transform: scale(1.04); }
+
+  .featured-card-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(20,18,16,0.9) 100%
+    );
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--terra);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  .featured-card-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .featured-card-cat {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.35rem;
+  }
+
+  .featured-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .featured-card-body {
+    padding: 1.25rem;
+  }
+
+  .featured-card-tagline {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--stone-light);
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+
+  .featured-card-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .featured-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .price-dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .price-dot-el {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  .price-dot-el.filled { background: var(--stone); }
+  .price-dot-el.empty { background: var(--border-mid); }
+
+  .price-label {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+
+  .visit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border: 1px solid var(--stone);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    background: transparent;
+    transition: background 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .visit-btn:hover, .featured-card:hover .visit-btn {
+    background: var(--stone);
+    color: var(--ink);
+  }
+
+  .visit-btn svg { width: 12px; height: 12px; transition: transform 0.2s ease; }
+  .featured-card:hover .visit-btn svg { transform: translateX(3px); }
+
+  /* ── PLACE CARDS (list) ── */
+  .places-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .place-card {
+    display: flex;
+    background: var(--ink-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .place-card:active { transform: scale(0.98); }
+  .place-card:hover { border-color: var(--border-mid); }
+
+  .place-card-photo {
+    width: 110px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .place-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .place-card:hover .place-card-img { transform: scale(1.06); }
+
+  .place-card-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(13,12,10,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-mid);
+    color: var(--stone);
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+  }
+
+  .place-card-body {
+    flex: 1;
+    padding: 1rem 1rem 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
+  }
+
+  .place-card-cat {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.3rem;
+  }
+
+  .place-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .place-card-desc {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .place-card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.7rem;
+  }
+
+  .place-card-price {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--stone);
+  }
+
+  .place-card-arrow {
+    width: 20px; height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-mid);
+    border-radius: 50%;
+    color: var(--stone);
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .place-card:hover .place-card-arrow {
+    background: var(--stone);
+    color: var(--ink);
+    transform: translateX(2px);
+  }
+
+  .place-card-arrow svg { width: 9px; height: 9px; }
+
+  /* ── BUSINESS CTA ── */
+  .biz-cta {
+    margin: 2.5rem 1.25rem 0;
+    padding: 2rem 1.5rem;
+    background: var(--stone-pale);
+    border: 1px solid rgba(184,149,106,0.25);
+    border-radius: var(--r);
+    text-align: center;
+  }
+
+  .biz-cta-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.75rem;
+  }
+
+  .biz-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .biz-cta-title em { font-style: italic; color: var(--stone-light); }
+
+  .biz-cta-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    max-width: 260px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .biz-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    background: var(--stone);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    transition: background 0.25s ease;
+    text-decoration: none;
+  }
+
+  .biz-btn:hover { background: var(--stone-light); }
+
+  /* ── FOOTER ── */
+  .ltn-footer {
+    margin: 2.5rem 1.25rem 0;
+    padding: 1.75rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
+  }
+
+  .ltn-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+  }
+
+  .ltn-tagline {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  .ltn-divider {
+    width: 30px;
+    height: 1px;
+    background: var(--border-mid);
+    margin: 0.5rem 0;
+  }
+
+  .ltn-sub {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.3);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Staggered delay helpers */
+  .d1 { animation-delay: 0.1s !important; }
+  .d2 { animation-delay: 0.2s !important; }
+  .d3 { animation-delay: 0.3s !important; }
+  .d4 { animation-delay: 0.4s !important; }
+  .d5 { animation-delay: 0.5s !important; }
+</style>
+</head>
+<body>
+
+<!-- SOURCE BADGE -->
+<div class="source-bar">
+  <div class="source-dot"></div>
+  <span class="source-text" id="sourceText">Curated recommendations · Segovia</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-photo" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=85&fit=crop')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-line"></div>
+      <span class="hero-eyebrow-text">Segovia, Spain</span>
+    </div>
+    <h1>The finest<br><em>tables in</em><br>the city</h1>
+    <p class="hero-sub">Hand-picked restaurants, local favorites, and the one dish you cannot leave without trying.</p>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line-v"></div>
+    <span class="scroll-label">Explore</span>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-label">Must visit</span>
+    <h2 class="section-title">The most <em>iconic</em> meal in Castile</h2>
+  </div>
+
+  <a class="featured-card" href="https://www.mesondecandido.es" target="_blank" onclick="logTap('candido', 'Mesón de Cándido')">
+    <div class="featured-card-photo">
+      <img class="featured-card-img"
+        src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&fit=crop"
+        alt="Mesón de Cándido"
+        loading="eager">
+      <div class="featured-card-photo-overlay"></div>
+      <div class="featured-badge">Most Iconic</div>
+      <div class="featured-card-bottom">
+        <div class="featured-card-cat">Cochinillo · Since 1786</div>
+        <div class="featured-card-name">Mesón de Cándido</div>
+      </div>
+    </div>
+    <div class="featured-card-body">
+      <div class="featured-card-tagline">"There is no more authentic Segovian experience."</div>
+      <div class="featured-card-desc">
+        Founded beneath the Roman aqueduct in 1786, Cándido's cochinillo asado — suckling pig roasted in wood-fired ovens, cut tableside with a ceramic plate — has been served to kings, presidents, and Hemingway. The skin crackles like porcelain. The memory lasts longer.
+      </div>
+      <div class="featured-card-footer">
+        <div class="price-tag">
+          <div class="price-dots">
+            <div class="price-dot-el filled"></div>
+            <div class="price-dot-el filled"></div>
+            <div class="price-dot-el filled"></div>
+          </div>
+          <span class="price-label">€40–55 per person</span>
+        </div>
+        <button class="visit-btn">
+          Reserve
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M2 6h8M6 2l4 4-4 4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- MORE PLACES -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-label">More worth your evening</span>
+    <h2 class="section-title">Picked by <em>locals</em></h2>
+  </div>
+
+  <div class="places-list" id="placesList"></div>
+</section>
+
+<!-- BUSINESS CTA -->
+<div class="biz-cta">
+  <div class="biz-cta-label">For businesses</div>
+  <div class="biz-cta-title">Want to reach tourists<br><em>exactly like this?</em></div>
+  <div class="biz-cta-desc">
+    Your restaurant, featured on the page tourists see the moment they arrive in Segovia. Zero wasted impressions.
+  </div>
+  <a class="biz-btn" href="mailto:hello@ltn.es">
+    Get featured
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M2 6h8M6 2l4 4-4 4"/>
+    </svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="ltn-footer">
+  <div class="ltn-logo">LTN</div>
+  <div class="ltn-tagline">Local Traffic Network</div>
+  <div class="ltn-divider"></div>
+  <div class="ltn-sub">Physical Traffic · Verified Results · Segovia Pilot</div>
+</footer>
+
+<script>
+/* ─── DATA ─── */
+const places = [
+  {
+    id: 'duque',
+    name: 'Restaurante Duque',
+    cat: 'Castilian · Family-Run',
+    desc: 'Five generations, the same wood-fired oven, the same recipe. Since 1895. Locals eat here at lunch — never a bad sign.',
+    price: '€€€',
+    badge: null,
+    photo: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80&fit=crop&crop=center',
+    url: 'https://www.restauranteduque.es'
+  },
+  {
+    id: 'josemaria',
+    name: 'José María',
+    cat: 'Cochinillo · Wine',
+    desc: 'The great rival. Locals argue about which cochinillo wins. José María\'s skin is crispier; the wine cellar is exceptional.',
+    price: '€€€',
+    badge: 'Locals\' Pick',
+    photo: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80&fit=crop&crop=center',
+    url: 'https://www.rtejosemaria.com'
+  },
+  {
+    id: 'fogon',
+    name: 'El Fogón Sefardí',
+    cat: 'Creative · Jewish Quarter',
+    desc: 'A 15th-century building, Sephardic recipes, lamb with honey and almonds. Reserve ahead — worth the effort.',
+    price: '€€€',
+    badge: null,
+    photo: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80&fit=crop&crop=center',
+    url: 'https://www.lacasamudejar.com/restaurante'
+  },
+  {
+    id: 'cueva',
+    name: 'Cueva de San Esteban',
+    cat: 'Cave Bar · Pintxos',
+    desc: 'Carved into the rock beneath a church. Where Segovians go Friday evenings. Come for one glass and stay for three.',
+    price: '€€',
+    badge: 'Local Secret',
+    photo: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop&crop=center',
+    url: 'https://maps.google.com/?q=Cueva+de+San+Esteban+Segovia'
+  },
+  {
+    id: 'mayor',
+    name: 'Mesón Mayor',
+    cat: 'Terrace · Plaza Mayor',
+    desc: 'The Cathedral lit gold, the plaza filling at dusk. The best free view in Castile. Come for a vermouth before dinner.',
+    price: '€€',
+    badge: null,
+    photo: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80&fit=crop&crop=center',
+    url: 'https://maps.google.com/?q=Plaza+Mayor+Segovia'
+  }
+];
+
+/* ─── RENDER CARDS ─── */
+const list = document.getElementById('placesList');
+
+places.forEach((p, i) => {
+  const priceDots = renderPriceDots(p.price);
+  const badgeHTML = p.badge
+    ? `<div class="place-card-badge">${p.badge}</div>`
+    : '';
+
+  const card = document.createElement('a');
+  card.className = `place-card d${Math.min(i + 1, 5)}`;
+  card.href = p.url;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.setAttribute('onclick', `logTap('${p.id}', '${p.name}')`);
+  card.innerHTML = `
+    <div class="place-card-photo">
+      <img class="place-card-img" src="${p.photo}" alt="${p.name}" loading="lazy">
+      ${badgeHTML}
+    </div>
+    <div class="place-card-body">
+      <div>
+        <div class="place-card-cat">${p.cat}</div>
+        <div class="place-card-name">${p.name}</div>
+        <div class="place-card-desc">${p.desc}</div>
+      </div>
+      <div class="place-card-row">
+        <span class="place-card-price">${p.price} · ${priceDots}</span>
+        <div class="place-card-arrow">
+          <svg viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M1.5 4.5h6M4.5 1.5l3 3-3 3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  `;
+  list.appendChild(card);
+});
+
+function renderPriceDots(price) {
+  const map = { '€': 1, '€€': 2, '€€€': 3 };
+  const count = map[price] || 2;
+  let html = '';
+  for (let i = 1; i <= 3; i++) {
+    const color = i <= count ? '#B8956A' : 'rgba(245,240,232,0.15)';
+    html += `<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${color};margin-left:3px;vertical-align:middle"></span>`;
+  }
+  return html;
+}
+
+/* ─── SOURCE BADGE ─── */
+const params = new URLSearchParams(window.location.search);
+const src = params.get('src') || 'taxi';
+const name = params.get('name') || '';
+
+const sourceMap = {
+  taxi:   { text: name ? `${name} recommends` : 'Your driver\'s picks for tonight' },
+  hotel:  { text: name ? `From ${name}` : 'From the concierge desk' },
+  airbnb: { text: name ? `${name}'s local guide` : 'Your host recommends' },
+  venue:  { text: name ? `Picked by ${name}` : 'Curated local picks' },
+};
+
+const source = sourceMap[src] || sourceMap.taxi;
+document.getElementById('sourceText').textContent = source.text;
+
+/* ─── TAP LOGGING ─── */
+function logTap(placeId, placeName) {
+  try {
+    const driverId = params.get('d') || 'unknown';
+    const route = params.get('r') || 'unknown';
+    fetch('/api/tap', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ placeId, placeName, driverId, route, src, ts: Date.now() })
+    }).catch(() => {}); // silent fail — redirect happens anyway
+  } catch (e) {}
+}
+</script>
+
+</body>
+</html>

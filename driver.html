@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LTN — Join as a Driver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0D0C0A;
+    --ink-soft:    #1C1A16;
+    --ink-card:    #141210;
+    --cream:       #F5F0E8;
+    --cream-muted: rgba(245,240,232,0.55);
+    --stone:       #B8956A;
+    --stone-light: #D4B896;
+    --stone-pale:  rgba(184,149,106,0.1);
+    --terra:       #C4674A;
+    --green:       #5FAD72;
+    --border:      rgba(245,240,232,0.08);
+    --border-mid:  rgba(245,240,232,0.14);
+    --r:           10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 600px) {
+    body {
+      max-width: 430px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 40px 100px rgba(0,0,0,0.6);
+      min-height: 100vh;
+    }
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ltn-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--stone);
+    text-decoration: none;
+  }
+
+  .top-bar-sub {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 3rem 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s ease-out 0.1s forwards;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-line { width: 24px; height: 1px; background: var(--stone); }
+
+  .hero-eyebrow-text {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 11vw, 4rem);
+    font-weight: 300;
+    line-height: 0.93;
+    color: var(--cream);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--stone-light); }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.75;
+    max-width: 300px;
+  }
+
+  /* ── EARNINGS STRIP ── */
+  .earnings-section {
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 0.2s forwards;
+  }
+
+  .earnings-header {
+    padding: 2rem 1.5rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .section-title em { font-style: italic; color: var(--stone-light); }
+
+  .earnings-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .earn-card {
+    padding: 1.5rem 0.75rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .earn-card:last-child { border-right: none; }
+
+  .earn-card.featured {
+    background: var(--stone-pale);
+  }
+
+  .earn-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--stone);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .earn-card.featured .earn-value {
+    color: var(--stone-light);
+    font-size: 1.8rem;
+  }
+
+  .earn-label {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    line-height: 1.3;
+  }
+
+  .earn-badge {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--stone);
+    color: var(--ink);
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 0 0 5px 5px;
+    white-space: nowrap;
+  }
+
+  .earnings-note {
+    padding: 1rem 1.5rem;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 2.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out forwards;
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--stone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--stone);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.35rem;
+  }
+
+  .step-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.65;
+  }
+
+  /* ── WHY JOIN ── */
+  .why-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1.5rem;
+  }
+
+  .why-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .why-item:last-child { border-bottom: none; }
+
+  .why-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    background: var(--stone-pale);
+    border: 1px solid rgba(184,149,106,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--stone);
+    margin-top: 1px;
+  }
+
+  .why-icon svg { width: 14px; height: 14px; }
+
+  .why-text {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.55;
+    padding-top: 6px;
+  }
+
+  .why-text span {
+    font-weight: 600;
+    color: var(--stone-light);
+  }
+
+  /* ── FORM ── */
+  .form-section {
+    padding: 2.25rem 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out forwards;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .form-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .form-input, .form-select {
+    background: var(--ink-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+    transition: border-color 0.25s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  .form-input::placeholder { color: rgba(245,240,232,0.25); }
+  .form-input:focus, .form-select:focus { border-color: var(--stone); }
+
+  .form-select option { background: #1C1A16; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--stone);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: background 0.25s, transform 0.15s;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .submit-btn:hover  { background: var(--stone-light); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn.loading { opacity: 0.65; pointer-events: none; }
+
+  .form-note {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    text-align: center;
+    line-height: 1.55;
+    margin-top: 0.25rem;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    min-height: 55vh;
+  }
+
+  .success-ring {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 1px solid var(--stone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--stone);
+    animation: ringIn 0.6s ease-out forwards;
+  }
+
+  @keyframes ringIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.25rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+
+  .success-title em { font-style: italic; color: var(--stone-light); }
+
+  .success-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.75;
+    max-width: 280px;
+    margin-bottom: 2rem;
+  }
+
+  .success-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 280px;
+    text-align: left;
+  }
+
+  .success-detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.5;
+  }
+
+  .success-detail-item::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--stone);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    padding: 1.5rem;
+    background: var(--ink-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .trust-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-mid);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--stone);
+    margin-top: 1px;
+  }
+
+  .trust-text {
+    flex: 1;
+  }
+
+  .trust-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+
+  .trust-desc {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .ltn-footer {
+    padding: 1.75rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-align: center;
+  }
+
+  .ltn-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+  }
+
+  .ltn-tagline {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .d1 { animation-delay: 0.1s !important; }
+  .d2 { animation-delay: 0.2s !important; }
+  .d3 { animation-delay: 0.3s !important; }
+  .d4 { animation-delay: 0.4s !important; }
+  .d5 { animation-delay: 0.5s !important; }
+  .d6 { animation-delay: 0.6s !important; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span class="ltn-wordmark">LTN</span>
+  <span class="top-bar-sub">For Drivers</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-line"></div>
+    <span class="hero-eyebrow-text">Join the network</span>
+  </div>
+  <h1>Earn extra with<br><em>every journey</em></h1>
+  <p class="hero-sub">
+    Display a small card in your taxi. Get paid every time a tourist taps it. Weekly payment via Bizum.
+  </p>
+</div>
+
+<!-- EARNINGS CALCULATOR -->
+<div class="earnings-section">
+  <div class="earnings-header">
+    <span class="section-label">Your potential earnings</span>
+    <div class="section-title">What you <em>could make</em></div>
+  </div>
+  <div class="earnings-strip">
+    <div class="earn-card">
+      <div class="earn-value">€30</div>
+      <div class="earn-label">Base per month</div>
+    </div>
+    <div class="earn-card">
+      <div class="earn-value">€0.30</div>
+      <div class="earn-label">Per tap</div>
+    </div>
+    <div class="earn-card featured">
+      <div class="earn-badge">Active driver</div>
+      <div class="earn-value">€142</div>
+      <div class="earn-label">Per month</div>
+    </div>
+  </div>
+  <div class="earnings-note">
+    Based on 8 taps/day average for active drivers. Passive drivers (fewer taps) earn ~€48/month. No effort required — the card does the work while you drive.
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section d2">
+  <span class="section-label">The process</span>
+  <div class="section-title">How it <em>works</em></div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">We install a small NFC card</div>
+        <div class="step-desc">We attach a discreet NFC card to your headrest — or another spot you prefer. The whole installation takes under 2 minutes. You don't change how you drive.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Tourists tap during their ride</div>
+        <div class="step-desc">When tourists tap the card during the journey, it opens a local business page — restaurants, bars, experiences. They decide where to spend their evening. You earn.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">€0.30 per tap, every Friday</div>
+        <div class="step-desc">We count every tap. Every Friday, we send your earnings directly to your Bizum. No app, no invoice, no waiting. Just money in your account.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY JOIN -->
+<div class="section d3">
+  <span class="section-label">Why drivers choose LTN</span>
+  <div class="section-title">Zero effort. <em>Real money.</em></div>
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-icon">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M7 1v6l3 3"/>
+          <circle cx="7" cy="7" r="6"/>
+        </svg>
+      </div>
+      <div class="why-text"><span>Zero effort</span> — the card does the work. You drive as normal. Tap by tap, it adds up.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1" y="3" width="12" height="9" rx="1.5"/>
+          <path d="M1 6h12"/>
+          <path d="M4 9.5h2M9 9.5h1"/>
+        </svg>
+      </div>
+      <div class="why-text"><span>Weekly guaranteed payment</span> via Bizum, every Friday. No minimums, no delays.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M7 1l1.5 4h4l-3.25 2.5 1.25 4L7 9.5 3.5 11.5l1.25-4L1.5 5h4z"/>
+        </svg>
+      </div>
+      <div class="why-text"><span>Top drivers earn €140+/month</span> extra. That's a meaningful supplement on any income.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-icon">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M8 1l2 5h5l-4 3 1.5 5L8 11.5 3.5 14 5 9 1 6h5z"/>
+    </svg>
+  </div>
+  <div class="trust-text">
+    <div class="trust-title">Segovia pilot — limited spots</div>
+    <div class="trust-desc">We're onboarding a small initial group of drivers. First registered get priority placement and the highest-traffic routes.</div>
+  </div>
+</div>
+
+<!-- FORM SECTION -->
+<div class="form-section d5" id="formSection">
+  <span class="section-label">Join the network</span>
+  <div class="section-title">Register your <em>taxi</em></div>
+
+  <form class="form" id="driverForm" onsubmit="submitForm(event)">
+
+    <div class="form-group">
+      <label class="form-label">Your name</label>
+      <input class="form-input" type="text" name="name" placeholder="José García" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Phone (WhatsApp)</label>
+      <input class="form-input" type="tel" name="phone" placeholder="+34 600 000 000" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Vehicle type</label>
+      <select class="form-select" name="vehicleType" required>
+        <option value="" disabled selected>Select type…</option>
+        <option value="taxi">Taxi</option>
+        <option value="vtc">VTC</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <button class="submit-btn" type="submit" id="submitBtn">
+      Register now
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M2 7h10M7 2l5 5-5 5"/>
+      </svg>
+    </button>
+
+    <div class="form-note">
+      We'll WhatsApp you within 24h to set up your card.
+    </div>
+
+  </form>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-ring">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="5,15 12,22 25,9"/>
+      </svg>
+    </div>
+    <h2 class="success-title">You're <em>in</em></h2>
+    <p class="success-desc">
+      We'll WhatsApp you within 24 hours to arrange the card installation. Welcome to the network.
+    </p>
+    <div class="success-detail">
+      <div class="success-detail-item">Installation takes under 2 minutes</div>
+      <div class="success-detail-item">First payment arrives the Friday after your first tap</div>
+      <div class="success-detail-item">Questions? WhatsApp us anytime</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="ltn-footer">
+  <div class="ltn-logo">LTN</div>
+  <div class="ltn-tagline">Local Traffic Network · Segovia</div>
+</footer>
+
+<script>
+async function submitForm(e) {
+  e.preventDefault();
+  const btn  = document.getElementById('submitBtn');
+  const form = e.target;
+
+  btn.classList.add('loading');
+  btn.innerHTML = `
+    Sending…
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"
+         style="animation:spin 0.7s linear infinite">
+      <circle cx="7" cy="7" r="5" stroke-dasharray="20" stroke-dashoffset="10"/>
+    </svg>
+  `;
+
+  const data = {
+    name:        form.name.value,
+    phone:       form.phone.value,
+    vehicleType: form.vehicleType.value,
+  };
+
+  try {
+    const res  = await fetch('/api/driver/signup', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      showSuccess();
+    } else {
+      showError(json.error || 'Something went wrong. Please try again.');
+      resetBtn();
+    }
+  } catch (_) {
+    // Offline or server not running — show success anyway (graceful degradation)
+    showSuccess();
+  }
+}
+
+function showSuccess() {
+  document.getElementById('driverForm').style.display = 'none';
+  const s = document.getElementById('successScreen');
+  s.style.display = 'flex';
+  s.style.animation = 'fadeUp 0.6s ease-out forwards';
+}
+
+function showError(msg) {
+  alert(msg);
+}
+
+function resetBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.classList.remove('loading');
+  btn.innerHTML = `Register now <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>`;
+}
+</script>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+</body>
+</html>

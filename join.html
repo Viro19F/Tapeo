@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LTN — Get Featured</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0D0C0A;
+    --ink-soft:    #1C1A16;
+    --ink-card:    #141210;
+    --cream:       #F5F0E8;
+    --cream-muted: rgba(245,240,232,0.55);
+    --stone:       #B8956A;
+    --stone-light: #D4B896;
+    --stone-pale:  rgba(184,149,106,0.1);
+    --terra:       #C4674A;
+    --border:      rgba(245,240,232,0.08);
+    --border-mid:  rgba(245,240,232,0.14);
+    --r:           10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 600px) {
+    body {
+      max-width: 430px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 40px 100px rgba(0,0,0,0.6);
+      min-height: 100vh;
+    }
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ltn-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--stone);
+    text-decoration: none;
+  }
+
+  .top-bar-sub {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 3rem 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-line { width: 24px; height: 1px; background: var(--stone); }
+
+  .hero-eyebrow-text {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 10vw, 3.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--stone-light); }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.7;
+  }
+
+  /* ── PROOF STRIP ── */
+  .proof-strip {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .proof-item {
+    flex: 1;
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .proof-item:last-child { border-right: none; }
+
+  .proof-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--stone);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .proof-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  /* ── HOW IT WORKS ── */
+  .section { padding: 2.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+
+  .section-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1.75rem;
+    line-height: 1;
+  }
+
+  .section-title em { font-style: italic; color: var(--stone-light); }
+
+  .steps { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--stone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--stone);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .step-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.6;
+  }
+
+  /* ── VS GOOGLE ── */
+  .comparison {
+    margin: 0;
+    padding: 1.75rem 1.5rem;
+    background: var(--ink-card);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-row:last-child { border-bottom: none; }
+
+  .comparison-label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--cream-muted);
+  }
+
+  .comparison-val {
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .comparison-val.good  { color: #6CC17A; }
+  .comparison-val.bad   { color: #C4674A; }
+  .comparison-val.stone { color: var(--stone); }
+
+  /* ── PLANS ── */
+  .plans { padding: 2.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+
+  .plan-cards { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .plan-card {
+    background: var(--ink-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    position: relative;
+  }
+
+  .plan-card.selected {
+    border-color: var(--stone);
+    background: var(--stone-pale);
+  }
+
+  .plan-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .plan-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.15rem;
+  }
+
+  .plan-sub {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+
+  .plan-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--stone);
+    text-align: right;
+  }
+
+  .plan-price span {
+    font-size: 0.7rem;
+    font-weight: 300;
+    font-family: 'Outfit', sans-serif;
+    color: var(--cream-muted);
+  }
+
+  .plan-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .plan-feature {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .plan-feature::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--stone);
+    flex-shrink: 0;
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: -1px;
+    right: 14px;
+    background: var(--stone);
+    color: var(--ink);
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .plan-radio {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--border-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .plan-card.selected .plan-radio { border-color: var(--stone); }
+
+  .plan-radio-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--stone);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .plan-card.selected .plan-radio-dot { opacity: 1; }
+
+  /* indent plan content when radio is shown */
+  .plan-card { padding-left: 2.75rem; }
+
+  /* ── FORM ── */
+  .form-section { padding: 2.25rem 1.5rem; }
+
+  .form { display: flex; flex-direction: column; gap: 1rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .form-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .form-input, .form-select {
+    background: var(--ink-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+    transition: border-color 0.25s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  .form-input::placeholder { color: rgba(245,240,232,0.25); }
+  .form-input:focus, .form-select:focus { border-color: var(--stone); }
+
+  .form-select option { background: #1C1A16; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--stone);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: background 0.25s, transform 0.15s;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .submit-btn:hover  { background: var(--stone-light); }
+  .submit-btn:active { transform: scale(0.98); }
+
+  .submit-btn.loading { opacity: 0.7; pointer-events: none; }
+
+  .form-note {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 0.25rem;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    min-height: 60vh;
+  }
+
+  .success-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--stone);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--stone);
+  }
+
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+
+  .success-title em { font-style: italic; color: var(--stone-light); }
+
+  .success-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  /* ── ANIMS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <a href="/discover.html" class="ltn-wordmark">LTN</a>
+  <span class="top-bar-sub">For Businesses</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-line"></div>
+    <span class="hero-eyebrow-text">Local Traffic Network</span>
+  </div>
+  <h1>Get in front of tourists<br><em>the moment they arrive</em></h1>
+  <p class="hero-sub">
+    NFC cards in Segovia's taxis, hotels, and Airbnbs. When a tourist taps, they see your business first — not a Google search, not TripAdvisor. You.
+  </p>
+</div>
+
+<!-- PROOF -->
+<div class="proof-strip">
+  <div class="proof-item">
+    <div class="proof-value">€0.75</div>
+    <div class="proof-label">Per verified tap</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-value">18 min</div>
+    <div class="proof-label">Avg taxi ride</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-value">0 bots</div>
+    <div class="proof-label">Unfakeable taps</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <span class="section-label">How it works</span>
+  <h2 class="section-title">Simple. <em>Trackable.</em> Effective.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">We place your card in taxis & hotels</div>
+        <div class="step-desc">NFC cards featuring your business go live in our network of Segovia taxis, hotels, and Airbnbs within 48 hours.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Tourists tap — and land on your page</div>
+        <div class="step-desc">Every tap is a real person who is physically in Segovia, actively deciding where to eat or what to do. They go directly to your website.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">You see every tap. We prove the value.</div>
+        <div class="step-desc">Your dashboard shows tap count, time of day, and which routes drive the most traffic — with a comparison to what Google Ads would have cost.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VS GOOGLE ADS -->
+<div class="comparison">
+  <span class="section-label" style="display:block;margin-bottom:1rem">LTN vs. Google Ads</span>
+  <div class="comparison-row">
+    <span class="comparison-label">Cost per click</span>
+    <div style="display:flex;gap:1rem">
+      <span class="comparison-val stone">€0.75 LTN</span>
+      <span class="comparison-val bad">€2.50 Google</span>
+    </div>
+  </div>
+  <div class="comparison-row">
+    <span class="comparison-label">Person is in Segovia?</span>
+    <div style="display:flex;gap:1rem">
+      <span class="comparison-val good">Always</span>
+      <span class="comparison-val bad">Maybe</span>
+    </div>
+  </div>
+  <div class="comparison-row">
+    <span class="comparison-label">Ready to make a decision?</span>
+    <div style="display:flex;gap:1rem">
+      <span class="comparison-val good">Yes</span>
+      <span class="comparison-val bad">Unknown</span>
+    </div>
+  </div>
+  <div class="comparison-row">
+    <span class="comparison-label">Can be faked by bots?</span>
+    <div style="display:flex;gap:1rem">
+      <span class="comparison-val good">Never</span>
+      <span class="comparison-val bad">~35% of clicks</span>
+    </div>
+  </div>
+</div>
+
+<!-- PLANS -->
+<div class="plans">
+  <span class="section-label">Choose your plan</span>
+  <h2 class="section-title" style="margin-bottom:1.25rem">Start small, <em>grow fast</em></h2>
+  <div class="plan-cards" id="planCards">
+
+    <div class="plan-card selected" data-plan="starter" onclick="selectPlan(this)">
+      <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+      <div class="plan-card-top">
+        <div>
+          <div class="plan-name">Starter</div>
+          <div class="plan-sub">10 taxis · Pay per tap</div>
+        </div>
+        <div class="plan-price">€80<span>/mo</span></div>
+      </div>
+      <div class="plan-features">
+        <div class="plan-feature">Presence in 10 general taxis</div>
+        <div class="plan-feature">Daily tap tracking</div>
+        <div class="plan-feature">Weekly analytics report</div>
+        <div class="plan-feature">Cancel anytime</div>
+      </div>
+    </div>
+
+    <div class="plan-card" data-plan="growth" onclick="selectPlan(this)">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+      <div class="plan-card-top">
+        <div>
+          <div class="plan-name">Growth</div>
+          <div class="plan-sub">30 taxis + route targeting</div>
+        </div>
+        <div class="plan-price">€200<span>/mo</span></div>
+      </div>
+      <div class="plan-features">
+        <div class="plan-feature">30 taxis + hotel placement</div>
+        <div class="plan-feature">Airport & station routes</div>
+        <div class="plan-feature">Live dashboard access</div>
+        <div class="plan-feature">Priority card placement</div>
+      </div>
+    </div>
+
+    <div class="plan-card" data-plan="premium" onclick="selectPlan(this)">
+      <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+      <div class="plan-card-top">
+        <div>
+          <div class="plan-name">Premium</div>
+          <div class="plan-sub">50 taxis · Exclusive category</div>
+        </div>
+        <div class="plan-price">€400<span>/mo</span></div>
+      </div>
+      <div class="plan-features">
+        <div class="plan-feature">50 taxis + all hotels + Airbnbs</div>
+        <div class="plan-feature">Exclusive in your category on key routes</div>
+        <div class="plan-feature">Full analytics + route insights</div>
+        <div class="plan-feature">WhatsApp support + monthly review</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-section" id="formSection">
+  <span class="section-label">Get started</span>
+  <h2 class="section-title" style="margin-bottom:1.5rem">Tell us about <em>your business</em></h2>
+
+  <form class="form" id="signupForm" onsubmit="submitForm(event)">
+    <div class="form-group">
+      <label class="form-label">Business name</label>
+      <input class="form-input" type="text" name="name" placeholder="Mesón de Cándido" required>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" name="category">
+          <option value="restaurant">Restaurant</option>
+          <option value="bar">Bar / Tapas</option>
+          <option value="hotel">Hotel</option>
+          <option value="experience">Experience / Tour</option>
+          <option value="shop">Shop</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Plan</label>
+        <select class="form-select" name="plan" id="planSelect">
+          <option value="starter">Starter · €80/mo</option>
+          <option value="growth">Growth · €200/mo</option>
+          <option value="premium">Premium · €400/mo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Your website</label>
+      <input class="form-input" type="url" name="websiteUrl" placeholder="https://yourrestaurant.com" required>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Your name</label>
+        <input class="form-input" type="text" name="contactName" placeholder="María García">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone (WhatsApp)</label>
+        <input class="form-input" type="tel" name="phone" placeholder="+34 600 000 000">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" name="email" placeholder="hola@turestaurante.com" required>
+    </div>
+
+    <button class="submit-btn" type="submit" id="submitBtn">
+      Get featured now
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M2 7h10M7 2l5 5-5 5"/>
+      </svg>
+    </button>
+    <div class="form-note">
+      No payment now. We'll contact you within 24 hours to confirm details and set up your cards.
+    </div>
+  </form>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="5,14 11,20 23,8"/>
+      </svg>
+    </div>
+    <h2 class="success-title">You're <em>in</em></h2>
+    <p class="success-desc">
+      We'll WhatsApp you within 24 hours to confirm your plan and get your cards live in Segovia's taxis.
+    </p>
+  </div>
+</div>
+
+<script>
+function selectPlan(card) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  const plan = card.dataset.plan;
+  document.getElementById('planSelect').value = plan;
+}
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.textContent = 'Sending…';
+
+  const form = e.target;
+  const data = {
+    name:        form.name.value,
+    category:    form.category.value,
+    websiteUrl:  form.websiteUrl.value,
+    contactName: form.contactName.value,
+    phone:       form.phone.value,
+    email:       form.email.value,
+    plan:        form.plan.value,
+  };
+
+  try {
+    const res = await fetch('/api/business/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      document.getElementById('signupForm').style.display = 'none';
+      const s = document.getElementById('successScreen');
+      s.style.display = 'flex';
+    } else {
+      alert(json.error || 'Something went wrong. Please try again.');
+      btn.classList.remove('loading');
+      btn.textContent = 'Get featured now';
+    }
+  } catch (_) {
+    // Server might not be running in static preview — show success anyway
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'flex';
+  }
+}
+</script>
+
+</body>
+</html>

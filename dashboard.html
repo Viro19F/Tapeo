@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>LTN — Analytics Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0D0C0A;
+    --ink-soft:    #1C1A16;
+    --ink-card:    #141210;
+    --cream:       #F5F0E8;
+    --cream-muted: rgba(245,240,232,0.55);
+    --stone:       #B8956A;
+    --stone-light: #D4B896;
+    --stone-pale:  rgba(184,149,106,0.1);
+    --terra:       #C4674A;
+    --green:       #5FAD72;
+    --border:      rgba(245,240,232,0.08);
+    --border-mid:  rgba(245,240,232,0.14);
+    --r:           10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 600px) {
+    body {
+      max-width: 430px;
+      margin: 0 auto;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 40px 100px rgba(0,0,0,0.6);
+      min-height: 100vh;
+    }
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,12,10,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .ltn-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--stone);
+    text-decoration: none;
+  }
+
+  .top-bar-biz {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--cream-muted);
+    text-align: right;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── HEADER SECTION ── */
+  .dash-header {
+    padding: 2.5rem 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dash-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  .dash-line { width: 24px; height: 1px; background: var(--stone); }
+
+  .dash-eyebrow-text {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .dash-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .dash-title em { font-style: italic; color: var(--stone-light); }
+
+  .dash-period {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+
+  /* ── STAT CARDS ── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-card {
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .stat-card:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--stone);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-label {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+    line-height: 1.3;
+  }
+
+  /* ── WIN CARD ── */
+  .win-card {
+    margin: 1.5rem;
+    background: var(--ink-card);
+    border: 1px solid rgba(184,149,106,0.2);
+    border-radius: var(--r);
+    padding: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out 0.2s forwards;
+  }
+
+  .win-label {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .win-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .win-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--stone);
+    line-height: 1;
+  }
+
+  .win-amount sup {
+    font-size: 1rem;
+    vertical-align: super;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+  }
+
+  .win-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(95,173,114,0.12);
+    border: 1px solid rgba(95,173,114,0.3);
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+  }
+
+  .win-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .win-title {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.35rem;
+  }
+
+  .win-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+  }
+
+  .win-vs-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .win-vs-label {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+
+  .win-vs-paid {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--stone-light);
+  }
+
+  .win-saving {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.6;
+  }
+
+  .win-saving strong {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.7s ease-out forwards;
+  }
+
+  .section-label {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    line-height: 1;
+  }
+
+  .section-title em { font-style: italic; color: var(--stone-light); }
+
+  /* ── HOUR CHART ── */
+  .chart-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .chart-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 28px;
+  }
+
+  .chart-hour {
+    width: 24px;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--cream-muted);
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chart-bar-wrap {
+    flex: 1;
+    height: 100%;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .chart-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--stone), var(--stone-light));
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+  }
+
+  .chart-bar.peak {
+    background: linear-gradient(90deg, var(--terra), #D9856B);
+  }
+
+  .chart-count {
+    width: 28px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--cream-muted);
+    text-align: right;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── ROUTE LIST ── */
+  .route-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .route-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .route-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .route-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--cream);
+    text-transform: capitalize;
+  }
+
+  .route-name-formatted {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--cream);
+  }
+
+  .route-count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .route-bar-wrap {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .route-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--stone), var(--stone-light));
+    border-radius: 3px;
+    transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+  }
+
+  /* ── RECENT TAPS ── */
+  .recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .recent-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 0.75rem;
+  }
+
+  .recent-item:last-child { border-bottom: none; }
+
+  .recent-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .recent-time {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--stone);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .recent-route {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--cream);
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .source-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .source-pill.taxi {
+    background: rgba(184,149,106,0.12);
+    border: 1px solid rgba(184,149,106,0.25);
+    color: var(--stone-light);
+  }
+
+  .source-pill.hotel {
+    background: rgba(196,103,74,0.12);
+    border: 1px solid rgba(196,103,74,0.25);
+    color: #D4876A;
+  }
+
+  .source-pill.airbnb {
+    background: rgba(95,173,114,0.1);
+    border: 1px solid rgba(95,173,114,0.2);
+    color: #7AC48A;
+  }
+
+  /* ── LOADING STATE ── */
+  .loading-state {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-mid);
+    border-top-color: var(--stone);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1.5rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+
+  /* ── ERROR STATE ── */
+  .error-state {
+    padding: 3rem 2rem;
+    text-align: center;
+    display: none;
+  }
+
+  .error-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .error-desc {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  .ltn-footer {
+    padding: 1.75rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-align: center;
+  }
+
+  .ltn-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+  }
+
+  .ltn-tagline {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+
+  /* ── DEMO BANNER ── */
+  .demo-banner {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 1.5rem;
+    background: rgba(196,103,74,0.12);
+    border-bottom: 1px solid rgba(196,103,74,0.2);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #D4876A;
+  }
+
+  .demo-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--terra);
+    flex-shrink: 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .d1 { animation-delay: 0.05s !important; }
+  .d2 { animation-delay: 0.1s !important; }
+  .d3 { animation-delay: 0.15s !important; }
+  .d4 { animation-delay: 0.25s !important; }
+  .d5 { animation-delay: 0.35s !important; }
+  .d6 { animation-delay: 0.45s !important; }
+  .d7 { animation-delay: 0.55s !important; }
+
+  #mainContent { display: none; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span class="ltn-wordmark">LTN</span>
+  <span class="top-bar-biz" id="bizName">Loading…</span>
+</div>
+
+<!-- DEMO BANNER (shown in demo mode) -->
+<div class="demo-banner" id="demoBanner">
+  <div class="demo-dot"></div>
+  Demo mode — showing sample data
+</div>
+
+<!-- LOADING STATE -->
+<div class="loading-state" id="loadingState">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading your analytics…</div>
+</div>
+
+<!-- MAIN CONTENT (hidden until loaded) -->
+<div id="mainContent">
+
+  <!-- HEADER -->
+  <div class="dash-header" style="opacity:0;animation:fadeUp 0.6s ease-out 0.05s forwards">
+    <div class="dash-eyebrow">
+      <div class="dash-line"></div>
+      <span class="dash-eyebrow-text">Analytics</span>
+    </div>
+    <div class="dash-title">Your <em>traffic</em> report</div>
+    <div class="dash-period" id="dashPeriod">All time · updated live</div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stat-strip">
+    <div class="stat-card d1">
+      <div class="stat-value" id="statTotal">—</div>
+      <div class="stat-label">Total<br>Taps</div>
+    </div>
+    <div class="stat-card d2">
+      <div class="stat-value" id="statWeek">—</div>
+      <div class="stat-label">This<br>Week</div>
+    </div>
+    <div class="stat-card d3">
+      <div class="stat-value" id="statToday">—</div>
+      <div class="stat-label">Today</div>
+    </div>
+  </div>
+
+  <!-- WIN CARD -->
+  <div class="win-card">
+    <span class="win-label">Equivalent reach</span>
+    <div class="win-row">
+      <div>
+        <div class="win-amount"><sup>€</sup><span id="winAmount">—</span></div>
+      </div>
+      <div class="win-badge" id="winBadge">You saved X</div>
+    </div>
+    <div class="win-title">Equivalent Google Ads cost</div>
+    <div class="win-saving" id="winSaving">
+      That's what you would have paid Google for the same number of clicks. Except those clicks aren't verified humans in Segovia.
+    </div>
+    <div class="win-divider"></div>
+    <div class="win-vs-row">
+      <span class="win-vs-label">You paid LTN</span>
+      <span class="win-vs-paid" id="winPaid">—</span>
+    </div>
+  </div>
+
+  <!-- TAPS BY HOUR -->
+  <div class="section d4">
+    <span class="section-label">When they tap</span>
+    <div class="section-title">Taps by <em>hour</em></div>
+    <div class="chart-wrap" id="hourChart"></div>
+  </div>
+
+  <!-- BY LOCATION -->
+  <div class="section d5">
+    <span class="section-label">Where it's working</span>
+    <div class="section-title">By <em>location</em></div>
+    <div class="route-list" id="routeList"></div>
+  </div>
+
+  <!-- RECENT TAPS -->
+  <div class="section d6">
+    <span class="section-label">Live feed</span>
+    <div class="section-title"><em>Recent</em> taps</div>
+    <div class="recent-list" id="recentList"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="ltn-footer">
+    <div class="ltn-logo">LTN</div>
+    <div class="ltn-tagline">Powered by Local Traffic Network</div>
+  </footer>
+
+</div>
+
+<script>
+/* ── MOCK DATA ── */
+const MOCK = {
+  businessName: 'Mesón de Cándido',
+  stats: {
+    total: 247,
+    week:  38,
+    today: 12,
+    googleAdsEquivalent: '469.30',
+    paidLTN: '200.00'
+  },
+  byHour: [
+    { hour: 8,  count: 3 },
+    { hour: 9,  count: 7 },
+    { hour: 10, count: 11 },
+    { hour: 11, count: 9 },
+    { hour: 12, count: 16 },
+    { hour: 13, count: 28 },
+    { hour: 14, count: 22 },
+    { hour: 15, count: 14 },
+    { hour: 16, count: 8 },
+    { hour: 17, count: 11 },
+    { hour: 18, count: 13 },
+    { hour: 19, count: 19 },
+    { hour: 20, count: 25 },
+    { hour: 21, count: 21 },
+    { hour: 22, count: 14 },
+    { hour: 23, count: 6 }
+  ],
+  byRoute: [
+    { route: 'city_center', n: 94 },
+    { route: 'airport',     n: 89 },
+    { route: 'hotel_zone',  n: 64 },
+  ],
+  recent: [
+    { tapped_at: '2026-02-24T20:41:00Z', route: 'city_center', source: 'taxi' },
+    { tapped_at: '2026-02-24T20:18:00Z', route: 'airport',     source: 'taxi' },
+    { tapped_at: '2026-02-24T19:55:00Z', route: 'hotel_zone',  source: 'hotel' },
+    { tapped_at: '2026-02-24T19:30:00Z', route: 'city_center', source: 'airbnb' },
+    { tapped_at: '2026-02-24T18:44:00Z', route: 'airport',     source: 'taxi' },
+  ]
+};
+
+/* ── HELPERS ── */
+function formatRoute(r) {
+  return r.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function formatTime(iso) {
+  try {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = Math.floor((now - d) / 60000);
+    if (diff < 1) return 'Just now';
+    if (diff < 60) return `${diff}m ago`;
+    if (diff < 1440) {
+      const h = Math.floor(diff / 60);
+      return `${h}h ago`;
+    }
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  } catch (_) { return iso; }
+}
+
+function formatHour(h) {
+  return String(h).padStart(2, '0');
+}
+
+/* ── RENDER ── */
+function renderDashboard(data) {
+  const { businessName, stats, byHour, byRoute, recent } = data;
+
+  // Top bar
+  document.getElementById('bizName').textContent = businessName;
+  document.title = `LTN — ${businessName}`;
+
+  // Stats
+  document.getElementById('statTotal').textContent = stats.total.toLocaleString();
+  document.getElementById('statWeek').textContent  = stats.week.toLocaleString();
+  document.getElementById('statToday').textContent = stats.today.toLocaleString();
+
+  // Win card
+  const adsEq  = parseFloat(stats.googleAdsEquivalent);
+  const paid   = parseFloat(stats.paidLTN || 200);
+  const saving = (adsEq - paid).toFixed(2);
+
+  document.getElementById('winAmount').textContent = adsEq.toFixed(2);
+  document.getElementById('winPaid').textContent   = `€${paid.toFixed(2)}`;
+  document.getElementById('winBadge').textContent  = saving > 0 ? `You saved €${saving}` : 'Great value';
+  document.getElementById('winSaving').innerHTML   =
+    saving > 0
+      ? `You got the same reach as <strong style="color:var(--stone-light)">€${adsEq.toFixed(2)}</strong> worth of Google Ads — but every single tap was a verified human, physically in Segovia. You paid <strong style="color:var(--green)">€${paid.toFixed(2)}</strong>, saving <strong style="color:var(--green)">€${saving}</strong>.`
+      : `Every tap is a verified human physically in Segovia — not a bot, not someone searching from Madrid. You paid <strong style="color:var(--stone-light)">€${paid.toFixed(2)}</strong> for that quality.`;
+
+  // Hour chart
+  const hourEl = document.getElementById('hourChart');
+  hourEl.innerHTML = '';
+  const maxCount = Math.max(...byHour.map(h => h.count), 1);
+  const peakHour = byHour.reduce((a, b) => b.count > a.count ? b : a, byHour[0]);
+
+  byHour.forEach(({ hour, count }) => {
+    const pct = Math.round((count / maxCount) * 100);
+    const isPeak = hour === peakHour.hour;
+    const row = document.createElement('div');
+    row.className = 'chart-row';
+    row.innerHTML = `
+      <div class="chart-hour">${formatHour(hour)}</div>
+      <div class="chart-bar-wrap">
+        <div class="chart-bar${isPeak ? ' peak' : ''}" data-w="${pct}" style="width:0"></div>
+      </div>
+      <div class="chart-count">${count}</div>
+    `;
+    hourEl.appendChild(row);
+  });
+
+  // Route list
+  const routeEl = document.getElementById('routeList');
+  routeEl.innerHTML = '';
+  const maxRoute = Math.max(...byRoute.map(r => r.n), 1);
+
+  byRoute.forEach(({ route, n }) => {
+    const pct = Math.round((n / maxRoute) * 100);
+    const div = document.createElement('div');
+    div.className = 'route-row';
+    div.innerHTML = `
+      <div class="route-meta">
+        <span class="route-name-formatted">${formatRoute(route)}</span>
+        <span class="route-count">${n} taps</span>
+      </div>
+      <div class="route-bar-wrap">
+        <div class="route-bar" data-w="${pct}" style="width:0"></div>
+      </div>
+    `;
+    routeEl.appendChild(div);
+  });
+
+  // Recent taps
+  const recentEl = document.getElementById('recentList');
+  recentEl.innerHTML = '';
+
+  recent.forEach(tap => {
+    const item = document.createElement('div');
+    item.className = 'recent-item';
+    const src = tap.source || 'taxi';
+    item.innerHTML = `
+      <div class="recent-left">
+        <div class="recent-time">${formatTime(tap.tapped_at)}</div>
+        <div class="recent-route">${formatRoute(tap.route || 'unknown')}</div>
+      </div>
+      <div class="source-pill ${src}">${src}</div>
+    `;
+    recentEl.appendChild(item);
+  });
+
+  // Show content
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+
+  // Animate bars after paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.chart-bar[data-w]').forEach(el => {
+        el.style.width = el.dataset.w + '%';
+      });
+      document.querySelectorAll('.route-bar[data-w]').forEach(el => {
+        el.style.width = el.dataset.w + '%';
+      });
+    });
+  });
+}
+
+/* ── LOAD ── */
+async function load() {
+  const params  = new URLSearchParams(window.location.search);
+  const id      = params.get('id');
+  const isDemo  = !id;
+
+  if (isDemo) {
+    document.getElementById('demoBanner').style.display = 'flex';
+    setTimeout(() => renderDashboard(MOCK), 600);
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/business/${encodeURIComponent(id)}/stats`);
+    if (!res.ok) throw new Error('API error');
+    const json = await res.json();
+    renderDashboard(json);
+  } catch (_) {
+    // API unavailable — fall back to demo
+    document.getElementById('demoBanner').style.display = 'flex';
+    setTimeout(() => renderDashboard(MOCK), 600);
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>
