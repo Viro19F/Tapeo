@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>LTN — Analytics Dashboard</title>
+<title>Tapeo — Analytics Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -59,7 +59,7 @@
     -webkit-backdrop-filter: blur(16px);
   }
 
-  .ltn-wordmark {
+  .tapeo-wordmark {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-weight: 300;
@@ -523,7 +523,7 @@
   }
 
   /* ── FOOTER ── */
-  .ltn-footer {
+  .tapeo-footer {
     padding: 1.75rem 1.5rem;
     border-top: 1px solid var(--border);
     display: flex;
@@ -533,7 +533,7 @@
     text-align: center;
   }
 
-  .ltn-logo {
+  .tapeo-logo {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.3rem;
     font-weight: 300;
@@ -541,7 +541,7 @@
     color: var(--stone);
   }
 
-  .ltn-tagline {
+  .tapeo-tagline {
     font-size: 0.58rem;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -591,7 +591,7 @@
 
 <!-- TOP BAR -->
 <div class="top-bar">
-  <span class="ltn-wordmark">LTN</span>
+  <span class="tapeo-wordmark">Tapeo</span>
   <span class="top-bar-biz" id="bizName">Loading…</span>
 </div>
 
@@ -651,7 +651,7 @@
     </div>
     <div class="win-divider"></div>
     <div class="win-vs-row">
-      <span class="win-vs-label">You paid LTN</span>
+      <span class="win-vs-label">You paid Tapeo</span>
       <span class="win-vs-paid" id="winPaid">—</span>
     </div>
   </div>
@@ -678,9 +678,9 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="ltn-footer">
-    <div class="ltn-logo">LTN</div>
-    <div class="ltn-tagline">Powered by Local Traffic Network</div>
+  <footer class="tapeo-footer">
+    <div class="tapeo-logo">Tapeo</div>
+    <div class="tapeo-tagline">Powered by Tapeo</div>
   </footer>
 
 </div>
@@ -694,7 +694,7 @@ const MOCK = {
     week:  38,
     today: 12,
     googleAdsEquivalent: '469.30',
-    paidLTN: '200.00'
+    paidTapeo: '200.00'
   },
   byHour: [
     { hour: 8,  count: 3 },
@@ -758,7 +758,7 @@ function renderDashboard(data) {
 
   // Top bar
   document.getElementById('bizName').textContent = businessName;
-  document.title = `LTN — ${businessName}`;
+  document.title = `Tapeo — ${businessName}`;
 
   // Stats
   document.getElementById('statTotal').textContent = stats.total.toLocaleString();
@@ -767,7 +767,7 @@ function renderDashboard(data) {
 
   // Win card
   const adsEq  = parseFloat(stats.googleAdsEquivalent);
-  const paid   = parseFloat(stats.paidLTN || 200);
+  const paid   = parseFloat(stats.paidTapeo || 200);
   const saving = (adsEq - paid).toFixed(2);
 
   document.getElementById('winAmount').textContent = adsEq.toFixed(2);

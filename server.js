@@ -164,7 +164,7 @@ app.post('/api/business/signup', (req, res) => {
   res.json({
     ok: true,
     id: result.lastInsertRowid,
-    message: "Welcome to LTN. We'll be in touch within 24 hours to set up your cards."
+    message: "Welcome to Tapeo. We'll be in touch within 24 hours to set up your cards."
   });
 });
 
@@ -228,7 +228,7 @@ app.post('/api/driver/signup', (req, res) => {
   res.json({
     ok: true,
     id: result.lastInsertRowid,
-    message: "Welcome to LTN! We'll WhatsApp you to install your card."
+    message: "Welcome to Tapeo! We'll WhatsApp you to install your card."
   });
 });
 
@@ -258,7 +258,7 @@ app.get('/{*splat}', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`\n  LTN server → http://localhost:${PORT}\n`);
+  console.log(`\n  Tapeo server → http://localhost:${PORT}\n`);
   console.log(`  NFC redirect:  /go?d=DRIVER&r=ROUTE&b=BUSINESS_ID`);
   console.log(`  Business join: /join.html`);
   console.log(`  Dashboard:     /dashboard.html?id=BUSINESS_ID`);
