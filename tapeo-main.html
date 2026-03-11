@@ -117,6 +117,37 @@ body {
 
 .nav-cta:hover { background: var(--stone-light) !important; color: var(--ink) !important; }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 3px;
+  border: 1px solid var(--border-mid);
+  border-radius: 999px;
+  background: rgba(245,240,232,0.03);
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: var(--cream-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.2s, color 0.2s;
+}
+
+.lang-btn.active {
+  background: var(--stone);
+  color: var(--ink);
+}
+
 .nav-mobile-toggle {
   display: none;
   flex-direction: column;
@@ -150,6 +181,8 @@ body {
   }
   .nav-links.open a { padding: 10px 0; font-size: 0.9rem; width: 100%; }
   .nav-cta { display: block !important; width: 100%; text-align: center; }
+  .lang-switch { margin: 6px 0 0; }
+  .lang-btn { padding: 6px 10px; }
 }
 
 /* ════════════════════════════════════════════
@@ -1062,6 +1095,10 @@ footer {
     <li><a href="#partners">For Partners</a></li>
     <li><a href="discover.html" target="_blank">See live demo</a></li>
     <li><a href="#biz-form" class="nav-cta">Get featured</a></li>
+    <li class="lang-switch" aria-label="Language selector">
+      <button class="lang-btn active" type="button" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" data-lang="es">ES</button>
+    </li>
   </ul>
   <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1559,6 +1596,614 @@ footer {
 </footer>
 
 <script>
+const ARROW_ICON = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>';
+let currentLang = 'en';
+
+const I18N = {
+  en: {
+    meta: {
+      title: 'Tapeo — Local Traffic Network',
+      description: 'The verified tourist presence network. NFC cards in taxis, Ubers, hotels and Airbnbs. Real people, real intent, trackable results.',
+      footerCopy: '© 2026 Local Traffic Network · Segovia, Spain'
+    },
+    nav: {
+      logoTagline: 'Local Traffic Network',
+      links: ['How it works', 'For Businesses', 'For Partners', 'See live demo', 'Get featured'],
+      menuAria: 'Menu',
+      languageAria: 'Language selector'
+    },
+    hero: {
+      eyebrow: 'Taxis · Hotels · Airbnbs · Ubers',
+      title: 'One network.<br>Every place<br>tourists <em>actually are</em>',
+      sub: "Taxis. Ubers. Hotel rooms. Airbnb apartments. We put your business in front of tourists the moment they arrive — verified presence, zero bots, trackable results. Not an ad. A physical network.",
+      primaryBtn: 'Get your business featured',
+      secondaryBtn: 'See how it works',
+      liveLabel: 'Live network · Segovia',
+      stepTitles: ['In a taxi or Uber', 'In their hotel room', 'In their Airbnb'],
+      stepSubs: [
+        'Airport → city · deciding where to eat',
+        'Just checked in · planning tonight',
+        '3-night stay · taps again on night two'
+      ]
+    },
+    stats: ['Per verified tap', 'Bot traffic', 'Channels per city', 'Cheaper than Google Ads'],
+    how: {
+      tag: 'How it works',
+      title: 'One system. <em>Every touchpoint.</em>',
+      lead: 'We build the physical network. You get the tourists. Every tap is logged, attributed, and reported back to you in real time.',
+      cards: [
+        {
+          title: 'We place NFC cards across the entire city',
+          desc: 'Taxis, Ubers, hotel rooms, Airbnb apartments, hotel lobbies. Every place a tourist lands, your card is waiting — elegant, unobtrusive, always on.'
+        },
+        {
+          title: 'Tourist taps — and lands on your business',
+          desc: "One tap. No app. No friction. Whether they're in a taxi at 3pm or an Airbnb at 9pm, their phone opens your page instantly — right when they're deciding."
+        },
+        {
+          title: 'You see every tap. We prove the ROI.',
+          desc: 'Your dashboard shows total taps, time of day, which channel converts best — taxi, hotel, or Airbnb — and a live comparison to Google Ads cost.'
+        }
+      ]
+    },
+    why: {
+      tag: 'Why Tapeo wins',
+      title: "What Google Ads<br><em>can't give you</em>",
+      lead: 'Digital ads reach devices. We reach people — in the right place, at the right moment, ready to act. No algorithm. No bidding. Just presence.',
+      cards: [
+        {
+          title: 'Verified physical presence',
+          desc: 'NFC requires 1–4cm proximity. Every tap is a real human — in a taxi, a hotel room, or an Airbnb — in your city. Bots cannot tap a card.'
+        },
+        {
+          title: 'The right moment, every time',
+          desc: "A tourist in a taxi is deciding where to eat. A hotel guest is planning tomorrow. An Airbnb arrival taps night one — and again night three. Every moment, you're there."
+        },
+        {
+          title: '3× cheaper than Google',
+          desc: 'A Google Ads click for "restaurant Segovia" costs €2–3 with no location guarantee. Our tap costs €0.75 and the person is already in the city, ready to spend.'
+        },
+        {
+          title: 'A network that compounds',
+          desc: 'Every new taxi, hotel, and Airbnb we add increases your reach automatically. The more the network grows, the more valuable your placement becomes.'
+        }
+      ]
+    },
+    business: {
+      tag: 'For businesses',
+      title: 'The network tourists<br><em>actually encounter</em>',
+      lead: "Local businesses can't outbid chains on Google. But they can be the first thing a tourist sees when they step off a plane, check into a hotel, or open their Airbnb door.",
+      channelTag: 'Match your business to the right channel',
+      channelTitle: 'Different placements. <em>Different power.</em>',
+      channelCards: [
+        {
+          title: 'Airbnb & Hotel Rooms',
+          desc: 'Guests are staying 3–5 nights. They tap on day one to find where to eat, and tap again the next evening. The same tourist comes back.',
+          bestForTag: 'Best for',
+          bestFor: 'Restaurants · Bars · Local shops · Experiences · Day trips'
+        },
+        {
+          title: 'Hotel Concierge & Lobby',
+          desc: 'High-spend travellers asking the concierge where to go. The card is the digital recommendation — trusted, curated, always visible in their space.',
+          bestForTag: 'Best for',
+          bestFor: 'Premium restaurants · Wine bars · Private tours · Luxury experiences'
+        },
+        {
+          title: 'Taxis & Ubers',
+          desc: 'High volume, high reach. Every tourist arriving in the city passes through a taxi. Perfect for brand awareness, product launches, and anything you want every visitor to see.',
+          bestForTag: 'Best for',
+          bestFor: 'Mass-market restaurants · Products · Tours · Events · Anything tourist-facing'
+        }
+      ],
+      compareHeaders: ['What you get', 'Tapeo', 'Google Ads'],
+      compareRows: [
+        ['Cost per click/tap', '€0.75', '€2.00–3.00'],
+        ['Person is physically in the city', 'Always — NFC only works in person ✓', 'Maybe ✗'],
+        ['Ready to make a decision', 'Yes — taxi, hotel, or Airbnb ✓', 'Unknown ✗'],
+        ['Bot / invalid traffic', '0% — physically impossible ✓', '~35% of clicks ✗'],
+        ['Provable ROI dashboard', 'Yes ✓', 'Yes'],
+        ['Needs ongoing management', 'No — we run it ✓', 'Yes — daily optimization ✗']
+      ],
+      pricingTag: 'Choose your plan',
+      pricingTitle: 'Start small, <em>grow fast</em>',
+      plans: [
+        {
+          name: 'Starter',
+          tagline: '10 taxis · Pay per tap',
+          features: ['Presence in 10 general taxis', 'Daily tap tracking', 'Weekly analytics report', 'Cancel anytime'],
+          button: 'Select Starter'
+        },
+        {
+          badge: 'Most Popular',
+          name: 'Growth',
+          tagline: '30 taxis + hotels + route targeting',
+          features: ['30 taxis + hotel placement', 'Airport & station routes', 'Live dashboard access', 'Priority card placement'],
+          button: 'Select Growth'
+        },
+        {
+          name: 'Premium',
+          tagline: '50 taxis · Exclusive category',
+          features: ['50 taxis + all hotels + Airbnbs', 'Exclusive category on key routes', 'Full analytics + route insights', 'WhatsApp support + monthly review'],
+          button: 'Select Premium'
+        }
+      ],
+      getStartedTag: 'Get started today',
+      getStartedTitle: 'Your business,<br>across the whole<br><em>tourist network</em>',
+      getStartedLead: "Cards live within 48 hours across taxis, hotels, and Airbnbs. No setup fee. No long-term commitment on the Starter plan. We'll contact you the same day.",
+      getStartedPoints: [
+        'Cards live in taxis, hotels & Airbnbs within 48h',
+        'Dashboard access from day one',
+        'Cancel anytime — no lock-in',
+        'Personal WhatsApp contact for setup'
+      ],
+      form: {
+        title: 'Join <em>the network</em>',
+        labels: ['Business name', 'Category', 'Plan', 'Your website', 'Contact name', 'WhatsApp', 'Email'],
+        placeholders: {
+          name: 'Mesón de Cándido',
+          websiteUrl: 'https://yourrestaurant.com',
+          contactName: 'María García',
+          phone: '+34 600 000 000',
+          email: 'hola@turestaurante.com'
+        },
+        categories: ['Restaurant', 'Bar / Tapas', 'Hotel', 'Experience / Tour', 'Shop', 'Other'],
+        planOptions: ['Starter · €80/mo', 'Growth · €200/mo', 'Premium · €400/mo'],
+        submit: 'Get featured now',
+        note: "No payment now. We'll call you within 24 hours to confirm details.",
+        successTitle: "You're <em>in</em>",
+        successDesc: "We'll WhatsApp you within 24 hours to set up your cards and get you live in Segovia's taxis."
+      }
+    },
+    partners: {
+      tag: 'For partners',
+      title: 'Turn your space into<br><em>passive income</em>',
+      lead: 'Taxi driver, Uber driver, Airbnb host, or hotel — if tourists pass through your space, you can earn from it. We install the card, you earn per tap. Zero effort.',
+      cards: [
+        {
+          title: 'Taxi & Uber Drivers',
+          desc: 'We install a card on your headrest. Every tourist tap earns you €0.30 plus a €30/month guaranteed base. Active drivers earn €142/month extra on average.'
+        },
+        {
+          title: 'Airbnb Hosts',
+          desc: 'Place a card in your apartment. Guests tap throughout their stay — each tap earns you €0.20. A busy listing with 3-night guests generates taps automatically, every stay.'
+        },
+        {
+          title: 'Hotels',
+          desc: 'Cards in rooms, lobbies, and elevators. Hotels earn a revenue share on every tap generated from their property. We handle setup, maintenance, and reporting.'
+        }
+      ],
+      earnings: {
+        labels: ['Driver monthly base', 'Avg driver monthly', 'Per tap — hosts & hotels'],
+        badge: 'Active partner'
+      },
+      howTag: 'How it works for you',
+      howTitle: 'Two minutes to set up.<br><em>Earns while you work.</em>',
+      howLead: 'We install the card in your vehicle, apartment, or hotel. You do nothing. Every tourist tap generates income automatically — paid every Friday via Bizum.',
+      howPoints: [
+        'We install everything — takes 2 minutes',
+        'Every tourist tap earns you money automatically',
+        'Drivers get €30/month guaranteed base',
+        'Airbnb hosts earn per tap, every stay',
+        'Paid every Friday via Bizum'
+      ],
+      form: {
+        title: 'Join as a <em>partner</em>',
+        labels: ['Your name', 'Partner type', 'WhatsApp number'],
+        placeholders: {
+          name: 'Carlos Martínez',
+          phone: '+34 600 000 000'
+        },
+        partnerTypes: ['Taxi driver', 'Uber / VTC driver', 'Airbnb host', 'Hotel', 'Other'],
+        submit: 'Join the network',
+        note: "We'll WhatsApp you within 24h to get your card installed and start earning.",
+        successTitle: 'Welcome to <em>Tapeo</em>',
+        successDesc: "We'll WhatsApp you within 24 hours to install your card and get you earning this week."
+      }
+    },
+    footer: {
+      tagline: 'Taxis · Hotels · Airbnbs · Ubers · Verified Tourist Traffic',
+      links: ['Tourist page', 'Business signup', 'Partner signup', 'Dashboard', 'hello@ltn.es']
+    },
+    common: {
+      sending: 'Sending...',
+      error: 'Something went wrong.'
+    }
+  },
+  es: {
+    meta: {
+      title: 'Tapeo — Red de Trafico Local',
+      description: 'La red verificada de presencia turistica. Tarjetas NFC en taxis, Ubers, hoteles y Airbnbs. Personas reales, intencion real y resultados medibles.',
+      footerCopy: '© 2026 Red de Trafico Local · Segovia, Espana'
+    },
+    nav: {
+      logoTagline: 'Red de Trafico Local',
+      links: ['Como funciona', 'Para negocios', 'Para socios', 'Ver demo en vivo', 'Destacar mi negocio'],
+      menuAria: 'Menu',
+      languageAria: 'Selector de idioma'
+    },
+    hero: {
+      eyebrow: 'Taxis · Hoteles · Airbnbs · Ubers',
+      title: 'Una red.<br>Cada lugar<br>donde los turistas <em>de verdad estan</em>',
+      sub: 'Taxis. Ubers. Habitaciones de hotel. Apartamentos de Airbnb. Ponemos tu negocio frente a turistas en el momento en que llegan: presencia verificada, cero bots y resultados medibles. No es un anuncio. Es una red fisica.',
+      primaryBtn: 'Destacar mi negocio',
+      secondaryBtn: 'Ver como funciona',
+      liveLabel: 'Red activa · Segovia',
+      stepTitles: ['En un taxi o Uber', 'En su habitacion de hotel', 'En su Airbnb'],
+      stepSubs: [
+        'Aeropuerto → centro · decidiendo donde comer',
+        'Recién llegados · planificando la noche',
+        'Estancia de 3 noches · vuelven a tocar en la segunda noche'
+      ]
+    },
+    stats: ['Por toque verificado', 'Trafico bot', 'Canales por ciudad', 'Mas barato que Google Ads'],
+    how: {
+      tag: 'Como funciona',
+      title: 'Un sistema. <em>Cada punto de contacto.</em>',
+      lead: 'Construimos la red fisica. Tu obtienes turistas. Cada toque queda registrado, atribuido y reportado en tiempo real.',
+      cards: [
+        {
+          title: 'Instalamos tarjetas NFC por toda la ciudad',
+          desc: 'Taxis, Ubers, habitaciones de hotel, apartamentos de Airbnb y lobbies. En cada lugar donde aterriza un turista, tu tarjeta esta esperando: elegante, discreta y siempre activa.'
+        },
+        {
+          title: 'El turista toca y llega a tu negocio',
+          desc: 'Un toque. Sin app. Sin friccion. Ya sea en un taxi a las 15:00 o en un Airbnb a las 21:00, su movil abre tu pagina al instante justo cuando esta decidiendo.'
+        },
+        {
+          title: 'Ves cada toque. Probamos el ROI.',
+          desc: 'Tu panel muestra toques totales, hora del dia y que canal convierte mejor: taxi, hotel o Airbnb, con comparacion en vivo frente al coste de Google Ads.'
+        }
+      ]
+    },
+    why: {
+      tag: 'Por que Tapeo gana',
+      title: 'Lo que Google Ads<br><em>no te puede dar</em>',
+      lead: 'Los anuncios digitales llegan a dispositivos. Nosotros llegamos a personas, en el lugar correcto y en el momento correcto, listas para actuar. Sin algoritmo. Sin pujas. Solo presencia.',
+      cards: [
+        {
+          title: 'Presencia fisica verificada',
+          desc: 'NFC requiere proximidad de 1 a 4 cm. Cada toque es una persona real en un taxi, una habitacion de hotel o un Airbnb de tu ciudad. Un bot no puede tocar una tarjeta.'
+        },
+        {
+          title: 'El momento correcto, siempre',
+          desc: 'Un turista en taxi decide donde comer. Un huesped de hotel planifica manana. Quien llega a un Airbnb toca la primera noche y vuelve a tocar la tercera. Tu estas ahi en cada momento.'
+        },
+        {
+          title: '3x mas barato que Google',
+          desc: 'Un clic de Google Ads para "restaurante Segovia" cuesta entre €2 y €3 sin garantia de ubicacion. Nuestro toque cuesta €0.75 y la persona ya esta en la ciudad, lista para gastar.'
+        },
+        {
+          title: 'Una red que se multiplica',
+          desc: 'Cada taxi, hotel y Airbnb que añadimos aumenta tu alcance automaticamente. Cuanto mas crece la red, mas valor tiene tu posicionamiento.'
+        }
+      ]
+    },
+    business: {
+      tag: 'Para negocios',
+      title: 'La red que los turistas<br><em>realmente encuentran</em>',
+      lead: 'Los negocios locales no pueden pujar como las grandes cadenas en Google. Pero si pueden ser lo primero que ve un turista al bajar del avion, entrar al hotel o abrir su Airbnb.',
+      channelTag: 'Conecta tu negocio con el canal correcto',
+      channelTitle: 'Ubicaciones distintas. <em>Impacto distinto.</em>',
+      channelCards: [
+        {
+          title: 'Airbnb y habitaciones de hotel',
+          desc: 'Los huespedes se quedan de 3 a 5 noches. Tocan el primer dia para decidir donde comer y vuelven a tocar la noche siguiente. El mismo turista regresa.',
+          bestForTag: 'Ideal para',
+          bestFor: 'Restaurantes · Bares · Tiendas locales · Experiencias · Excursiones'
+        },
+        {
+          title: 'Conserjeria y lobby del hotel',
+          desc: 'Viajeros de alto gasto preguntando al conserje donde ir. La tarjeta funciona como recomendacion digital: confiable, curada y siempre visible en su espacio.',
+          bestForTag: 'Ideal para',
+          bestFor: 'Restaurantes premium · Wine bars · Tours privados · Experiencias de lujo'
+        },
+        {
+          title: 'Taxis y Ubers',
+          desc: 'Alto volumen y gran alcance. Todo turista que llega a la ciudad pasa por un taxi. Perfecto para notoriedad de marca, lanzamientos y todo lo que quieras que vea cada visitante.',
+          bestForTag: 'Ideal para',
+          bestFor: 'Restaurantes masivos · Productos · Tours · Eventos · Todo negocio turistico'
+        }
+      ],
+      compareHeaders: ['Que obtienes', 'Tapeo', 'Google Ads'],
+      compareRows: [
+        ['Coste por clic/toque', '€0.75', '€2.00–3.00'],
+        ['Persona fisicamente en la ciudad', 'Siempre: NFC solo funciona en persona ✓', 'Quiza ✗'],
+        ['Lista para decidir', 'Si: taxi, hotel o Airbnb ✓', 'Desconocido ✗'],
+        ['Trafico bot / invalido', '0%: fisicamente imposible ✓', '~35% de clics ✗'],
+        ['Panel con ROI demostrable', 'Si ✓', 'Si'],
+        ['Necesita gestion continua', 'No: nosotros lo operamos ✓', 'Si: optimizacion diaria ✗']
+      ],
+      pricingTag: 'Elige tu plan',
+      pricingTitle: 'Empieza pequeno, <em>crece rapido</em>',
+      plans: [
+        {
+          name: 'Inicial',
+          tagline: '10 taxis · Pago por toque',
+          features: ['Presencia en 10 taxis generales', 'Seguimiento diario de toques', 'Informe analitico semanal', 'Cancela cuando quieras'],
+          button: 'Elegir Inicial'
+        },
+        {
+          badge: 'Mas popular',
+          name: 'Crecimiento',
+          tagline: '30 taxis + hoteles + segmentacion por ruta',
+          features: ['30 taxis + presencia en hoteles', 'Rutas de aeropuerto y estacion', 'Acceso a panel en vivo', 'Prioridad de colocacion'],
+          button: 'Elegir Crecimiento'
+        },
+        {
+          name: 'Premium',
+          tagline: '50 taxis · Categoria exclusiva',
+          features: ['50 taxis + todos los hoteles + Airbnbs', 'Categoria exclusiva en rutas clave', 'Analitica completa + insights de ruta', 'Soporte por WhatsApp + revision mensual'],
+          button: 'Elegir Premium'
+        }
+      ],
+      getStartedTag: 'Empieza hoy',
+      getStartedTitle: 'Tu negocio,<br>en toda la red<br><em>turistica</em>',
+      getStartedLead: 'Tarjetas activas en 48 horas en taxis, hoteles y Airbnbs. Sin coste de alta. Sin compromiso largo en el plan Inicial. Te contactamos el mismo dia.',
+      getStartedPoints: [
+        'Tarjetas activas en taxis, hoteles y Airbnbs en 48h',
+        'Acceso al panel desde el primer dia',
+        'Cancela cuando quieras, sin permanencia',
+        'Contacto personal por WhatsApp para la puesta en marcha'
+      ],
+      form: {
+        title: 'Unete <em>a la red</em>',
+        labels: ['Nombre del negocio', 'Categoria', 'Plan', 'Tu web', 'Nombre de contacto', 'WhatsApp', 'Email'],
+        placeholders: {
+          name: 'Mesón de Cándido',
+          websiteUrl: 'https://turestaurante.com',
+          contactName: 'María García',
+          phone: '+34 600 000 000',
+          email: 'hola@turestaurante.com'
+        },
+        categories: ['Restaurante', 'Bar / Tapas', 'Hotel', 'Experiencia / Tour', 'Tienda', 'Otro'],
+        planOptions: ['Inicial · €80/mes', 'Crecimiento · €200/mes', 'Premium · €400/mes'],
+        submit: 'Destacar mi negocio',
+        note: 'Sin pago ahora. Te llamamos en 24 horas para confirmar los detalles.',
+        successTitle: 'Ya estas <em>dentro</em>',
+        successDesc: 'Te escribiremos por WhatsApp en 24 horas para configurar tus tarjetas y activarte en los taxis de Segovia.'
+      }
+    },
+    partners: {
+      tag: 'Para socios',
+      title: 'Convierte tu espacio en<br><em>ingresos pasivos</em>',
+      lead: 'Conductor de taxi, conductor Uber, anfitrion de Airbnb u hotel: si turistas pasan por tu espacio, puedes monetizarlo. Instalamos la tarjeta y cobras por cada toque. Cero esfuerzo.',
+      cards: [
+        {
+          title: 'Conductores de Taxi y Uber',
+          desc: 'Instalamos una tarjeta en el reposacabezas. Cada toque turistico te da €0.30 mas una base garantizada de €30/mes. Los conductores activos ganan €142/mes extra de media.'
+        },
+        {
+          title: 'Anfitriones Airbnb',
+          desc: 'Coloca una tarjeta en tu apartamento. Los huespedes tocan durante su estancia y cada toque te da €0.20. Un alojamiento activo con estancias de 3 noches genera toques automaticamente en cada reserva.'
+        },
+        {
+          title: 'Hoteles',
+          desc: 'Tarjetas en habitaciones, lobby y ascensores. Los hoteles ganan un revenue share por cada toque generado en su propiedad. Nosotros gestionamos instalacion, mantenimiento y reportes.'
+        }
+      ],
+      earnings: {
+        labels: ['Base mensual conductor', 'Promedio mensual conductor', 'Por toque: anfitriones y hoteles'],
+        badge: 'Socio activo'
+      },
+      howTag: 'Como funciona para ti',
+      howTitle: 'Dos minutos para instalar.<br><em>Gana mientras trabajas.</em>',
+      howLead: 'Instalamos la tarjeta en tu vehiculo, apartamento u hotel. Tu no haces nada. Cada toque turistico genera ingresos automaticamente y cobramos cada viernes por Bizum.',
+      howPoints: [
+        'Nosotros instalamos todo en 2 minutos',
+        'Cada toque turistico te genera dinero automaticamente',
+        'Los conductores reciben una base de €30/mes',
+        'Los anfitriones Airbnb ganan por toque en cada estancia',
+        'Pago cada viernes por Bizum'
+      ],
+      form: {
+        title: 'Unete como <em>socio</em>',
+        labels: ['Tu nombre', 'Tipo de socio', 'Numero de WhatsApp'],
+        placeholders: {
+          name: 'Carlos Martínez',
+          phone: '+34 600 000 000'
+        },
+        partnerTypes: ['Conductor de taxi', 'Conductor Uber / VTC', 'Anfitrion Airbnb', 'Hotel', 'Otro'],
+        submit: 'Unirme a la red',
+        note: 'Te escribimos por WhatsApp en 24h para instalar tu tarjeta y empezar a ganar.',
+        successTitle: 'Bienvenido a <em>Tapeo</em>',
+        successDesc: 'Te escribimos por WhatsApp en 24 horas para instalar tu tarjeta y que empieces a ganar esta semana.'
+      }
+    },
+    footer: {
+      tagline: 'Taxis · Hoteles · Airbnbs · Ubers · Trafico Turistico Verificado',
+      links: ['Pagina para turistas', 'Alta de negocio', 'Alta de socios', 'Panel', 'hello@ltn.es']
+    },
+    common: {
+      sending: 'Enviando...',
+      error: 'Algo salio mal.'
+    }
+  }
+};
+
+function setText(el, text) {
+  if (el) el.textContent = text;
+}
+
+function setHTML(el, html) {
+  if (el) el.innerHTML = html;
+}
+
+function setWithArrow(el, label) {
+  if (el) el.innerHTML = `${label} ${ARROW_ICON}`;
+}
+
+function applyLanguage(lang) {
+  const copy = I18N[lang] || I18N.en;
+  currentLang = copy === I18N.es ? 'es' : 'en';
+
+  document.documentElement.lang = currentLang;
+  document.title = copy.meta.title;
+  const descriptionMeta = document.querySelector('meta[name="description"]');
+  if (descriptionMeta) descriptionMeta.setAttribute('content', copy.meta.description);
+
+  setText(document.querySelector('.nav-logo span'), copy.nav.logoTagline);
+  const navLinks = document.querySelectorAll('#navLinks a');
+  navLinks.forEach((link, idx) => setText(link, copy.nav.links[idx]));
+  const navToggle = document.getElementById('navToggle');
+  if (navToggle) navToggle.setAttribute('aria-label', copy.nav.menuAria);
+  const langSwitch = document.querySelector('.lang-switch');
+  if (langSwitch) langSwitch.setAttribute('aria-label', copy.nav.languageAria);
+
+  setText(document.querySelector('.eyebrow-text'), copy.hero.eyebrow);
+  setHTML(document.querySelector('.hero-left h1'), copy.hero.title);
+  setText(document.querySelector('.hero-sub'), copy.hero.sub);
+  setWithArrow(document.querySelector('.hero-btns .btn-primary'), copy.hero.primaryBtn);
+  setText(document.querySelector('.hero-btns .btn-ghost'), copy.hero.secondaryBtn);
+  setText(document.querySelector('.tap-demo-label'), copy.hero.liveLabel);
+
+  const tapTitles = document.querySelectorAll('.tap-flow .tap-step-title');
+  const tapSubs = document.querySelectorAll('.tap-flow .tap-step-sub');
+  tapTitles.forEach((el, idx) => setText(el, copy.hero.stepTitles[idx]));
+  tapSubs.forEach((el, idx) => setText(el, copy.hero.stepSubs[idx]));
+
+  document.querySelectorAll('.stats-bar .stat-label').forEach((el, idx) => setText(el, copy.stats[idx]));
+
+  const howSection = document.getElementById('how-it-works');
+  setText(howSection.querySelector('.section-tag'), copy.how.tag);
+  setHTML(howSection.querySelector('.section-h2'), copy.how.title);
+  setText(howSection.querySelector('.section-lead'), copy.how.lead);
+  howSection.querySelectorAll('.step-card').forEach((card, idx) => {
+    setText(card.querySelector('.step-title'), copy.how.cards[idx].title);
+    setText(card.querySelector('.step-desc'), copy.how.cards[idx].desc);
+  });
+
+  const whySection = document.getElementById('why');
+  setText(whySection.querySelector('.section-tag'), copy.why.tag);
+  setHTML(whySection.querySelector('.section-h2'), copy.why.title);
+  setText(whySection.querySelector('.section-lead'), copy.why.lead);
+  whySection.querySelectorAll('.advantage-card').forEach((card, idx) => {
+    setText(card.querySelector('.adv-title'), copy.why.cards[idx].title);
+    setText(card.querySelector('.adv-desc'), copy.why.cards[idx].desc);
+  });
+
+  const bizSection = document.getElementById('businesses');
+  const bizTags = bizSection.querySelectorAll('.section-tag');
+  setText(bizTags[0], copy.business.tag);
+  setText(bizTags[1], copy.business.channelTag);
+  setText(bizTags[2], copy.business.pricingTag);
+  setText(bizTags[3], copy.business.getStartedTag);
+  setHTML(bizSection.querySelector('.section-h2'), copy.business.title);
+  setText(bizSection.querySelector('.section-lead'), copy.business.lead);
+
+  const bizH3s = bizSection.querySelectorAll('h3');
+  setHTML(bizH3s[0], copy.business.channelTitle);
+  setHTML(bizH3s[1], copy.business.pricingTitle);
+  setHTML(bizH3s[2], copy.business.getStartedTitle);
+
+  const channelCards = bizSection.querySelectorAll('.steps-grid .step-card');
+  channelCards.forEach((card, idx) => {
+    const cardCopy = copy.business.channelCards[idx];
+    if (!cardCopy) return;
+    setText(card.children[2], cardCopy.title);
+    setText(card.children[3], cardCopy.desc);
+    setText(card.children[4], cardCopy.bestForTag);
+    setText(card.children[5], cardCopy.bestFor);
+  });
+
+  setText(bizSection.querySelector('.signup-pitch p'), copy.business.getStartedLead);
+  bizSection.querySelectorAll('.signup-pitch .pitch-point').forEach((point, idx) => {
+    const dot = point.querySelector('.pitch-point-dot');
+    point.textContent = copy.business.getStartedPoints[idx];
+    point.prepend(dot);
+  });
+
+  const compareHeaders = bizSection.querySelectorAll('.compare-header-cell');
+  compareHeaders.forEach((el, idx) => setText(el, copy.business.compareHeaders[idx]));
+  bizSection.querySelectorAll('.compare-row').forEach((row, idx) => {
+    const cells = row.querySelectorAll('.compare-cell');
+    const rowCopy = copy.business.compareRows[idx];
+    if (!rowCopy) return;
+    cells.forEach((cell, cIdx) => setText(cell, rowCopy[cIdx]));
+  });
+
+  const planCards = bizSection.querySelectorAll('.pricing-grid .plan-card');
+  planCards.forEach((card, idx) => {
+    const planCopy = copy.business.plans[idx];
+    if (!planCopy) return;
+    const badge = card.querySelector('.plan-badge');
+    if (badge && planCopy.badge) setText(badge, planCopy.badge);
+    setText(card.querySelector('.plan-name'), planCopy.name);
+    setText(card.querySelector('.plan-tagline'), planCopy.tagline);
+    card.querySelectorAll('.plan-feature').forEach((feature, fIdx) => setText(feature, planCopy.features[fIdx]));
+    setText(card.querySelector('.plan-btn'), planCopy.button);
+  });
+
+  setHTML(document.querySelector('#bizFormCard .form-title'), copy.business.form.title);
+  const bizLabels = document.querySelectorAll('#bizForm .form-label');
+  bizLabels.forEach((label, idx) => setText(label, copy.business.form.labels[idx]));
+  const bizForm = document.getElementById('bizForm');
+  bizForm.name.placeholder = copy.business.form.placeholders.name;
+  bizForm.websiteUrl.placeholder = copy.business.form.placeholders.websiteUrl;
+  bizForm.contactName.placeholder = copy.business.form.placeholders.contactName;
+  bizForm.phone.placeholder = copy.business.form.placeholders.phone;
+  bizForm.email.placeholder = copy.business.form.placeholders.email;
+  Array.from(bizForm.category.options).forEach((option, idx) => setText(option, copy.business.form.categories[idx]));
+  Array.from(document.getElementById('bizPlanSelect').options).forEach((option, idx) => setText(option, copy.business.form.planOptions[idx]));
+  const bizSubmitBtn = document.getElementById('bizSubmitBtn');
+  if (!bizSubmitBtn.classList.contains('loading')) setWithArrow(bizSubmitBtn, copy.business.form.submit);
+  setText(document.querySelector('#bizForm .form-note'), copy.business.form.note);
+  setHTML(document.querySelector('#bizSuccess .success-title'), copy.business.form.successTitle);
+  setText(document.querySelector('#bizSuccess .success-desc'), copy.business.form.successDesc);
+
+  const partnersSection = document.getElementById('partners');
+  const partnerTags = partnersSection.querySelectorAll('.section-tag');
+  setText(partnerTags[0], copy.partners.tag);
+  setText(partnerTags[1], copy.partners.howTag);
+  setHTML(partnersSection.querySelector('.section-h2'), copy.partners.title);
+  setText(partnersSection.querySelector('.section-lead'), copy.partners.lead);
+
+  const partnerCards = partnersSection.querySelectorAll('.steps-grid .step-card');
+  partnerCards.forEach((card, idx) => {
+    const cardCopy = copy.partners.cards[idx];
+    if (!cardCopy) return;
+    setText(card.children[2], cardCopy.title);
+    setText(card.children[3], cardCopy.desc);
+  });
+
+  const earningsLabels = partnersSection.querySelectorAll('.earn-label');
+  earningsLabels.forEach((label, idx) => setText(label, copy.partners.earnings.labels[idx]));
+  setText(partnersSection.querySelector('.earn-badge'), copy.partners.earnings.badge);
+
+  const partnerH3 = partnersSection.querySelector('.signup-pitch h3');
+  setHTML(partnerH3, copy.partners.howTitle);
+  setText(partnersSection.querySelector('.signup-pitch p'), copy.partners.howLead);
+  partnersSection.querySelectorAll('.signup-pitch .pitch-point').forEach((point, idx) => {
+    const dot = point.querySelector('.pitch-point-dot');
+    point.textContent = copy.partners.howPoints[idx];
+    point.prepend(dot);
+  });
+
+  setHTML(document.querySelector('#driverFormCard .form-title'), copy.partners.form.title);
+  const driverLabels = document.querySelectorAll('#driverForm .form-label');
+  driverLabels.forEach((label, idx) => setText(label, copy.partners.form.labels[idx]));
+  const driverForm = document.getElementById('driverForm');
+  driverForm.name.placeholder = copy.partners.form.placeholders.name;
+  driverForm.phone.placeholder = copy.partners.form.placeholders.phone;
+  Array.from(driverForm.vehicle.options).forEach((option, idx) => setText(option, copy.partners.form.partnerTypes[idx]));
+  const driverSubmitBtn = document.getElementById('driverSubmitBtn');
+  if (!driverSubmitBtn.classList.contains('loading')) setWithArrow(driverSubmitBtn, copy.partners.form.submit);
+  setText(document.querySelector('#driverForm .form-note'), copy.partners.form.note);
+  setHTML(document.querySelector('#driverSuccess .success-title'), copy.partners.form.successTitle);
+  setText(document.querySelector('#driverSuccess .success-desc'), copy.partners.form.successDesc);
+
+  setText(document.querySelector('.footer-tagline'), copy.footer.tagline);
+  document.querySelectorAll('.footer-links a').forEach((link, idx) => setText(link, copy.footer.links[idx]));
+  setText(document.querySelector('.footer-copy'), copy.meta.footerCopy);
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    const isActive = btn.dataset.lang === currentLang;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', String(isActive));
+  });
+
+  try { localStorage.setItem('tapeo_lang', currentLang); } catch (_) {}
+}
+
 /* ── MOBILE NAV ── */
 document.getElementById('navToggle').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
@@ -1568,6 +2213,10 @@ document.querySelectorAll('#navLinks a').forEach(a => {
   a.addEventListener('click', () => {
     document.getElementById('navLinks').classList.remove('open');
   });
+});
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
 });
 
 /* ── SCROLL REVEAL ── */
@@ -1605,7 +2254,7 @@ async function submitBiz(e) {
   e.preventDefault();
   const btn = document.getElementById('bizSubmitBtn');
   btn.classList.add('loading');
-  btn.innerHTML = 'Sending…';
+  btn.innerHTML = I18N[currentLang].common.sending;
 
   const form = e.target;
   const data = {
@@ -1627,9 +2276,9 @@ async function submitBiz(e) {
     const json = await res.json();
     if (json.ok) { showBizSuccess(); }
     else {
-      alert(json.error || 'Something went wrong.');
+      alert(json.error || I18N[currentLang].common.error);
       btn.classList.remove('loading');
-      btn.innerHTML = 'Get featured now <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>';
+      setWithArrow(btn, I18N[currentLang].business.form.submit);
     }
   } catch (_) { showBizSuccess(); }
 }
@@ -1644,7 +2293,7 @@ async function submitDriver(e) {
   e.preventDefault();
   const btn = document.getElementById('driverSubmitBtn');
   btn.classList.add('loading');
-  btn.innerHTML = 'Sending…';
+  btn.innerHTML = I18N[currentLang].common.sending;
 
   const form = e.target;
   const data = { name: form.name.value, phone: form.phone.value, vehicle: form.vehicle.value };
@@ -1658,9 +2307,9 @@ async function submitDriver(e) {
     const json = await res.json();
     if (json.ok) { showDriverSuccess(); }
     else {
-      alert(json.error || 'Something went wrong.');
+      alert(json.error || I18N[currentLang].common.error);
       btn.classList.remove('loading');
-      btn.innerHTML = 'Register now';
+      setWithArrow(btn, I18N[currentLang].partners.form.submit);
     }
   } catch (_) { showDriverSuccess(); }
 }
@@ -1669,6 +2318,11 @@ function showDriverSuccess() {
   document.getElementById('driverForm').style.display    = 'none';
   document.getElementById('driverSuccess').style.display = 'flex';
 }
+
+const savedLang = (() => {
+  try { return localStorage.getItem('tapeo_lang'); } catch (_) { return null; }
+})();
+applyLanguage(savedLang === 'es' ? 'es' : 'en');
 </script>
 
 </body>
