@@ -1,12 +1,26 @@
 const express = require('express');
 const Database = require('better-sqlite3');
 const path = require('path');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'tapeo-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
+}));
+
+// Root route → main landing page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'tapeo-main.html'));
+});
+
+app.use(express.static(path.join(__dirname), { index: false }));
 
 // ── DATABASE ───────────────────────────────────────────────
 const db = new Database(path.join(__dirname, 'segovia.db'));
@@ -65,18 +79,78 @@ db.exec(`
     FOREIGN KEY (driver_id)   REFERENCES drivers(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id)
   );
+
+  CREATE TABLE IF NOT EXISTS users (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    email       TEXT NOT NULL UNIQUE,
+    password    TEXT NOT NULL,
+    role        TEXT NOT NULL DEFAULT 'business',
+    business_id INTEGER DEFAULT NULL,
+    name        TEXT,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (business_id) REFERENCES businesses(id)
+  );
 `);
 
-// Safe migrations — add columns to existing taps table if missing
+// Safe migrations
 ['driver_id TEXT DEFAULT "unknown"', 'source TEXT DEFAULT "taxi"',
  'route TEXT DEFAULT "unknown"', 'business_id INTEGER DEFAULT NULL']
   .forEach(col => {
     try { db.exec(`ALTER TABLE taps ADD COLUMN ${col}`); } catch (_) {}
   });
 
+// Seed admin user if none exists
+const adminExists = db.prepare('SELECT id FROM users WHERE role = ?').get('admin');
+if (!adminExists) {
+  const hash = bcrypt.hashSync('tapeo2026', 10);
+  db.prepare('INSERT INTO users (email, password, role, name) VALUES (?, ?, ?, ?)')
+    .run('admin@tapeo.co', hash, 'admin', 'Fernando');
+}
+
+// ── AUTH MIDDLEWARE ────────────────────────────────────────
+function requireAuth(req, res, next) {
+  if (!req.session.user) return res.status(401).json({ error: 'Not authenticated' });
+  next();
+}
+
+function requireAdmin(req, res, next) {
+  if (!req.session.user || req.session.user.role !== 'admin')
+    return res.status(403).json({ error: 'Admin access required' });
+  next();
+}
+
+// ── AUTH ENDPOINTS ────────────────────────────────────────
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json({ error: 'Email and password required' });
+
+  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+  if (!user || !bcrypt.compareSync(password, user.password))
+    return res.status(401).json({ error: 'Invalid credentials' });
+
+  req.session.user = {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    name: user.name,
+    businessId: user.business_id
+  };
+
+  res.json({ ok: true, user: req.session.user });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  req.session.destroy();
+  res.json({ ok: true });
+});
+
+app.get('/api/auth/me', (req, res) => {
+  if (!req.session.user) return res.status(401).json({ error: 'Not authenticated' });
+  res.json({ user: req.session.user });
+});
+
 // ── NFC REDIRECT ───────────────────────────────────────────
-// This URL lives inside every NFC card: /go?d=DRIVER_ID&r=ROUTE&b=BUSINESS_ID
-// Tourist taps → we log it → redirect to business website
 app.get('/go', (req, res) => {
   const { d = 'unknown', r = 'city', b } = req.query;
 
@@ -95,11 +169,10 @@ app.get('/go', (req, res) => {
     }
   }
 
-  // No business assigned → show the discovery page
-  res.redirect(`/discover.html?src=taxi&d=${d}&r=${r}`);
+  res.redirect(`/nfc-discover.html?src=taxi&d=${d}&r=${r}`);
 });
 
-// ── TAP LOGGING (from discover.html) ──────────────────────
+// ── TAP LOGGING ───────────────────────────────────────────
 app.post('/api/tap', (req, res) => {
   const {
     placeId, placeName,
@@ -119,7 +192,7 @@ app.post('/api/tap', (req, res) => {
   res.json({ ok: true });
 });
 
-// ── TRENDING / STATS (legacy) ──────────────────────────────
+// ── TRENDING / STATS ──────────────────────────────────────
 app.get('/api/trending', (req, res) => {
   const rows = db.prepare(`
     SELECT place_id AS id, place_name AS name, COUNT(*) AS visits
@@ -161,6 +234,13 @@ app.post('/api/business/signup', (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `).run(name, category || '', websiteUrl, contactName || '', email, phone || '', plan || 'starter');
 
+  // Create user account for the business
+  const hash = bcrypt.hashSync(email.split('@')[0] + '2026', 10);
+  try {
+    db.prepare('INSERT INTO users (email, password, role, business_id, name) VALUES (?, ?, ?, ?, ?)')
+      .run(email.toLowerCase().trim(), hash, 'business', result.lastInsertRowid, contactName || name);
+  } catch (_) { /* email already exists */ }
+
   res.json({
     ok: true,
     id: result.lastInsertRowid,
@@ -181,8 +261,20 @@ app.get('/api/business/:id/stats', (req, res) => {
     `SELECT COUNT(*) AS n FROM taps WHERE business_id = ? AND tapped_at >= datetime('now','-7 days')`
   ).get(id).n;
 
+  const prevWeek = db.prepare(
+    `SELECT COUNT(*) AS n FROM taps WHERE business_id = ? AND tapped_at >= datetime('now','-14 days') AND tapped_at < datetime('now','-7 days')`
+  ).get(id).n;
+
   const today = db.prepare(
     `SELECT COUNT(*) AS n FROM taps WHERE business_id = ? AND tapped_at >= date('now')`
+  ).get(id).n;
+
+  const month = db.prepare(
+    `SELECT COUNT(*) AS n FROM taps WHERE business_id = ? AND tapped_at >= datetime('now','-30 days')`
+  ).get(id).n;
+
+  const prevMonth = db.prepare(
+    `SELECT COUNT(*) AS n FROM taps WHERE business_id = ? AND tapped_at >= datetime('now','-60 days') AND tapped_at < datetime('now','-30 days')`
   ).get(id).n;
 
   const byHour = db.prepare(`
@@ -195,18 +287,47 @@ app.get('/api/business/:id/stats', (req, res) => {
     GROUP BY route ORDER BY n DESC
   `).all(id);
 
-  const recent = db.prepare(`
-    SELECT route, source, tapped_at FROM taps
-    WHERE business_id = ? ORDER BY tapped_at DESC LIMIT 20
+  const bySource = db.prepare(`
+    SELECT source, COUNT(*) AS n FROM taps WHERE business_id = ?
+    GROUP BY source ORDER BY n DESC
   `).all(id);
 
+  const byDay = db.prepare(`
+    SELECT date(tapped_at) AS day, COUNT(*) AS n FROM taps
+    WHERE business_id = ? AND tapped_at >= datetime('now', '-30 days')
+    GROUP BY day ORDER BY day
+  `).all(id);
+
+  const recent = db.prepare(`
+    SELECT route, source, tapped_at FROM taps
+    WHERE business_id = ? ORDER BY tapped_at DESC LIMIT 30
+  `).all(id);
+
+  // Plan pricing
+  const planPrices = { starter: 80, growth: 150, premium: 300 };
+  const monthlyFee = planPrices[business.plan] || 80;
+  const costPerTap = month > 0 ? (monthlyFee / month).toFixed(2) : '—';
+  const googleEquiv = (total * 2.50).toFixed(2);
+  const weekTrend = prevWeek > 0 ? Math.round(((week - prevWeek) / prevWeek) * 100) : 0;
+  const monthTrend = prevMonth > 0 ? Math.round(((month - prevMonth) / prevMonth) * 100) : 0;
+
   res.json({
-    business: { name: business.name, plan: business.plan, joined: business.joined_at },
-    stats: {
-      total, week, today,
-      googleAdsEquivalent: (total * 1.9).toFixed(2)
+    business: {
+      name: business.name,
+      plan: business.plan,
+      category: business.category,
+      joined: business.joined_at,
+      monthlyFee
     },
-    byHour, byRoute, recent
+    stats: {
+      total, week, prevWeek, today, month, prevMonth,
+      costPerTap,
+      googleAdsEquivalent: googleEquiv,
+      paidTapeo: monthlyFee.toFixed(2),
+      weekTrend,
+      monthTrend
+    },
+    byHour, byRoute, bySource, byDay, recent
   });
 });
 
@@ -245,22 +366,95 @@ app.get('/api/driver/:id/earnings', (req, res) => {
     driver: { name: driver.name },
     taps:   { total, week, month },
     earnings: {
-      base:      30.00,
+      base:      0,
       perTap:    0.30,
-      thisMonth: (30 + month * 0.30).toFixed(2)
+      thisMonth: (month * 0.30).toFixed(2)
     }
   });
 });
 
-// ── CATCH-ALL ──────────────────────────────────────────────
-app.get('/{*splat}', (req, res) => {
-  res.sendFile(path.join(__dirname, 'discover.html'));
+// ── ADMIN ENDPOINTS ───────────────────────────────────────
+app.get('/api/admin/overview', requireAdmin, (req, res) => {
+  const totalBusinesses = db.prepare('SELECT COUNT(*) AS n FROM businesses WHERE active = 1').get().n;
+  const totalDrivers = db.prepare('SELECT COUNT(*) AS n FROM drivers WHERE active = 1').get().n;
+  const totalTaps = db.prepare('SELECT COUNT(*) AS n FROM taps').get().n;
+  const tapsThisMonth = db.prepare("SELECT COUNT(*) AS n FROM taps WHERE tapped_at >= datetime('now','-30 days')").get().n;
+  const tapsLastMonth = db.prepare("SELECT COUNT(*) AS n FROM taps WHERE tapped_at >= datetime('now','-60 days') AND tapped_at < datetime('now','-30 days')").get().n;
+  const activeCards = db.prepare('SELECT COUNT(*) AS n FROM cards WHERE active = 1').get().n;
+
+  // MRR calculation
+  const planPrices = { starter: 80, growth: 150, premium: 300 };
+  const businesses = db.prepare('SELECT plan FROM businesses WHERE active = 1').all();
+  const mrr = businesses.reduce((sum, b) => sum + (planPrices[b.plan] || 0), 0);
+
+  // Driver costs this month
+  const driverCost = tapsThisMonth * 0.30;
+
+  // Recent activity
+  const recentTaps = db.prepare(`
+    SELECT t.route, t.source, t.tapped_at, b.name AS business_name, t.driver_id
+    FROM taps t LEFT JOIN businesses b ON t.business_id = b.id
+    ORDER BY t.tapped_at DESC LIMIT 20
+  `).all();
+
+  // Taps by day (last 30 days)
+  const tapsByDay = db.prepare(`
+    SELECT date(tapped_at) AS day, COUNT(*) AS n FROM taps
+    WHERE tapped_at >= datetime('now', '-30 days')
+    GROUP BY day ORDER BY day
+  `).all();
+
+  // Taps by source
+  const tapsBySource = db.prepare(`
+    SELECT source, COUNT(*) AS n FROM taps GROUP BY source ORDER BY n DESC
+  `).all();
+
+  const tapsTrend = tapsLastMonth > 0 ? Math.round(((tapsThisMonth - tapsLastMonth) / tapsLastMonth) * 100) : 0;
+
+  res.json({
+    totalBusinesses, totalDrivers, totalTaps, tapsThisMonth, tapsLastMonth,
+    tapsTrend, activeCards, mrr, driverCost,
+    netRevenue: mrr - driverCost,
+    recentTaps, tapsByDay, tapsBySource
+  });
 });
+
+app.get('/api/admin/businesses', requireAdmin, (req, res) => {
+  const businesses = db.prepare(`
+    SELECT b.*,
+      (SELECT COUNT(*) FROM taps WHERE business_id = b.id) AS total_taps,
+      (SELECT COUNT(*) FROM taps WHERE business_id = b.id AND tapped_at >= datetime('now','-30 days')) AS month_taps,
+      (SELECT COUNT(*) FROM taps WHERE business_id = b.id AND tapped_at >= datetime('now','-7 days')) AS week_taps
+    FROM businesses b ORDER BY b.joined_at DESC
+  `).all();
+  res.json(businesses);
+});
+
+app.get('/api/admin/drivers', requireAdmin, (req, res) => {
+  const drivers = db.prepare(`
+    SELECT d.*,
+      (SELECT COUNT(*) FROM taps WHERE driver_id = CAST(d.id AS TEXT)) AS total_taps,
+      (SELECT COUNT(*) FROM taps WHERE driver_id = CAST(d.id AS TEXT) AND tapped_at >= datetime('now','-30 days')) AS month_taps,
+      (SELECT COUNT(*) FROM taps WHERE driver_id = CAST(d.id AS TEXT) AND tapped_at >= datetime('now','-7 days')) AS week_taps
+    FROM drivers d ORDER BY d.joined_at DESC
+  `).all();
+
+  const result = drivers.map(d => ({
+    ...d,
+    earnings: (d.month_taps * 0.30).toFixed(2)
+  }));
+
+  res.json(result);
+});
+
 
 app.listen(PORT, () => {
   console.log(`\n  Tapeo server → http://localhost:${PORT}\n`);
+  console.log(`  Login:         /login.html`);
+  console.log(`  Admin:         /admin.html`);
+  console.log(`  Dashboard:     /dashboard.html`);
   console.log(`  NFC redirect:  /go?d=DRIVER&r=ROUTE&b=BUSINESS_ID`);
-  console.log(`  Business join: /join.html`);
-  console.log(`  Dashboard:     /dashboard.html?id=BUSINESS_ID`);
-  console.log(`  Driver signup: /driver.html\n`);
+  console.log(`  Business join: /nfc-join.html`);
+  console.log(`  Driver signup: /nfc-driver.html\n`);
+  console.log(`  Admin login:   admin@tapeo.co / tapeo2026\n`);
 });

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tapeo — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── THEME VARIABLES ── */
+:root, [data-theme="dark"] {
+  --bg: #0D0C0A; --bg-surface: #111110; --bg-card: #171614; --bg-card-hover: #1C1A16;
+  --text: #F5F0E8; --text-muted: rgba(245,240,232,0.55); --text-faint: rgba(245,240,232,0.3);
+  --stone: #B8956A; --stone-light: #D4B896; --stone-pale: rgba(184,149,106,0.1);
+  --terra: #C4674A; --green: #5FAD72; --green-bg: rgba(95,173,114,0.1);
+  --red: #E05252; --red-bg: rgba(224,82,82,0.08);
+  --border: rgba(245,240,232,0.07); --border-mid: rgba(245,240,232,0.12);
+  --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  --sidebar-bg: #0A0A08;
+}
+[data-theme="light"] {
+  --bg: #F5F3EF; --bg-surface: #FAFAF8; --bg-card: #FFFFFF; --bg-card-hover: #F8F7F4;
+  --text: #1C1A16; --text-muted: rgba(28,26,22,0.5); --text-faint: rgba(28,26,22,0.25);
+  --stone: #9A7B56; --stone-light: #B8956A; --stone-pale: rgba(154,123,86,0.08);
+  --terra: #B85A3A; --green: #3D9155; --green-bg: rgba(61,145,85,0.08);
+  --red: #C44040; --red-bg: rgba(196,64,64,0.06);
+  --border: rgba(28,26,22,0.08); --border-mid: rgba(28,26,22,0.12);
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --sidebar-bg: #0D0C0A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.app { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid rgba(245,240,232,0.06);
+  display: flex; flex-direction: column;
+  position: fixed; top:0; left:0; bottom:0; z-index:200;
+}
+.sidebar-brand { padding: 1.5rem 1.25rem; border-bottom: 1px solid rgba(245,240,232,0.06); }
+.sidebar-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300;
+  letter-spacing: 0.15em; color: #B8956A; text-decoration: none;
+}
+.sidebar-label {
+  font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(245,240,232,0.35); margin-top: 0.35rem;
+}
+.sidebar-nav { flex:1; padding: 1rem 0.75rem; display: flex; flex-direction: column; gap: 2px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.7rem 0.75rem; border-radius: 8px;
+  font-size: 0.82rem; font-weight: 400;
+  color: rgba(245,240,232,0.55);
+  cursor: pointer; transition: all 0.15s; text-decoration: none;
+}
+.nav-item:hover { background: rgba(245,240,232,0.04); color: #F5F0E8; }
+.nav-item.active { background: rgba(184,149,106,0.12); color: #D4B896; font-weight: 500; }
+.nav-icon { width:18px; height:18px; opacity:0.6; flex-shrink:0; }
+.nav-item.active .nav-icon { opacity:1; }
+.sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(245,240,232,0.06); }
+.sidebar-user { font-size:0.72rem; color:rgba(245,240,232,0.45); margin-bottom:0.5rem; }
+.sidebar-logout {
+  font-size:0.72rem; color:rgba(245,240,232,0.35);
+  cursor:pointer; text-decoration:none;
+}
+.sidebar-logout:hover { color:#E05252; }
+
+/* ── MAIN ── */
+.main { flex:1; margin-left:220px; min-height:100vh; }
+.main-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+  position:sticky; top:0; z-index:100;
+}
+.main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 300;
+}
+.main-title em { font-style:italic; color: var(--stone-light); }
+.header-actions { display:flex; align-items:center; gap:12px; }
+
+/* Theme toggle */
+.theme-toggle {
+  width:44px; height:24px; background:var(--border-mid);
+  border-radius:12px; position:relative; cursor:pointer;
+  transition:background 0.2s; border:none; padding:0;
+}
+.theme-toggle::after {
+  content:''; position:absolute; width:18px; height:18px;
+  background:var(--stone); border-radius:50%;
+  top:3px; left:3px; transition:transform 0.2s;
+}
+[data-theme="light"] .theme-toggle::after { transform:translateX(20px); }
+
+/* ── PAGES ── */
+.page { display:none; padding:2rem; }
+.page.active { display:block; }
+
+/* ── KPI GRID ── */
+.kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:1.5rem; }
+.kpi-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:10px; padding:1.25rem;
+}
+.kpi-label {
+  font-size:0.6rem; font-weight:600;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:0.65rem;
+}
+.kpi-value {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem; font-weight:400;
+  color:var(--stone); line-height:1;
+}
+.kpi-sub {
+  font-size:0.65rem; color:var(--text-muted); margin-top:0.4rem;
+}
+.kpi-trend { display:inline-flex; align-items:center; gap:4px; margin-top:0.4rem; font-size:0.65rem; font-weight:600; }
+.kpi-trend.up { color:var(--green); }
+.kpi-trend.down { color:var(--red); }
+.kpi-trend.neutral { color:var(--text-muted); }
+
+/* ── TABLES ── */
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th {
+  text-align:left; padding:0.75rem 1rem;
+  font-size:0.6rem; font-weight:600;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--text-muted);
+  border-bottom:1px solid var(--border-mid);
+  background:var(--bg-surface);
+  position:sticky; top:0;
+}
+.data-table td {
+  padding:0.85rem 1rem;
+  font-size:0.82rem;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+}
+.data-table tr:hover td { background:var(--bg-card-hover); }
+.table-name { font-weight:500; }
+.table-muted { color:var(--text-muted); font-size:0.75rem; }
+
+/* Badges */
+.badge {
+  display:inline-flex; padding:3px 10px; border-radius:20px;
+  font-size:0.58rem; font-weight:600;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.badge.starter { background:var(--stone-pale); color:var(--stone); border:1px solid rgba(184,149,106,0.2); }
+.badge.growth { background:var(--green-bg); color:var(--green); border:1px solid rgba(95,173,114,0.2); }
+.badge.premium { background:rgba(196,103,74,0.1); color:#D4876A; border:1px solid rgba(196,103,74,0.2); }
+.badge.active { background:var(--green-bg); color:var(--green); border:1px solid rgba(95,173,114,0.2); }
+.badge.inactive { background:var(--red-bg); color:var(--red); border:1px solid rgba(224,82,82,0.15); }
+
+/* ── SECTION CARD ── */
+.section-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:10px; padding:1.5rem; margin-bottom:1.5rem;
+}
+.section-card-title {
+  font-size:0.62rem; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:1rem;
+}
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
+
+/* ── RECENT ACTIVITY ── */
+.activity-list { display:flex; flex-direction:column; }
+.activity-item {
+  display:flex; align-items:center; gap:0.75rem;
+  padding:0.65rem 0; border-bottom:1px solid var(--border);
+}
+.activity-item:last-child { border-bottom:none; }
+.activity-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.activity-dot.tap { background:var(--stone); }
+.activity-dot.signup { background:var(--green); }
+.activity-text { flex:1; font-size:0.78rem; color:var(--text); }
+.activity-text strong { font-weight:500; }
+.activity-time { font-size:0.65rem; color:var(--text-muted); flex-shrink:0; font-variant-numeric:tabular-nums; }
+
+/* Source bars */
+.source-bars { display:flex; flex-direction:column; gap:0.75rem; }
+.source-row { display:flex; align-items:center; gap:10px; }
+.source-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.source-dot.taxi { background:var(--stone); }
+.source-dot.hotel { background:var(--terra); }
+.source-dot.airbnb { background:var(--green); }
+.source-dot.nfc { background:var(--stone-light); }
+.source-name { flex:1; font-size:0.78rem; text-transform:capitalize; }
+.source-count { font-size:0.78rem; font-weight:600; color:var(--stone); }
+.source-pct { width:36px; text-align:right; font-size:0.68rem; color:var(--text-muted); }
+
+/* ── LOADING ── */
+.loading-wrap {
+  display:flex; align-items:center; justify-content:center;
+  min-height:60vh; flex-direction:column; gap:1rem;
+}
+.spinner {
+  width:32px; height:32px;
+  border:2px solid var(--border-mid);
+  border-top-color:var(--stone);
+  border-radius:50%; animation:spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.loading-text { font-size:0.78rem; color:var(--text-muted); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:768px) {
+  .sidebar { display:none; }
+  .main { margin-left:0; }
+  .kpi-grid { grid-template-columns:repeat(2,1fr); }
+  .grid-2 { grid-template-columns:1fr; }
+  .data-table { font-size:0.75rem; }
+  .data-table th, .data-table td { padding:0.6rem 0.5rem; }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.fade-in { opacity:0; animation:fadeUp 0.5s ease-out forwards; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <a href="/admin.html" class="sidebar-logo">Tapeo</a>
+    <div class="sidebar-label">Admin Panel</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="overview" onclick="showPage('overview')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </a>
+    <a class="nav-item" data-page="businesses" onclick="showPage('businesses')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Businesses
+    </a>
+    <a class="nav-item" data-page="drivers" onclick="showPage('drivers')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Drivers
+    </a>
+    <a class="nav-item" data-page="analytics" onclick="showPage('analytics')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 5-7"/></svg>
+      Analytics
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">Admin</div>
+    <a class="sidebar-logout" onclick="logout()">Sign out</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="main-header">
+    <div class="main-title" id="pageTitle">Admin <em>overview</em></div>
+    <div class="header-actions">
+      <button class="theme-toggle" onclick="toggleTheme()"></button>
+    </div>
+  </div>
+
+  <div class="loading-wrap" id="loadingState">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading admin panel…</div>
+  </div>
+
+  <!-- ═══════ OVERVIEW ═══════ -->
+  <div class="page" id="page-overview">
+    <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="grid-2">
+      <div class="section-card fade-in">
+        <div class="section-card-title">Traffic Sources</div>
+        <div class="source-bars" id="adminSources"></div>
+      </div>
+      <div class="section-card fade-in">
+        <div class="section-card-title">Recent Activity</div>
+        <div class="activity-list" id="activityList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ BUSINESSES ═══════ -->
+  <div class="page" id="page-businesses">
+    <div class="section-card fade-in" style="padding:0;overflow-x:auto">
+      <table class="data-table" id="bizTable">
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Category</th>
+            <th>Plan</th>
+            <th>This Month</th>
+            <th>This Week</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Joined</th>
+          </tr>
+        </thead>
+        <tbody id="bizBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════ DRIVERS ═══════ -->
+  <div class="page" id="page-drivers">
+    <div class="section-card fade-in" style="padding:0;overflow-x:auto">
+      <table class="data-table" id="driverTable">
+        <thead>
+          <tr>
+            <th>Driver</th>
+            <th>Vehicle</th>
+            <th>This Month</th>
+            <th>This Week</th>
+            <th>Total</th>
+            <th>Earnings (month)</th>
+            <th>Status</th>
+            <th>Joined</th>
+          </tr>
+        </thead>
+        <tbody id="driverBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════ ANALYTICS ═══════ -->
+  <div class="page" id="page-analytics">
+    <div class="section-card fade-in">
+      <div class="section-card-title">Global Tap Analytics</div>
+      <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6" id="analyticsText">
+        Loading analytics data…
+      </p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ── MOCK DATA ── */
+const MOCK_OVERVIEW = {
+  totalBusinesses: 7, totalDrivers: 12, totalTaps: 1843,
+  tapsThisMonth: 487, tapsLastMonth: 392, tapsTrend: 24,
+  activeCards: 18, mrr: 1110, driverCost: 146.10, netRevenue: 963.90,
+  tapsBySource: [
+    {source:'taxi',n:1024},{source:'hotel',n:412},{source:'airbnb',n:268},{source:'nfc',n:139}
+  ],
+  recentTaps: [
+    {tapped_at:'2026-03-19T21:12:00Z',route:'city_center',source:'taxi',business_name:'Mesón de Cándido',driver_id:'3'},
+    {tapped_at:'2026-03-19T20:48:00Z',route:'airport',source:'taxi',business_name:'Restaurante Duque',driver_id:'1'},
+    {tapped_at:'2026-03-19T20:15:00Z',route:'hotel_zone',source:'hotel',business_name:'José María',driver_id:'5'},
+    {tapped_at:'2026-03-19T19:42:00Z',route:'old_town',source:'airbnb',business_name:'El Fogón Sefardí',driver_id:'2'},
+    {tapped_at:'2026-03-19T19:10:00Z',route:'train_station',source:'nfc',business_name:'Cueva de San Esteban',driver_id:'4'},
+  ]
+};
+
+const MOCK_BIZ = [
+  {id:1,name:'Mesón de Cándido',category:'Restaurant',plan:'growth',active:1,joined_at:'2026-02-10',total_taps:487,month_taps:218,week_taps:62},
+  {id:2,name:'Restaurante Duque',category:'Restaurant',plan:'starter',active:1,joined_at:'2026-02-15',total_taps:312,month_taps:142,week_taps:38},
+  {id:3,name:'José María',category:'Restaurant',plan:'premium',active:1,joined_at:'2026-02-12',total_taps:398,month_taps:178,week_taps:51},
+  {id:4,name:'El Fogón Sefardí',category:'Restaurant',plan:'growth',active:1,joined_at:'2026-02-20',total_taps:245,month_taps:108,week_taps:29},
+  {id:5,name:'Cueva de San Esteban',category:'Bar',plan:'starter',active:1,joined_at:'2026-03-01',total_taps:156,month_taps:89,week_taps:24},
+  {id:6,name:'La Almuzara',category:'Restaurant',plan:'starter',active:0,joined_at:'2026-02-18',total_taps:98,month_taps:12,week_taps:0},
+  {id:7,name:'Mesón Mayor',category:'Restaurant',plan:'growth',active:1,joined_at:'2026-03-05',total_taps:147,month_taps:82,week_taps:22},
+];
+
+const MOCK_DRIVERS = [
+  {id:1,name:'Carlos Martín',phone:'612345678',vehicle:'taxi',active:1,joined_at:'2026-02-10',total_taps:342,month_taps:156,week_taps:42,earnings:'46.80'},
+  {id:2,name:'Miguel Ángel',phone:'623456789',vehicle:'taxi',active:1,joined_at:'2026-02-12',total_taps:298,month_taps:134,week_taps:36,earnings:'40.20'},
+  {id:3,name:'Antonio García',phone:'634567890',vehicle:'taxi',active:1,joined_at:'2026-02-15',total_taps:256,month_taps:112,week_taps:31,earnings:'33.60'},
+  {id:4,name:'Pedro López',phone:'645678901',vehicle:'vtc',active:1,joined_at:'2026-02-20',total_taps:198,month_taps:89,week_taps:24,earnings:'26.70'},
+  {id:5,name:'Juan Fernández',phone:'656789012',vehicle:'taxi',active:1,joined_at:'2026-02-25',total_taps:167,month_taps:78,week_taps:21,earnings:'23.40'},
+  {id:6,name:'Roberto Díaz',phone:'667890123',vehicle:'taxi',active:0,joined_at:'2026-02-14',total_taps:89,month_taps:5,week_taps:0,earnings:'1.50'},
+];
+
+/* ── HELPERS ── */
+function fmt(n) { return n.toLocaleString(); }
+function fmtRoute(r) { return (r||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+function fmtTime(iso) {
+  try {
+    const d=new Date(iso),now=new Date(),diff=Math.floor((now-d)/60000);
+    if(diff<1)return'Just now';if(diff<60)return diff+'m ago';
+    if(diff<1440)return Math.floor(diff/60)+'h ago';
+    return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  } catch(_){return iso;}
+}
+function fmtDate(iso) {
+  try { return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+  catch(_){return iso;}
+}
+
+/* ── THEME ── */
+function toggleTheme() {
+  const h=document.documentElement;
+  const n=h.dataset.theme==='dark'?'light':'dark';
+  h.dataset.theme=n; localStorage.setItem('tapeo-theme',n);
+}
+(function(){const s=localStorage.getItem('tapeo-theme');if(s)document.documentElement.dataset.theme=s;})();
+
+/* ── NAV ── */
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===p));
+  const t={overview:'Admin <em>overview</em>',businesses:'<em>Businesses</em>',drivers:'<em>Drivers</em>',analytics:'<em>Analytics</em>'};
+  document.getElementById('pageTitle').innerHTML=t[p]||'';
+}
+
+/* ── RENDER OVERVIEW ── */
+function renderOverview(d) {
+  const g=document.getElementById('kpiGrid');
+  g.innerHTML = `
+    <div class="kpi-card fade-in">
+      <div class="kpi-label">Businesses</div>
+      <div class="kpi-value">${d.totalBusinesses}</div>
+      <div class="kpi-sub">Active</div>
+    </div>
+    <div class="kpi-card fade-in">
+      <div class="kpi-label">Drivers</div>
+      <div class="kpi-value">${d.totalDrivers}</div>
+      <div class="kpi-sub">Active</div>
+    </div>
+    <div class="kpi-card fade-in">
+      <div class="kpi-label">Taps (month)</div>
+      <div class="kpi-value">${fmt(d.tapsThisMonth)}</div>
+      <div class="kpi-trend ${d.tapsTrend>0?'up':d.tapsTrend<0?'down':'neutral'}">
+        ${d.tapsTrend>0?'↑':'↓'} ${Math.abs(d.tapsTrend)}% vs prev
+      </div>
+    </div>
+    <div class="kpi-card fade-in">
+      <div class="kpi-label">MRR</div>
+      <div class="kpi-value">€${fmt(d.mrr)}</div>
+      <div class="kpi-sub">Monthly revenue</div>
+    </div>
+    <div class="kpi-card fade-in">
+      <div class="kpi-label">Net Revenue</div>
+      <div class="kpi-value" style="color:var(--green)">€${d.netRevenue.toFixed(0)}</div>
+      <div class="kpi-sub">After driver costs (€${d.driverCost.toFixed(0)})</div>
+    </div>
+  `;
+
+  // Sources
+  const srcEl=document.getElementById('adminSources');
+  srcEl.innerHTML='';
+  const totalS=(d.tapsBySource||[]).reduce((s,x)=>s+x.n,0)||1;
+  (d.tapsBySource||[]).forEach(({source,n})=>{
+    srcEl.innerHTML+=`
+      <div class="source-row">
+        <div class="source-dot ${source}"></div>
+        <span class="source-name">${source}</span>
+        <span class="source-count">${fmt(n)}</span>
+        <span class="source-pct">${Math.round(n/totalS*100)}%</span>
+      </div>`;
+  });
+
+  // Activity
+  const actEl=document.getElementById('activityList');
+  actEl.innerHTML='';
+  (d.recentTaps||[]).slice(0,8).forEach(t=>{
+    actEl.innerHTML+=`
+      <div class="activity-item">
+        <div class="activity-dot tap"></div>
+        <div class="activity-text">
+          Tap on <strong>${t.business_name||'Unknown'}</strong> via ${t.source} — ${fmtRoute(t.route)}
+        </div>
+        <div class="activity-time">${fmtTime(t.tapped_at)}</div>
+      </div>`;
+  });
+}
+
+/* ── RENDER BUSINESSES ── */
+function renderBusinesses(data) {
+  const body=document.getElementById('bizBody');
+  body.innerHTML='';
+  data.forEach(b=>{
+    body.innerHTML+=`
+      <tr>
+        <td class="table-name">${b.name}</td>
+        <td class="table-muted">${b.category||'—'}</td>
+        <td><span class="badge ${b.plan}">${b.plan}</span></td>
+        <td>${fmt(b.month_taps)}</td>
+        <td>${fmt(b.week_taps)}</td>
+        <td>${fmt(b.total_taps)}</td>
+        <td><span class="badge ${b.active?'active':'inactive'}">${b.active?'Active':'Inactive'}</span></td>
+        <td class="table-muted">${fmtDate(b.joined_at)}</td>
+      </tr>`;
+  });
+}
+
+/* ── RENDER DRIVERS ── */
+function renderDrivers(data) {
+  const body=document.getElementById('driverBody');
+  body.innerHTML='';
+  data.forEach(d=>{
+    body.innerHTML+=`
+      <tr>
+        <td class="table-name">${d.name}</td>
+        <td class="table-muted" style="text-transform:uppercase">${d.vehicle||'—'}</td>
+        <td>${fmt(d.month_taps)}</td>
+        <td>${fmt(d.week_taps)}</td>
+        <td>${fmt(d.total_taps)}</td>
+        <td style="color:var(--green);font-weight:600">€${d.earnings}</td>
+        <td><span class="badge ${d.active?'active':'inactive'}">${d.active?'Active':'Inactive'}</span></td>
+        <td class="table-muted">${fmtDate(d.joined_at)}</td>
+      </tr>`;
+  });
+}
+
+/* ── RENDER ANALYTICS ── */
+function renderAnalytics(d) {
+  const el=document.getElementById('analyticsText');
+  el.innerHTML = `
+    <strong style="color:var(--text)">${fmt(d.totalTaps)}</strong> total taps across all businesses.<br>
+    <strong style="color:var(--text)">${fmt(d.tapsThisMonth)}</strong> this month
+    (${d.tapsTrend>0?'+':''}${d.tapsTrend}% vs last month).<br>
+    <strong style="color:var(--text)">${d.activeCards}</strong> active NFC cards deployed.<br><br>
+    MRR: <strong style="color:var(--green)">€${fmt(d.mrr)}</strong> |
+    Driver costs: <strong style="color:var(--terra)">€${d.driverCost.toFixed(2)}</strong> |
+    Net: <strong style="color:var(--green)">€${d.netRevenue.toFixed(2)}</strong>
+  `;
+}
+
+/* ── LOGOUT ── */
+async function logout() {
+  await fetch('/api/auth/logout',{method:'POST'});
+  window.location.href='/login.html';
+}
+
+/* ── LOAD ── */
+async function load() {
+  let overview, businesses, drivers;
+
+  try {
+    const [oRes, bRes, dRes] = await Promise.all([
+      fetch('/api/admin/overview'),
+      fetch('/api/admin/businesses'),
+      fetch('/api/admin/drivers')
+    ]);
+
+    if (oRes.ok && bRes.ok && dRes.ok) {
+      overview = await oRes.json();
+      businesses = await bRes.json();
+      drivers = await dRes.json();
+    } else {
+      throw new Error('Not authorized');
+    }
+  } catch(_) {
+    // Demo mode
+    overview = MOCK_OVERVIEW;
+    businesses = MOCK_BIZ;
+    drivers = MOCK_DRIVERS;
+  }
+
+  document.getElementById('loadingState').style.display='none';
+  renderOverview(overview);
+  renderBusinesses(businesses);
+  renderDrivers(drivers);
+  renderAnalytics(overview);
+  showPage('overview');
+}
+
+load();
+</script>
+</body>
+</html>

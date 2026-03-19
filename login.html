@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tapeo — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0C0A; --ink-soft: #1C1A16; --ink-card: #141210;
+    --cream: #F5F0E8; --cream-muted: rgba(245,240,232,0.55);
+    --stone: #B8956A; --stone-light: #D4B896;
+    --terra: #C4674A;
+    --border: rgba(245,240,232,0.08); --border-mid: rgba(245,240,232,0.14);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+  }
+  .brand {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+  }
+  .brand-sub {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-muted);
+  }
+  .card {
+    background: var(--ink-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 0.35rem;
+  }
+  .card-title em { font-style: italic; color: var(--stone-light); }
+  .card-subtitle {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+    margin-bottom: 2rem;
+  }
+  .role-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .role-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    background: var(--ink);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    color: var(--cream);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .role-btn:hover {
+    border-color: var(--stone);
+    background: rgba(184,149,106,0.06);
+  }
+  .role-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .role-icon.admin {
+    background: rgba(184,149,106,0.12);
+  }
+  .role-icon.business {
+    background: rgba(95,173,114,0.1);
+  }
+  .role-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .role-info {
+    text-align: left;
+    flex: 1;
+  }
+  .role-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .role-desc {
+    font-size: 0.68rem;
+    font-weight: 300;
+    color: var(--cream-muted);
+  }
+  .role-arrow {
+    color: var(--stone);
+    font-size: 1.1rem;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .role-btn:hover .role-arrow { opacity: 1; }
+  .footer {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  .footer a {
+    font-size: 0.72rem;
+    color: var(--cream-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer a:hover { color: var(--stone); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand">
+    <div class="brand-name">Tapeo</div>
+    <div class="brand-sub">Verified local traffic</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Choose your <em>view</em></div>
+    <div class="card-subtitle">Select a dashboard to continue</div>
+    <div class="role-grid">
+      <a href="/admin.html" class="role-btn">
+        <div class="role-icon admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B8956A" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <div class="role-info">
+          <div class="role-name">Admin Panel</div>
+          <div class="role-desc">Manage businesses, drivers, revenue &amp; analytics</div>
+        </div>
+        <span class="role-arrow">&rsaquo;</span>
+      </a>
+      <a href="/dashboard.html" class="role-btn">
+        <div class="role-icon business">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5FAD72" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="role-info">
+          <div class="role-name">Business Dashboard</div>
+          <div class="role-desc">View taps, savings, insights &amp; analytics</div>
+        </div>
+        <span class="role-arrow">&rsaquo;</span>
+      </a>
+    </div>
+  </div>
+  <div class="footer">
+    <a href="/">&larr; Back to Tapeo</a>
+  </div>
+</div>
+</body>
+</html>
