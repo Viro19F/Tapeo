@@ -19,13 +19,13 @@
   --sidebar-bg: #0A0A08;
 }
 [data-theme="light"] {
-  --bg: #F5F3EF; --bg-surface: #FAFAF8; --bg-card: #FFFFFF; --bg-card-hover: #F8F7F4;
-  --text: #1C1A16; --text-muted: rgba(28,26,22,0.5); --text-faint: rgba(28,26,22,0.25);
-  --stone: #9A7B56; --stone-light: #B8956A; --stone-pale: rgba(154,123,86,0.08);
-  --terra: #B85A3A; --green: #3D9155; --green-bg: rgba(61,145,85,0.08);
-  --red: #C44040; --red-bg: rgba(196,64,64,0.06);
-  --border: rgba(28,26,22,0.08); --border-mid: rgba(28,26,22,0.12);
-  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --bg: #F0EDE8; --bg-surface: #F5F3EF; --bg-card: #FFFFFF; --bg-card-hover: #F8F7F4;
+  --text: #0D0C0A; --text-muted: rgba(13,12,10,0.6); --text-faint: rgba(13,12,10,0.35);
+  --stone: #7A5F3A; --stone-light: #8C6D45; --stone-pale: rgba(122,95,58,0.1);
+  --terra: #A84E2E; --green: #1F6B34; --green-bg: rgba(31,107,52,0.1);
+  --red: #B33030; --red-bg: rgba(179,48,48,0.08);
+  --border: rgba(13,12,10,0.12); --border-mid: rgba(13,12,10,0.18);
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
   --sidebar-bg: #0D0C0A;
 }
 
@@ -71,9 +71,9 @@ body {
 .nav-icon { width:18px; height:18px; opacity:0.6; flex-shrink:0; }
 .nav-item.active .nav-icon { opacity:1; }
 .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(245,240,232,0.06); }
-.sidebar-user { font-size:0.72rem; color:rgba(245,240,232,0.45); margin-bottom:0.5rem; }
+.sidebar-user { font-size:0.82rem; color:rgba(245,240,232,0.45); margin-bottom:0.5rem; }
 .sidebar-logout {
-  font-size:0.72rem; color:rgba(245,240,232,0.35);
+  font-size:0.82rem; color:rgba(245,240,232,0.35);
   cursor:pointer; text-decoration:none;
 }
 .sidebar-logout:hover { color:#E05252; }
@@ -118,7 +118,7 @@ body {
   border-radius:10px; padding:1.25rem;
 }
 .kpi-label {
-  font-size:0.6rem; font-weight:600;
+  font-size:0.82rem; font-weight:600;
   letter-spacing:0.12em; text-transform:uppercase;
   color:var(--text-muted); margin-bottom:0.65rem;
 }
@@ -128,9 +128,9 @@ body {
   color:var(--stone); line-height:1;
 }
 .kpi-sub {
-  font-size:0.65rem; color:var(--text-muted); margin-top:0.4rem;
+  font-size:0.88rem; color:var(--text-muted); margin-top:0.4rem;
 }
-.kpi-trend { display:inline-flex; align-items:center; gap:4px; margin-top:0.4rem; font-size:0.65rem; font-weight:600; }
+.kpi-trend { display:inline-flex; align-items:center; gap:4px; margin-top:0.4rem; font-size:0.88rem; font-weight:600; }
 .kpi-trend.up { color:var(--green); }
 .kpi-trend.down { color:var(--red); }
 .kpi-trend.neutral { color:var(--text-muted); }
@@ -139,7 +139,7 @@ body {
 .data-table { width:100%; border-collapse:collapse; }
 .data-table th {
   text-align:left; padding:0.75rem 1rem;
-  font-size:0.6rem; font-weight:600;
+  font-size:0.82rem; font-weight:600;
   letter-spacing:0.12em; text-transform:uppercase;
   color:var(--text-muted);
   border-bottom:1px solid var(--border-mid);
@@ -154,12 +154,12 @@ body {
 }
 .data-table tr:hover td { background:var(--bg-card-hover); }
 .table-name { font-weight:500; }
-.table-muted { color:var(--text-muted); font-size:0.75rem; }
+.table-muted { color:var(--text-muted); font-size:0.82rem; }
 
 /* Badges */
 .badge {
   display:inline-flex; padding:3px 10px; border-radius:20px;
-  font-size:0.58rem; font-weight:600;
+  font-size:0.82rem; font-weight:600;
   letter-spacing:0.06em; text-transform:uppercase;
 }
 .badge.starter { background:var(--stone-pale); color:var(--stone); border:1px solid rgba(184,149,106,0.2); }
@@ -174,7 +174,7 @@ body {
   border-radius:10px; padding:1.5rem; margin-bottom:1.5rem;
 }
 .section-card-title {
-  font-size:0.62rem; font-weight:600;
+  font-size:0.88rem; font-weight:600;
   letter-spacing:0.15em; text-transform:uppercase;
   color:var(--text-muted); margin-bottom:1rem;
 }
@@ -190,9 +190,9 @@ body {
 .activity-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 .activity-dot.tap { background:var(--stone); }
 .activity-dot.signup { background:var(--green); }
-.activity-text { flex:1; font-size:0.78rem; color:var(--text); }
+.activity-text { flex:1; font-size:0.88rem; color:var(--text); }
 .activity-text strong { font-weight:500; }
-.activity-time { font-size:0.65rem; color:var(--text-muted); flex-shrink:0; font-variant-numeric:tabular-nums; }
+.activity-time { font-size:0.88rem; color:var(--text-muted); flex-shrink:0; font-variant-numeric:tabular-nums; }
 
 /* Source bars */
 .source-bars { display:flex; flex-direction:column; gap:0.75rem; }
@@ -202,9 +202,9 @@ body {
 .source-dot.hotel { background:var(--terra); }
 .source-dot.airbnb { background:var(--green); }
 .source-dot.nfc { background:var(--stone-light); }
-.source-name { flex:1; font-size:0.78rem; text-transform:capitalize; }
-.source-count { font-size:0.78rem; font-weight:600; color:var(--stone); }
-.source-pct { width:36px; text-align:right; font-size:0.68rem; color:var(--text-muted); }
+.source-name { flex:1; font-size:0.88rem; text-transform:capitalize; }
+.source-count { font-size:0.88rem; font-weight:600; color:var(--stone); }
+.source-pct { width:36px; text-align:right; font-size:0.88rem; color:var(--text-muted); }
 
 /* ── LOADING ── */
 .loading-wrap {
@@ -218,7 +218,7 @@ body {
   border-radius:50%; animation:spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform:rotate(360deg); } }
-.loading-text { font-size:0.78rem; color:var(--text-muted); }
+.loading-text { font-size:0.88rem; color:var(--text-muted); }
 
 /* ── RESPONSIVE ── */
 @media (max-width:768px) {
@@ -226,8 +226,35 @@ body {
   .main { margin-left:0; }
   .kpi-grid { grid-template-columns:repeat(2,1fr); }
   .grid-2 { grid-template-columns:1fr; }
-  .data-table { font-size:0.75rem; }
+  .data-table { font-size:0.82rem; }
   .data-table th, .data-table td { padding:0.6rem 0.5rem; }
+}
+
+/* ── FORMS ── */
+.form-input {
+  width:100%; padding:0.75rem 1rem;
+  background:var(--bg); border:1px solid var(--border-mid);
+  border-radius:8px; color:var(--text);
+  font-family:'Outfit',sans-serif; font-size:0.88rem;
+  outline:none; transition:border-color 0.2s;
+}
+.form-input::placeholder { color:var(--text-faint); }
+.form-input:focus { border-color:var(--stone); }
+select.form-input { cursor:pointer; }
+.btn-action {
+  padding:0.75rem 1.25rem;
+  background:var(--stone); border:none; border-radius:8px;
+  color:#0D0C0A; font-family:'Outfit',sans-serif;
+  font-size:0.88rem; font-weight:600;
+  cursor:pointer; transition:opacity 0.2s;
+  white-space:nowrap;
+}
+.btn-action:hover { opacity:0.85; }
+.success-msg {
+  padding:0.75rem 1rem; margin-top:0.75rem;
+  background:var(--green-bg); border:1px solid rgba(45,122,66,0.2);
+  border-radius:8px; font-size:0.85rem; color:var(--green);
+  display:none;
 }
 
 @keyframes fadeUp {
@@ -258,6 +285,10 @@ body {
     <a class="nav-item" data-page="drivers" onclick="showPage('drivers')">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Drivers
+    </a>
+    <a class="nav-item" data-page="nfc" onclick="showPage('nfc')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 18.7V21a1 1 0 001 1h10a1 1 0 001-1v-2.3"/><path d="M12 12a3 3 0 100 6 3 3 0 000-6z"/><path d="M12 8a7 7 0 100 12"/><path d="M12 4a11 11 0 100 16"/></svg>
+      NFC Cards
     </a>
     <a class="nav-item" data-page="analytics" onclick="showPage('analytics')">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 5-7"/></svg>
@@ -301,6 +332,27 @@ body {
 
   <!-- ═══════ BUSINESSES ═══════ -->
   <div class="page" id="page-businesses">
+    <!-- Add Business Form -->
+    <div class="section-card fade-in" id="addBizCard" style="display:none;margin-bottom:1.5rem">
+      <div class="section-card-title">Add New Business</div>
+      <form id="addBizForm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <input class="form-input" name="name" placeholder="Business name" required>
+        <input class="form-input" name="category" placeholder="Category (e.g. Restaurant)">
+        <input class="form-input" name="websiteUrl" placeholder="Website URL" required>
+        <input class="form-input" name="email" placeholder="Email" required>
+        <input class="form-input" name="contactName" placeholder="Contact name">
+        <input class="form-input" name="phone" placeholder="Phone">
+        <select class="form-input" name="plan">
+          <option value="starter">Starter — €80/mo</option>
+          <option value="growth" selected>Growth — €150/mo</option>
+          <option value="premium">Premium — €300/mo</option>
+        </select>
+        <button type="submit" class="btn-action">Add Business</button>
+      </form>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+      <button class="btn-action" onclick="toggleForm('addBizCard')" id="addBizBtn">+ Add Business</button>
+    </div>
     <div class="section-card fade-in" style="padding:0;overflow-x:auto">
       <table class="data-table" id="bizTable">
         <thead>
@@ -322,6 +374,23 @@ body {
 
   <!-- ═══════ DRIVERS ═══════ -->
   <div class="page" id="page-drivers">
+    <!-- Add Driver Form -->
+    <div class="section-card fade-in" id="addDriverCard" style="display:none;margin-bottom:1.5rem">
+      <div class="section-card-title">Add New Driver</div>
+      <form id="addDriverForm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <input class="form-input" name="name" placeholder="Driver name" required>
+        <input class="form-input" name="phone" placeholder="Phone / WhatsApp" required>
+        <select class="form-input" name="vehicle">
+          <option value="taxi">Taxi</option>
+          <option value="vtc">VTC / Uber</option>
+          <option value="other">Other</option>
+        </select>
+        <button type="submit" class="btn-action">Add Driver</button>
+      </form>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+      <button class="btn-action" onclick="toggleForm('addDriverCard')" id="addDriverBtn">+ Add Driver</button>
+    </div>
     <div class="section-card fade-in" style="padding:0;overflow-x:auto">
       <table class="data-table" id="driverTable">
         <thead>
@@ -341,11 +410,78 @@ body {
     </div>
   </div>
 
+  <!-- ═══════ NFC CARDS ═══════ -->
+  <div class="page" id="page-nfc">
+    <!-- How NFC Tracking Works -->
+    <div class="section-card fade-in" style="margin-bottom:1.5rem">
+      <div class="section-card-title">How NFC Tracking Works</div>
+      <div style="font-size:0.9rem;color:var(--text);line-height:1.8">
+        <p style="margin-bottom:1rem">Each NFC card has a unique URL programmed into it:</p>
+        <div style="background:var(--bg);border:1px solid var(--border-mid);border-radius:8px;padding:1rem;font-family:monospace;font-size:0.85rem;color:var(--stone);margin-bottom:1rem;word-break:break-all">
+          tapeo.co/go?d=<strong>DRIVER_ID</strong>&r=<strong>ROUTE</strong>&b=<strong>BUSINESS_ID</strong>
+        </div>
+        <p style="margin-bottom:0.5rem"><strong style="color:var(--stone)">d</strong> = Driver ID (who has the card)</p>
+        <p style="margin-bottom:0.5rem"><strong style="color:var(--stone)">r</strong> = Route (airport, city_center, hotel_zone, etc.)</p>
+        <p style="margin-bottom:0.5rem"><strong style="color:var(--stone)">b</strong> = Business ID (if card is assigned to a specific business)</p>
+        <p style="margin-bottom:1rem;color:var(--text-muted)">When a tourist taps → the server logs the tap with all metadata → redirects to the business website or the discover page.</p>
+        <p><strong>To program a card:</strong> Use any NFC writing app (NFC Tools, TagWriter) and write the URL above with the right driver/route/business IDs.</p>
+      </div>
+    </div>
+
+    <!-- Manual Tap Logger -->
+    <div class="section-card fade-in" style="margin-bottom:1.5rem">
+      <div class="section-card-title">Log a Tap Manually</div>
+      <form id="manualTapForm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <input class="form-input" name="placeName" placeholder="Place name" required>
+        <input class="form-input" name="placeId" placeholder="Place ID (e.g. biz_1)">
+        <select class="form-input" name="source">
+          <option value="taxi">Taxi</option>
+          <option value="hotel">Hotel</option>
+          <option value="airbnb">Airbnb</option>
+          <option value="nfc">NFC Direct</option>
+          <option value="manual">Manual</option>
+        </select>
+        <select class="form-input" name="route">
+          <option value="city_center">City Center</option>
+          <option value="airport">Airport</option>
+          <option value="hotel_zone">Hotel Zone</option>
+          <option value="train_station">Train Station</option>
+          <option value="old_town">Old Town</option>
+          <option value="other">Other</option>
+        </select>
+        <input class="form-input" name="driverId" placeholder="Driver ID (optional)">
+        <button type="submit" class="btn-action">Log Tap</button>
+      </form>
+    </div>
+
+    <!-- NFC Card Generator -->
+    <div class="section-card fade-in">
+      <div class="section-card-title">Generate NFC Card URL</div>
+      <form id="nfcGenForm" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem" onsubmit="return generateNfcUrl(event)">
+        <input class="form-input" id="nfcDriver" placeholder="Driver ID" required>
+        <select class="form-input" id="nfcRoute">
+          <option value="city_center">City Center</option>
+          <option value="airport">Airport</option>
+          <option value="hotel_zone">Hotel Zone</option>
+          <option value="train_station">Train Station</option>
+          <option value="old_town">Old Town</option>
+        </select>
+        <input class="form-input" id="nfcBusiness" placeholder="Business ID (optional)">
+        <button type="submit" class="btn-action">Generate URL</button>
+      </form>
+      <div id="nfcResult" style="display:none;margin-top:1rem;background:var(--bg);border:1px solid var(--border-mid);border-radius:8px;padding:1rem">
+        <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem">Program this URL into the NFC card:</div>
+        <div id="nfcUrl" style="font-family:monospace;font-size:0.9rem;color:var(--stone);word-break:break-all"></div>
+        <button onclick="copyNfcUrl()" class="btn-action" style="margin-top:0.75rem;font-size:0.82rem">Copy URL</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══════ ANALYTICS ═══════ -->
   <div class="page" id="page-analytics">
     <div class="section-card fade-in">
       <div class="section-card-title">Global Tap Analytics</div>
-      <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6" id="analyticsText">
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.6" id="analyticsText">
         Loading analytics data…
       </p>
     </div>
@@ -420,8 +556,97 @@ function showPage(p) {
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===p));
-  const t={overview:'Admin <em>overview</em>',businesses:'<em>Businesses</em>',drivers:'<em>Drivers</em>',analytics:'<em>Analytics</em>'};
+  const t={overview:'Admin <em>overview</em>',businesses:'<em>Businesses</em>',drivers:'<em>Drivers</em>',nfc:'<em>NFC</em> Cards',analytics:'<em>Analytics</em>'};
   document.getElementById('pageTitle').innerHTML=t[p]||'';
+}
+
+/* ── TOGGLE FORMS ── */
+function toggleForm(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ── ADD BUSINESS ── */
+document.getElementById('addBizForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd);
+  try {
+    const res = await fetch('/api/business/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      e.target.reset();
+      document.getElementById('addBizCard').style.display = 'none';
+      load(); // refresh
+    }
+  } catch(_) {}
+});
+
+/* ── ADD DRIVER ── */
+document.getElementById('addDriverForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd);
+  try {
+    const res = await fetch('/api/driver/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      e.target.reset();
+      document.getElementById('addDriverCard').style.display = 'none';
+      load(); // refresh
+    }
+  } catch(_) {}
+});
+
+/* ── LOG TAP MANUALLY ── */
+document.getElementById('manualTapForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = {
+    placeId: fd.get('placeId') || 'manual_' + Date.now(),
+    placeName: fd.get('placeName'),
+    driverId: fd.get('driverId') || 'manual',
+    src: fd.get('source'),
+    route: fd.get('route')
+  };
+  try {
+    const res = await fetch('/api/tap', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      e.target.reset();
+      alert('Tap logged successfully');
+      load();
+    }
+  } catch(_) {}
+});
+
+/* ── NFC URL GENERATOR ── */
+function generateNfcUrl(e) {
+  e.preventDefault();
+  const d = document.getElementById('nfcDriver').value;
+  const r = document.getElementById('nfcRoute').value;
+  const b = document.getElementById('nfcBusiness').value;
+  let url = window.location.origin + '/go?d=' + encodeURIComponent(d) + '&r=' + encodeURIComponent(r);
+  if (b) url += '&b=' + encodeURIComponent(b);
+  document.getElementById('nfcUrl').textContent = url;
+  document.getElementById('nfcResult').style.display = 'block';
+  return false;
+}
+
+function copyNfcUrl() {
+  const url = document.getElementById('nfcUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    alert('URL copied to clipboard');
+  });
 }
 
 /* ── RENDER OVERVIEW ── */
