@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
 /* ════════════════════════════════════════════
    TOKENS
 ════════════════════════════════════════════ */
-:root {
+:root, [data-theme="dark"] {
   --ink:          #0D0C0A;
   --ink-soft:     #181614;
   --ink-card:     #141210;
@@ -27,6 +27,20 @@
   --border-mid:   rgba(245,240,232,0.13);
   --r:            10px;
   --max:          1160px;
+}
+[data-theme="light"] {
+  --ink:          #F5F3EF;
+  --ink-soft:     #EDEAE4;
+  --ink-card:     #FFFFFF;
+  --cream:        #0D0C0A;
+  --cream-muted:  rgba(13,12,10,0.55);
+  --stone:        #8C6D45;
+  --stone-light:  #7A5F3A;
+  --stone-pale:   rgba(140,109,69,0.08);
+  --terra:        #A84E2E;
+  --green:        #2D7A42;
+  --border:       rgba(13,12,10,0.08);
+  --border-mid:   rgba(13,12,10,0.14);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -57,6 +71,9 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: background 0.3s;
+}
+[data-theme="light"] .nav {
+  background: rgba(245,243,239,0.92);
 }
 
 .nav-logo {
@@ -148,6 +165,33 @@ body {
   color: var(--ink);
 }
 
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  background: rgba(245,240,232,0.03);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.theme-btn:hover { border-color: var(--stone); }
+.theme-icon-label {
+  font-size: 1rem;
+  line-height: 1;
+}
+[data-theme="light"] .theme-btn {
+  background: rgba(13,12,10,0.05);
+  border-color: rgba(13,12,10,0.15);
+}
+
 .nav-mobile-toggle {
   display: none;
   flex-direction: column;
@@ -220,6 +264,14 @@ body {
     rgba(13,12,10,0.92) 0%,
     rgba(13,12,10,0.65) 50%,
     rgba(13,12,10,0.88) 100%
+  );
+}
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(245,243,239,0.94) 0%,
+    rgba(245,243,239,0.75) 50%,
+    rgba(245,243,239,0.92) 100%
   );
 }
 
@@ -1099,6 +1151,11 @@ footer {
       <button class="lang-btn active" type="button" data-lang="en">EN</button>
       <button class="lang-btn" type="button" data-lang="es">ES</button>
     </li>
+    <li class="theme-switch">
+      <button class="theme-btn" type="button" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-icon-label" id="themeLabel">☀</span>
+      </button>
+    </li>
   </ul>
   <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1596,6 +1653,24 @@ footer {
 </footer>
 
 <script>
+/* ── THEME TOGGLE ── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  html.dataset.theme = next;
+  localStorage.setItem('tapeo-theme', next);
+  updateThemeIcon();
+}
+function updateThemeIcon() {
+  const label = document.getElementById('themeLabel');
+  if (label) label.textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾';
+}
+(function() {
+  const saved = localStorage.getItem('tapeo-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  updateThemeIcon();
+})();
+
 const ARROW_ICON = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>';
 let currentLang = 'en';
 
@@ -1608,7 +1683,7 @@ const I18N = {
     },
     nav: {
       logoTagline: 'Local Traffic Network',
-      links: ['How it works', 'For Businesses', 'For Partners', 'See live demo', 'Get featured'],
+      links: ['How it works', 'For Businesses', 'For Partners', 'See live demo', 'Sign In'],
       menuAria: 'Menu',
       languageAria: 'Language selector'
     },
@@ -1817,7 +1892,7 @@ const I18N = {
     },
     nav: {
       logoTagline: 'Red de Trafico Local',
-      links: ['Como funciona', 'Para negocios', 'Para socios', 'Ver demo en vivo', 'Destacar mi negocio'],
+      links: ['Como funciona', 'Para negocios', 'Para socios', 'Ver demo en vivo', 'Iniciar sesion'],
       menuAria: 'Menu',
       languageAria: 'Selector de idioma'
     },
