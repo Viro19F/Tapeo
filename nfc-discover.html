@@ -670,23 +670,23 @@
     <h2 class="section-title">The most <em>iconic</em> meal in Castile</h2>
   </div>
 
-  <a class="featured-card" href="https://www.mesondecandido.es" target="_blank" onclick="logTap('candido', 'Mesón de Cándido')">
+  <a class="featured-card" href="#" onclick="logTap('featured', 'Featured Restaurant');return false;">
     <div class="featured-card-photo">
       <img class="featured-card-img"
         src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&fit=crop"
-        alt="Mesón de Cándido"
+        alt="Featured Restaurant"
         loading="eager">
       <div class="featured-card-photo-overlay"></div>
-      <div class="featured-badge">Most Iconic</div>
+      <div class="featured-badge">Featured</div>
       <div class="featured-card-bottom">
-        <div class="featured-card-cat">Cochinillo · Since 1786</div>
-        <div class="featured-card-name">Mesón de Cándido</div>
+        <div class="featured-card-cat">Castilian Cuisine · Historic</div>
+        <div class="featured-card-name">Your Restaurant Here</div>
       </div>
     </div>
     <div class="featured-card-body">
-      <div class="featured-card-tagline">"There is no more authentic Segovian experience."</div>
+      <div class="featured-card-tagline">"This space is reserved for our first featured partner."</div>
       <div class="featured-card-desc">
-        Founded beneath the Roman aqueduct in 1786, Cándido's cochinillo asado — suckling pig roasted in wood-fired ovens, cut tableside with a ceramic plate — has been served to kings, presidents, and Hemingway. The skin crackles like porcelain. The memory lasts longer.
+        This premium spot showcases the best dining experience in Segovia. Traditional Castilian cuisine, wood-fired ovens, and an unforgettable atmosphere. Your restaurant could be here — featured to every tourist who arrives in the city.
       </div>
       <div class="featured-card-footer">
         <div class="price-tag">
@@ -695,7 +695,7 @@
             <div class="price-dot-el filled"></div>
             <div class="price-dot-el filled"></div>
           </div>
-          <span class="price-label">€40–55 per person</span>
+          <span class="price-label">Premium placement</span>
         </div>
         <button class="visit-btn">
           Reserve
@@ -745,54 +745,54 @@
 /* ─── DATA ─── */
 const places = [
   {
-    id: 'duque',
-    name: 'Restaurante Duque',
-    cat: 'Castilian · Family-Run',
-    desc: 'Five generations, the same wood-fired oven, the same recipe. Since 1895. Locals eat here at lunch — never a bad sign.',
+    id: 'partner1',
+    name: 'Available Spot',
+    cat: 'Castilian · Traditional',
+    desc: 'This spot is reserved for a partner restaurant. Traditional cuisine, warm atmosphere, and the kind of food tourists remember.',
     price: '€€€',
     badge: null,
     photo: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80&fit=crop&crop=center',
-    url: 'https://www.restauranteduque.es'
+    url: '#'
   },
   {
-    id: 'josemaria',
-    name: 'José María',
-    cat: 'Cochinillo · Wine',
-    desc: 'The great rival. Locals argue about which cochinillo wins. José María\'s skin is crispier; the wine cellar is exceptional.',
+    id: 'partner2',
+    name: 'Available Spot',
+    cat: 'Wine · Fine Dining',
+    desc: 'A premium placement for a restaurant that wants to be discovered by every tourist arriving in Segovia.',
     price: '€€€',
-    badge: 'Locals\' Pick',
+    badge: 'Premium Spot',
     photo: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80&fit=crop&crop=center',
-    url: 'https://www.rtejosemaria.com'
+    url: '#'
   },
   {
-    id: 'fogon',
-    name: 'El Fogón Sefardí',
-    cat: 'Creative · Jewish Quarter',
-    desc: 'A 15th-century building, Sephardic recipes, lamb with honey and almonds. Reserve ahead — worth the effort.',
+    id: 'partner3',
+    name: 'Available Spot',
+    cat: 'Creative · Local',
+    desc: 'Showcase your unique dishes and atmosphere to tourists who are ready to explore and spend.',
     price: '€€€',
     badge: null,
     photo: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80&fit=crop&crop=center',
-    url: 'https://www.lacasamudejar.com/restaurante'
+    url: '#'
   },
   {
-    id: 'cueva',
-    name: 'Cueva de San Esteban',
-    cat: 'Cave Bar · Pintxos',
-    desc: 'Carved into the rock beneath a church. Where Segovians go Friday evenings. Come for one glass and stay for three.',
+    id: 'partner4',
+    name: 'Available Spot',
+    cat: 'Bar · Tapas',
+    desc: 'The perfect place for tourists looking for an authentic local experience. Your bar could be featured here.',
     price: '€€',
-    badge: 'Local Secret',
+    badge: null,
     photo: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop&crop=center',
-    url: 'https://maps.google.com/?q=Cueva+de+San+Esteban+Segovia'
+    url: '#'
   },
   {
-    id: 'mayor',
-    name: 'Mesón Mayor',
-    cat: 'Terrace · Plaza Mayor',
-    desc: 'The Cathedral lit gold, the plaza filling at dusk. The best free view in Castile. Come for a vermouth before dinner.',
+    id: 'partner5',
+    name: 'Available Spot',
+    cat: 'Terrace · Views',
+    desc: 'A featured spot for a restaurant with great views and atmosphere. Tourists see this the moment they arrive.',
     price: '€€',
     badge: null,
     photo: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80&fit=crop&crop=center',
-    url: 'https://maps.google.com/?q=Plaza+Mayor+Segovia'
+    url: '#'
   }
 ];
 
