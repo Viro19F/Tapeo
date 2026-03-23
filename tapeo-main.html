@@ -1381,39 +1381,104 @@ setInterval(()=>goWhy((curWhy+1)%4),5000);
     <h2 class="section-h2 reveal">The network customers<br><em>actually encounter</em></h2>
     <p class="section-lead reveal">Local businesses can't outbid chains on Google. But they can be the first thing a customer sees when they step off a plane, check into a hotel, or open their Airbnb door.</p>
 
-    <!-- Channel match -->
+    <!-- Channel match — Interactive tabs -->
     <div class="section-eyebrow" style="margin-bottom:0.75rem">
       <div class="section-line"></div>
       <span class="section-tag">Match your business to the right channel</span>
     </div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:1.5rem;line-height:1">Different placements. <em style="font-style:italic;color:var(--stone-light)">Different power.</em></h3>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:2rem;line-height:1">Different placements. <em style="font-style:italic;color:var(--stone-light)">Different power.</em></h3>
 
-    <div class="steps-grid reveal" style="margin-bottom:3.5rem">
-      <div class="step-card">
-        <div class="step-num-big">🏠</div>
-        <div class="step-icon">🏠</div>
-        <div class="step-title">Airbnb &amp; Hotel Rooms</div>
-        <div class="step-desc" style="margin-bottom:1rem">Guests are staying 3–5 nights. They tap on day one to find where to eat, and tap again the next evening. The same customer comes back.</div>
-        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:0.4rem">Best for</div>
-        <div style="font-size:0.78rem;font-weight:300;color:var(--cream-muted);line-height:1.6">Restaurants · Bars · Local shops · Experiences · Day trips</div>
+    <!-- Channel tabs -->
+    <div style="display:flex;gap:0;margin-bottom:0;border-radius:12px 12px 0 0;overflow:hidden;border:1px solid var(--border-mid);border-bottom:none" id="channelTabs">
+      <button class="ch-tab active" onclick="goChannel(0)" style="flex:1;padding:16px 12px;background:var(--ink-card);border:none;cursor:pointer;font-family:inherit;transition:all .25s;border-right:1px solid var(--border)">
+        <div style="font-size:1.5rem;margin-bottom:6px">🏠</div>
+        <div style="font-size:0.78rem;font-weight:600;color:var(--cream)">Airbnb & Hotels</div>
+      </button>
+      <button class="ch-tab" onclick="goChannel(1)" style="flex:1;padding:16px 12px;background:transparent;border:none;cursor:pointer;font-family:inherit;transition:all .25s;border-right:1px solid var(--border)">
+        <div style="font-size:1.5rem;margin-bottom:6px">🏨</div>
+        <div style="font-size:0.78rem;font-weight:600;color:var(--cream-muted)">Hotel Concierge</div>
+      </button>
+      <button class="ch-tab" onclick="goChannel(2)" style="flex:1;padding:16px 12px;background:transparent;border:none;cursor:pointer;font-family:inherit;transition:all .25s">
+        <div style="font-size:1.5rem;margin-bottom:6px">🚕</div>
+        <div style="font-size:0.78rem;font-weight:600;color:var(--cream-muted)">Taxis & Ubers</div>
+      </button>
+    </div>
+
+    <!-- Channel content panels -->
+    <div style="border:1px solid var(--border-mid);border-top:none;border-radius:0 0 12px 12px;overflow:hidden;margin-bottom:3.5rem">
+      <div class="ch-panel active" data-ch="0" style="padding:2.5rem;background:var(--ink-card);display:flex;gap:2.5rem;align-items:center">
+        <div style="flex:1">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;line-height:1.15">Guests stay <em style="color:var(--stone-light)">3–5 nights</em></div>
+          <p style="font-size:0.88rem;color:var(--cream-muted);line-height:1.75;margin-bottom:1.25rem">They tap on day one to find where to eat, and tap again the next evening. The same customer comes back — repeatedly. Your NFC card sits in their room for the entire stay.</p>
+          <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem">Best for</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Restaurants</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Bars</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Local shops</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Experiences</span>
+          </div>
+        </div>
+        <div style="width:180px;height:180px;border-radius:16px;background:rgba(184,149,106,0.06);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0">
+          <div style="font-size:2.5rem;margin-bottom:8px">🏠</div>
+          <div style="font-size:0.72rem;color:var(--stone);font-weight:600">Avg. 3.2 taps</div>
+          <div style="font-size:0.65rem;color:var(--cream-muted)">per guest stay</div>
+        </div>
       </div>
-      <div class="step-card">
-        <div class="step-num-big">🏨</div>
-        <div class="step-icon">🏨</div>
-        <div class="step-title">Hotel Concierge &amp; Lobby</div>
-        <div class="step-desc" style="margin-bottom:1rem">High-spend travellers asking the concierge where to go. The card is the digital recommendation — trusted, curated, always visible in their space.</div>
-        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:0.4rem">Best for</div>
-        <div style="font-size:0.78rem;font-weight:300;color:var(--cream-muted);line-height:1.6">Premium restaurants · Wine bars · Private tours · Luxury experiences</div>
+      <div class="ch-panel" data-ch="1" style="padding:2.5rem;background:var(--ink-card);display:none;gap:2.5rem;align-items:center">
+        <div style="flex:1">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;line-height:1.15">High-spend travellers asking <em style="color:var(--stone-light)">where to go</em></div>
+          <p style="font-size:0.88rem;color:var(--cream-muted);line-height:1.75;margin-bottom:1.25rem">The card is the digital recommendation — trusted, curated, always visible in their space. When the concierge recommends, guests follow. Your business is the answer they see first.</p>
+          <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem">Best for</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Premium restaurants</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Wine bars</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Private tours</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Luxury</span>
+          </div>
+        </div>
+        <div style="width:180px;height:180px;border-radius:16px;background:rgba(184,149,106,0.06);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0">
+          <div style="font-size:2.5rem;margin-bottom:8px">🏨</div>
+          <div style="font-size:0.72rem;color:var(--stone);font-weight:600">High-value</div>
+          <div style="font-size:0.65rem;color:var(--cream-muted)">premium audience</div>
+        </div>
       </div>
-      <div class="step-card">
-        <div class="step-num-big">🚕</div>
-        <div class="step-icon">🚕</div>
-        <div class="step-title">Taxis &amp; Ubers</div>
-        <div class="step-desc" style="margin-bottom:1rem">High volume, high reach. Every customer arriving in the city passes through a taxi. Perfect for brand awareness, product launches, and anything you want every visitor to see.</div>
-        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:0.4rem">Best for</div>
-        <div style="font-size:0.78rem;font-weight:300;color:var(--cream-muted);line-height:1.6">Mass-market restaurants · Products · Tours · Events · Anything customer-facing</div>
+      <div class="ch-panel" data-ch="2" style="padding:2.5rem;background:var(--ink-card);display:none;gap:2.5rem;align-items:center">
+        <div style="flex:1">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;line-height:1.15">Every customer passes through <em style="color:var(--stone-light)">a taxi</em></div>
+          <p style="font-size:0.88rem;color:var(--cream-muted);line-height:1.75;margin-bottom:1.25rem">High volume, high reach. Every customer arriving in the city passes through a taxi. Perfect for brand awareness, product launches, and anything you want every visitor to see. Maximum exposure.</p>
+          <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem">Best for</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Restaurants</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Products</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Tours</span>
+            <span style="padding:5px 12px;border:1px solid var(--border-mid);border-radius:100px;font-size:0.72rem;color:var(--cream-muted)">Events</span>
+          </div>
+        </div>
+        <div style="width:180px;height:180px;border-radius:16px;background:rgba(184,149,106,0.06);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0">
+          <div style="font-size:2.5rem;margin-bottom:8px">🚕</div>
+          <div style="font-size:0.72rem;color:var(--stone);font-weight:600">Highest volume</div>
+          <div style="font-size:0.65rem;color:var(--cream-muted)">mass reach</div>
+        </div>
       </div>
     </div>
+    <style>
+      .ch-tab.active{background:var(--ink-card)!important}
+      .ch-tab.active div:last-child{color:var(--cream)!important}
+      .ch-tab:not(.active):hover{background:rgba(184,149,106,0.04)!important}
+      .ch-panel{animation:fadeIn .4s ease}
+      .ch-panel.active{display:flex!important}
+      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+      @media(max-width:640px){.ch-panel{flex-direction:column!important}.ch-panel>div:last-child{width:100%!important;height:120px!important}}
+    </style>
+    <script>
+      let curCh=0;
+      function goChannel(n){
+        curCh=n;
+        document.querySelectorAll('.ch-tab').forEach((t,i)=>{t.classList.toggle('active',i===n);t.style.background=i===n?'var(--ink-card)':'transparent';t.querySelector('div:last-child').style.color=i===n?'var(--cream)':'var(--cream-muted)'});
+        document.querySelectorAll('.ch-panel').forEach((p,i)=>{p.style.display=i===n?'flex':'none';p.classList.toggle('active',i===n)});
+      }
+      setInterval(()=>goChannel((curCh+1)%3),5000);
+    </script>
 
     <!-- Comparison table -->
     <div class="compare-table reveal">
