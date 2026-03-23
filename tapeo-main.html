@@ -1282,38 +1282,92 @@ footer {
 
 <hr class="divider">
 
-<!-- ════ WHY TAPEO ════ -->
-<section class="section reveal" id="why">
-  <div class="section-eyebrow">
-    <div class="section-line"></div>
-    <span class="section-tag">Why Tapeo wins</span>
+<!-- ════ WHY TAPEO — FULL-WIDTH SLIDER ════ -->
+<section class="reveal" id="why" style="padding:4rem 0;overflow:hidden">
+  <div class="section" style="margin-bottom:2rem">
+    <div class="section-eyebrow">
+      <div class="section-line"></div>
+      <span class="section-tag">Why Tapeo wins</span>
+    </div>
+    <h2 class="section-h2">What Google Ads<br><em>can't give you</em></h2>
   </div>
-  <h2 class="section-h2">What Google Ads<br><em>can't give you</em></h2>
-  <p class="section-lead">Digital ads reach devices. We reach people — in the right place, at the right moment, ready to act. No algorithm. No bidding. Just presence.</p>
 
-  <div class="advantages-grid">
-    <div class="advantage-card reveal">
-      <div class="adv-icon">🎯</div>
-      <div class="adv-title">Verified physical presence</div>
-      <div class="adv-desc">NFC requires 1–4cm proximity. Every tap is a real human — in a taxi, a hotel room, or an Airbnb — in your city. Bots cannot tap a card.</div>
+  <!-- Slider -->
+  <div style="position:relative;max-width:900px;margin:0 auto;padding:0 1.5rem">
+    <div id="whySlider" style="overflow:hidden;border-radius:16px;border:1px solid rgba(184,149,106,0.15)">
+      <div id="whyTrack" style="display:flex;transition:transform 0.5s cubic-bezier(.4,0,.2,1)">
+
+        <div class="why-slide" style="min-width:100%;padding:3rem 2.5rem;background:linear-gradient(135deg,rgba(184,149,106,0.06) 0%,rgba(20,18,16,0.95) 100%)">
+          <div style="font-size:3rem;margin-bottom:1rem;opacity:.8">01</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:1rem;line-height:1.15">Verified physical <em style="color:var(--stone-light)">presence</em></div>
+          <p style="font-size:0.92rem;color:var(--cream-muted);line-height:1.75;max-width:520px">NFC requires 1–4cm proximity. Every tap is a real person — in a taxi, a hotel room, or an Airbnb — already in your city. Bots cannot tap a physical card. Every impression is verified and real.</p>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">100% verified</div>
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">0% bot traffic</div>
+          </div>
+        </div>
+
+        <div class="why-slide" style="min-width:100%;padding:3rem 2.5rem;background:linear-gradient(135deg,rgba(184,149,106,0.06) 0%,rgba(20,18,16,0.95) 100%)">
+          <div style="font-size:3rem;margin-bottom:1rem;opacity:.8">02</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:1rem;line-height:1.15">The right moment, <em style="color:var(--stone-light)">every time</em></div>
+          <p style="font-size:0.92rem;color:var(--cream-muted);line-height:1.75;max-width:520px">A customer in a taxi is deciding where to eat right now. A hotel guest is planning tomorrow. An Airbnb arrival taps night one — and comes back night three. You're there at the decision point.</p>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">Decision moment</div>
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">High intent</div>
+          </div>
+        </div>
+
+        <div class="why-slide" style="min-width:100%;padding:3rem 2.5rem;background:linear-gradient(135deg,rgba(184,149,106,0.06) 0%,rgba(20,18,16,0.95) 100%)">
+          <div style="font-size:3rem;margin-bottom:1rem;opacity:.8">03</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:1rem;line-height:1.15">3× cheaper than <em style="color:var(--stone-light)">Google</em></div>
+          <p style="font-size:0.92rem;color:var(--cream-muted);line-height:1.75;max-width:520px">A Google Ads click for "restaurant Segovia" costs €2–3 with no location guarantee. Our tap costs €0.75 and the person is already in the city, ready to spend. Real presence at a third of the cost.</p>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">€0.75 per tap</div>
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">vs €2.50 Google</div>
+          </div>
+        </div>
+
+        <div class="why-slide" style="min-width:100%;padding:3rem 2.5rem;background:linear-gradient(135deg,rgba(184,149,106,0.06) 0%,rgba(20,18,16,0.95) 100%)">
+          <div style="font-size:3rem;margin-bottom:1rem;opacity:.8">04</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin-bottom:1rem;line-height:1.15">A network that <em style="color:var(--stone-light)">compounds</em></div>
+          <p style="font-size:0.92rem;color:var(--cream-muted);line-height:1.75;max-width:520px">Every new taxi, hotel, and Airbnb we add increases your reach automatically. The more the network grows, the more valuable your placement becomes. You get bigger without doing anything.</p>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">Auto-scaling</div>
+            <div style="padding:8px 16px;border:1px solid var(--border-mid);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--stone)">Network effect</div>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="advantage-card reveal">
-      <div class="adv-icon">⏱️</div>
-      <div class="adv-title">The right moment, every time</div>
-      <div class="adv-desc">A customer in a taxi is deciding where to eat. A hotel guest is planning tomorrow. An Airbnb arrival taps night one — and again night three. Every moment, you're there.</div>
-    </div>
-    <div class="advantage-card reveal">
-      <div class="adv-icon">💶</div>
-      <div class="adv-title">3× cheaper than Google</div>
-      <div class="adv-desc">A Google Ads click for "restaurant Segovia" costs €2–3 with no location guarantee. Our tap costs €0.75 and the person is already in the city, ready to spend.</div>
-    </div>
-    <div class="advantage-card reveal">
-      <div class="adv-icon">📈</div>
-      <div class="adv-title">A network that compounds</div>
-      <div class="adv-desc">Every new taxi, hotel, and Airbnb we add increases your reach automatically. The more the network grows, the more valuable your placement becomes.</div>
+
+    <!-- Controls -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem;padding:0 0.25rem">
+      <div style="display:flex;gap:6px" id="whyDots">
+        <button class="wdot active" onclick="goWhy(0)"></button>
+        <button class="wdot" onclick="goWhy(1)"></button>
+        <button class="wdot" onclick="goWhy(2)"></button>
+        <button class="wdot" onclick="goWhy(3)"></button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="goWhy((curWhy-1+4)%4)" style="width:36px;height:36px;border-radius:50%;background:var(--ink-card);border:1px solid var(--border-mid);color:var(--cream-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:border-color .2s" onmouseover="this.style.borderColor='var(--stone)'" onmouseout="this.style.borderColor='rgba(245,240,232,0.14)'">←</button>
+        <button onclick="goWhy((curWhy+1)%4)" style="width:36px;height:36px;border-radius:50%;background:var(--ink-card);border:1px solid var(--border-mid);color:var(--cream-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:border-color .2s" onmouseover="this.style.borderColor='var(--stone)'" onmouseout="this.style.borderColor='rgba(245,240,232,0.14)'">→</button>
+      </div>
     </div>
   </div>
 </section>
+<style>
+.wdot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(184,149,106,0.2);cursor:pointer;padding:0;transition:all .3s}
+.wdot.active{background:var(--stone);width:24px;border-radius:4px}
+</style>
+<script>
+let curWhy=0;
+function goWhy(n){
+  curWhy=n;
+  document.getElementById('whyTrack').style.transform='translateX(-'+(n*100)+'%)';
+  document.querySelectorAll('.wdot').forEach((d,i)=>d.classList.toggle('active',i===n));
+}
+setInterval(()=>goWhy((curWhy+1)%4),5000);
+</script>
 
 <hr class="divider">
 
