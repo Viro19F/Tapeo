@@ -1519,71 +1519,78 @@ setInterval(()=>goWhy((curWhy+1)%4),5000);
       </div>
     </div>
 
-    <!-- Pricing -->
+    <!-- Combined signup — toggle between Business and Partner -->
     <div class="section-eyebrow" style="margin-bottom:0.75rem">
       <div class="section-line"></div>
-      <span class="section-tag">Choose your plan</span>
+      <span class="section-tag">Get started</span>
     </div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:1.5rem;line-height:1">Start small, <em style="font-style:italic;color:var(--stone-light)">grow fast</em></h3>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:2rem;line-height:1">Join the <em style="font-style:italic;color:var(--stone-light)">network</em></h3>
 
-    <div class="pricing-grid reveal">
-      <div class="plan-card" onclick="selectBizPlan('starter',this)">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>€</sup>80<sub>/mo</sub></div>
-        <div class="plan-tagline">10 taxis · Pay per tap</div>
-        <div class="plan-features">
-          <div class="plan-feature">Presence in 10 general taxis</div>
-          <div class="plan-feature">Daily tap tracking</div>
-          <div class="plan-feature">Weekly analytics report</div>
-          <div class="plan-feature">Cancel anytime</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem" id="joinSection">
+      <!-- Left: pitch + toggle -->
+      <div class="reveal">
+        <!-- Toggle tabs -->
+        <div style="display:flex;gap:0;margin-bottom:1.5rem;border-radius:10px;overflow:hidden;border:1px solid var(--border-mid)">
+          <button class="join-tab active" onclick="toggleJoin('biz')" id="joinTabBiz" style="flex:1;padding:14px;background:var(--ink-card);border:none;cursor:pointer;font-family:inherit;font-size:0.82rem;font-weight:600;color:var(--cream);transition:all .2s;border-right:1px solid var(--border)">Join as a Business</button>
+          <button class="join-tab" onclick="toggleJoin('partner')" id="joinTabPartner" style="flex:1;padding:14px;background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:0.82rem;font-weight:600;color:var(--cream-muted);transition:all .2s">Become a Partner</button>
         </div>
-        <button class="plan-btn">Select Starter</button>
+
+        <!-- Business pitch -->
+        <div id="joinPitchBiz">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;line-height:1.15">Your business, across the whole <em style="color:var(--stone-light)">customer network</em></h3>
+          <p style="font-size:0.85rem;color:var(--cream-muted);line-height:1.75;margin-bottom:1.25rem">Cards live within 48 hours across taxis, hotels, and Airbnbs. No setup fee. We'll contact you the same day.</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Cards live in 48 hours</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Dashboard access from day one</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Cancel anytime — no lock-in</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Personal WhatsApp contact</div>
+          </div>
+        </div>
+
+        <!-- Partner pitch (hidden by default) -->
+        <div id="joinPitchPartner" style="display:none">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;line-height:1.15">Turn your space into <em style="color:var(--stone-light)">passive income</em></h3>
+          <p style="font-size:0.85rem;color:var(--cream-muted);line-height:1.75;margin-bottom:1.25rem">Taxi, Uber, Airbnb, or hotel — if customers pass through your space, you can earn from it. We install the card, you earn per tap. Zero effort.</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>€30/month base + €0.30 per tap</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Active partners earn €142/month avg</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>We install the card — you do nothing</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--cream-muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--stone);flex-shrink:0"></div>Paid weekly via Bizum</div>
+          </div>
+        </div>
       </div>
 
-      <div class="plan-card featured" onclick="selectBizPlan('growth',this)">
-        <div class="plan-badge">Most Popular</div>
-        <div class="plan-name">Growth</div>
-        <div class="plan-price"><sup>€</sup>200<sub>/mo</sub></div>
-        <div class="plan-tagline">30 taxis + hotels + route targeting</div>
-        <div class="plan-features">
-          <div class="plan-feature">30 taxis + hotel placement</div>
-          <div class="plan-feature">Airport & station routes</div>
-          <div class="plan-feature">Live dashboard access</div>
-          <div class="plan-feature">Priority card placement</div>
+      <!-- Right: forms (toggle between biz and partner) -->
+      <div>
+        <!-- Partner form (hidden by default) -->
+        <div class="form-card reveal" id="partnerFormCard" style="display:none">
+          <div class="form-title">Join as a <em>partner</em></div>
+          <form class="form" id="partnerFormInline" onsubmit="submitDriver(event)">
+            <div class="form-group">
+              <label class="form-label">Your name</label>
+              <input class="form-input" type="text" name="name" placeholder="Carlos Martínez" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Partner type</label>
+              <select class="form-select" name="vehicle">
+                <option value="taxi">Taxi driver</option>
+                <option value="vtc">Uber / VTC driver</option>
+                <option value="airbnb">Airbnb host</option>
+                <option value="hotel">Hotel</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp number</label>
+              <input class="form-input" type="tel" name="phone" placeholder="+34 600 000 000" required>
+            </div>
+            <button class="form-submit" type="submit">
+              Join the network
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
+            </button>
+            <div class="form-note">We'll WhatsApp you within 24h to install your card.</div>
+          </form>
         </div>
-        <button class="plan-btn">Select Growth</button>
-      </div>
-
-      <div class="plan-card" onclick="selectBizPlan('premium',this)">
-        <div class="plan-name">Premium</div>
-        <div class="plan-price"><sup>€</sup>400<sub>/mo</sub></div>
-        <div class="plan-tagline">50 taxis · Exclusive category</div>
-        <div class="plan-features">
-          <div class="plan-feature">50 taxis + all hotels + Airbnbs</div>
-          <div class="plan-feature">Exclusive category on key routes</div>
-          <div class="plan-feature">Full analytics + route insights</div>
-          <div class="plan-feature">WhatsApp support + monthly review</div>
-        </div>
-        <button class="plan-btn">Select Premium</button>
-      </div>
-    </div>
-
-    <!-- Business signup form -->
-    <div class="signup-grid" id="biz-form">
-      <div class="signup-pitch reveal">
-        <div class="section-eyebrow" style="margin-bottom:0.75rem">
-          <div class="section-line"></div>
-          <span class="section-tag">Get started today</span>
-        </div>
-        <h3>Your business,<br>across the whole<br><em>customer network</em></h3>
-        <p>Cards live within 48 hours across taxis, hotels, and Airbnbs. No setup fee. No long-term commitment on the Starter plan. We'll contact you the same day.</p>
-        <div class="pitch-points">
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Cards live in taxis, hotels &amp; Airbnbs within 48h</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Dashboard access from day one</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Cancel anytime — no lock-in</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Personal WhatsApp contact for setup</div>
-        </div>
-      </div>
       <div class="form-card reveal" id="bizFormCard">
         <div class="form-title">Join <em>the network</em></div>
         <form class="form" id="bizForm" onsubmit="submitBiz(event)">
@@ -1646,111 +1653,34 @@ setInterval(()=>goWhy((curWhy+1)%4),5000);
       </div>
     </div>
 
-  </div>
-</section>
+    </div><!-- close grid -->
 
-<!-- ════ FOR PARTNERS ════ -->
-<section class="driver-section" id="partners">
-  <div class="driver-inner">
-    <div class="section-eyebrow">
-      <div class="section-line"></div>
-      <span class="section-tag">For partners</span>
-    </div>
-    <h2 class="section-h2 reveal">Turn your space into<br><em>passive income</em></h2>
-    <p class="section-lead reveal">Taxi driver, Uber driver, Airbnb host, or hotel — if customers pass through your space, you can earn from it. We install the card, you earn per tap. Zero effort.</p>
-
-    <!-- 3 partner types -->
-    <div class="steps-grid reveal" style="margin-bottom:3rem">
-      <div class="step-card">
-        <div class="step-num-big">🚕</div>
-        <div class="step-icon">🚕</div>
-        <div class="step-title">Taxi &amp; Uber Drivers</div>
-        <div class="step-desc">We install a card on your headrest. Every customer tap earns you €0.30 plus a €30/month guaranteed base. Active drivers earn €142/month extra on average.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num-big">🏠</div>
-        <div class="step-icon">🏠</div>
-        <div class="step-title">Airbnb Hosts</div>
-        <div class="step-desc">Place a card in your apartment. Guests tap throughout their stay — each tap earns you €0.20. A busy listing with 3-night guests generates taps automatically, every stay.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num-big">🏨</div>
-        <div class="step-icon">🏨</div>
-        <div class="step-title">Hotels</div>
-        <div class="step-desc">Cards in rooms, lobbies, and elevators. Hotels earn a revenue share on every tap generated from their property. We handle setup, maintenance, and reporting.</div>
-      </div>
-    </div>
-
-    <!-- Earnings strip -->
-    <div class="earnings-strip reveal">
-      <div class="earn-item">
-        <div class="earn-value">€30</div>
-        <div class="earn-label">Driver monthly base</div>
-      </div>
-      <div class="earn-item highlight">
-        <div class="earn-badge">Active partner</div>
-        <div class="earn-value">€142</div>
-        <div class="earn-label">Avg driver monthly</div>
-      </div>
-      <div class="earn-item">
-        <div class="earn-value">€0.20</div>
-        <div class="earn-label">Per tap — hosts &amp; hotels</div>
-      </div>
-    </div>
-
-    <!-- Steps + Form -->
-    <div class="signup-grid">
-      <div class="signup-pitch reveal">
-        <div class="section-eyebrow" style="margin-bottom:0.75rem">
-          <div class="section-line"></div>
-          <span class="section-tag">How it works for you</span>
-        </div>
-        <h3>Two minutes to set up.<br><em>Earns while you work.</em></h3>
-        <p>We install the card in your vehicle, apartment, or hotel. You do nothing. Every customer tap generates income automatically — paid every Friday via Bizum.</p>
-        <div class="pitch-points">
-          <div class="pitch-point"><div class="pitch-point-dot"></div>We install everything — takes 2 minutes</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Every customer tap earns you money automatically</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Drivers get €30/month guaranteed base</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Airbnb hosts earn per tap, every stay</div>
-          <div class="pitch-point"><div class="pitch-point-dot"></div>Paid every Friday via Bizum</div>
-        </div>
-      </div>
-      <div class="form-card reveal" id="driverFormCard">
-        <div class="form-title">Join as a <em>partner</em></div>
-        <form class="form" id="driverForm" onsubmit="submitDriver(event)">
-          <div class="form-group">
-            <label class="form-label">Your name</label>
-            <input class="form-input" type="text" name="name" placeholder="Carlos Martínez" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Partner type</label>
-            <select class="form-select" name="vehicle">
-              <option value="taxi">Taxi driver</option>
-              <option value="vtc">Uber / VTC driver</option>
-              <option value="airbnb">Airbnb host</option>
-              <option value="hotel">Hotel</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">WhatsApp number</label>
-            <input class="form-input" type="tel" name="phone" placeholder="+34 600 000 000" required>
-          </div>
-          <button class="form-submit" type="submit" id="driverSubmitBtn">
-            Join the network
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
-          </button>
-          <div class="form-note">We'll WhatsApp you within 24h to get your card installed and start earning.</div>
-        </form>
-        <div class="success-card" id="driverSuccess">
-          <div class="success-ring">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4,12 9,17 20,6"/></svg>
-          </div>
-          <div class="success-title">Welcome to <em>Tapeo</em></div>
-          <div class="success-desc">We'll WhatsApp you within 24 hours to install your card and get you earning this week.</div>
-        </div>
-      </div>
-    </div>
+    <style>
+      .join-tab.active{background:var(--ink-card)!important;color:var(--cream)!important}
+      .join-tab:not(.active):hover{background:rgba(184,149,106,0.04)!important}
+      @media(max-width:640px){#joinSection{grid-template-columns:1fr!important}}
+    </style>
+    <script>
+      function toggleJoin(type){
+        const bizTab=document.getElementById('joinTabBiz');
+        const partnerTab=document.getElementById('joinTabPartner');
+        const bizPitch=document.getElementById('joinPitchBiz');
+        const partnerPitch=document.getElementById('joinPitchPartner');
+        const bizForm=document.getElementById('bizFormCard');
+        const partnerForm=document.getElementById('partnerFormCard');
+        if(type==='biz'){
+          bizTab.classList.add('active');bizTab.style.background='var(--ink-card)';bizTab.style.color='var(--cream)';
+          partnerTab.classList.remove('active');partnerTab.style.background='transparent';partnerTab.style.color='var(--cream-muted)';
+          bizPitch.style.display='block';partnerPitch.style.display='none';
+          bizForm.style.display='block';partnerForm.style.display='none';
+        } else {
+          partnerTab.classList.add('active');partnerTab.style.background='var(--ink-card)';partnerTab.style.color='var(--cream)';
+          bizTab.classList.remove('active');bizTab.style.background='transparent';bizTab.style.color='var(--cream-muted)';
+          partnerPitch.style.display='block';bizPitch.style.display='none';
+          partnerForm.style.display='block';bizForm.style.display='none';
+        }
+      }
+    </script>
 
   </div>
 </section>
