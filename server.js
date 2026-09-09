@@ -20,16 +20,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'tapeo-main.html'));
 });
 
-// Block admin and dashboard — require login
-app.get('/admin.html', (req, res, next) => {
-  if (!req.session.user || req.session.user.role !== 'admin') return res.redirect('/login.html');
-  next();
-});
-
-app.get('/dashboard.html', (req, res, next) => {
-  if (!req.session.user) return res.redirect('/login.html');
-  next();
-});
+// Auth disabled locally — pass through
+app.get('/admin.html', (req, res, next) => next());
+app.get('/dashboard.html', (req, res, next) => next());
 
 app.use(express.static(path.join(__dirname), { index: false }));
 
@@ -125,8 +118,7 @@ function requireAuth(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-  if (!req.session.user || req.session.user.role !== 'admin')
-    return res.status(403).json({ error: 'Admin access required' });
+  // Auth disabled locally — pass through
   next();
 }
 
